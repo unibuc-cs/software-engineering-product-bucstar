@@ -1,0 +1,1044 @@
+{
+  "configuration" : {
+    "scope" : "SoftwareSystem"
+  },
+  "description" : "Description",
+  "documentation" : { },
+  "id" : 1,
+  "lastModifiedAgent" : "structurizr-ui",
+  "lastModifiedDate" : "2024-10-30T10:17:56Z",
+  "model" : {
+    "customElements" : [ {
+      "description" : "Each component (except Database Component) needs the have a repository interface, which will be implemented in the DatabaseComponent",
+      "id" : "25",
+      "name" : "RepositoryNote",
+      "properties" : {
+        "structurizr.dsl.identifier" : "repositorynote"
+      },
+      "tags" : "Element,note"
+    } ],
+    "people" : [ {
+      "description" : "A person that wants to find other people to join his activities",
+      "id" : "1",
+      "location" : "Unspecified",
+      "name" : "Event Organizer",
+      "properties" : {
+        "structurizr.dsl.identifier" : "eventorganizer"
+      },
+      "relationships" : [ {
+        "description" : "creates events via",
+        "destinationId" : "4",
+        "id" : "27",
+        "properties" : {
+          "structurizr.dsl.identifier" : "52941662-19b9-4539-9361-2f5075ae45ff"
+        },
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "connects to",
+        "destinationId" : "3",
+        "id" : "29",
+        "properties" : {
+          "structurizr.dsl.identifier" : "231b4561-2b98-4dc7-ba1a-cec7d1809f89"
+        },
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "accesses platform via",
+        "destinationId" : "18",
+        "id" : "32",
+        "properties" : {
+          "structurizr.dsl.identifier" : "cc9de6c7-50fc-48d5-81a6-d33af019cac5"
+        },
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Created a new event via",
+        "destinationId" : "21",
+        "id" : "54",
+        "properties" : {
+          "structurizr.dsl.identifier" : "68a43a23-699c-4067-bec1-928cee0d8ede"
+        },
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "A person that wants to find fun events to take part in",
+      "id" : "2",
+      "location" : "Unspecified",
+      "name" : "User",
+      "properties" : {
+        "structurizr.dsl.identifier" : "user"
+      },
+      "relationships" : [ {
+        "description" : "browses and registers for events via",
+        "destinationId" : "4",
+        "id" : "26",
+        "properties" : {
+          "structurizr.dsl.identifier" : "8bc4a788-1d5a-48f4-a60e-a35a500fe969"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      }, {
+        "description" : "connects to",
+        "destinationId" : "3",
+        "id" : "28",
+        "properties" : {
+          "structurizr.dsl.identifier" : "78480793-69b3-473a-ad4a-c8dcc4bac223"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      }, {
+        "description" : "accesses platform via",
+        "destinationId" : "18",
+        "id" : "31",
+        "properties" : {
+          "structurizr.dsl.identifier" : "d961abe0-eace-4ae5-adf2-8344e1143f87"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Connects to the platform via",
+        "destinationId" : "19",
+        "id" : "52",
+        "properties" : {
+          "structurizr.dsl.identifier" : "6056177d-3fb6-4b61-9f32-c18f420255c9"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Browses future events via",
+        "destinationId" : "20",
+        "id" : "53",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fa767c2e-7fb3-4078-be3f-4b5f6832b28c"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Views event details via",
+        "destinationId" : "22",
+        "id" : "55",
+        "properties" : {
+          "structurizr.dsl.identifier" : "0d41986b-e11c-48dc-a8a3-2d82a7041218"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Views the events he participated to in the past via",
+        "destinationId" : "23",
+        "id" : "56",
+        "properties" : {
+          "structurizr.dsl.identifier" : "529a4535-b9ab-4864-8fec-e3f5e2f6b126"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Views a list of recommended events via",
+        "destinationId" : "24",
+        "id" : "57",
+        "properties" : {
+          "structurizr.dsl.identifier" : "ea9d6d0b-08aa-4747-a3d2-50439608045e"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    } ],
+    "softwareSystems" : [ {
+      "description" : "Social media platform",
+      "documentation" : { },
+      "id" : "3",
+      "location" : "Unspecified",
+      "name" : "Facebook",
+      "properties" : {
+        "structurizr.dsl.identifier" : "facebook"
+      },
+      "tags" : "Element,Software System"
+    }, {
+      "containers" : [ {
+        "description" : "Stores user and event data",
+        "documentation" : { },
+        "id" : "5",
+        "name" : "Database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "vibesync.database"
+        },
+        "tags" : "Element,Container",
+        "technology" : "TODO"
+      }, {
+        "components" : [ {
+          "description" : "Allows users to sign in to the VibeSync platform",
+          "documentation" : { },
+          "id" : "7",
+          "name" : "Account Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.server.accountcontroller"
+          },
+          "relationships" : [ {
+            "description" : "uses",
+            "destinationId" : "8",
+            "id" : "41",
+            "properties" : {
+              "structurizr.dsl.identifier" : "2f5be924-a990-4390-af8e-39bbe15f3ba0"
+            },
+            "sourceId" : "7",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : ".Net ApiController"
+        }, {
+          "description" : "Provides functionality regarding account managment",
+          "documentation" : { },
+          "id" : "8",
+          "name" : "Account Component",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.server.accountcomponent"
+          },
+          "relationships" : [ {
+            "description" : "interacts with the database via",
+            "destinationId" : "17",
+            "id" : "46",
+            "properties" : {
+              "structurizr.dsl.identifier" : "c897466b-581f-4559-81ce-59156e4d8ded"
+            },
+            "sourceId" : "8",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Collection of C# classes"
+        }, {
+          "description" : "Provides general events data",
+          "documentation" : { },
+          "id" : "9",
+          "name" : "Browse Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.server.browsecontroller"
+          },
+          "relationships" : [ {
+            "description" : "uses",
+            "destinationId" : "10",
+            "id" : "42",
+            "properties" : {
+              "structurizr.dsl.identifier" : "b8a58119-c9c0-4124-8cff-f374fe7c78bb"
+            },
+            "sourceId" : "9",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : ".Net ApiController"
+        }, {
+          "description" : "Provides functionality regarding fetching general future events data",
+          "documentation" : { },
+          "id" : "10",
+          "name" : "Browse Component",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.server.browsecomponent"
+          },
+          "relationships" : [ {
+            "description" : "interacts with the database via",
+            "destinationId" : "17",
+            "id" : "47",
+            "properties" : {
+              "structurizr.dsl.identifier" : "9839d0d1-56bf-4b73-a7f4-eb6da33c09c4"
+            },
+            "sourceId" : "10",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Collection of C# classes"
+        }, {
+          "description" : "Provides event fetching, updating and creating",
+          "documentation" : { },
+          "id" : "11",
+          "name" : "Event Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.server.eventcontroller"
+          },
+          "relationships" : [ {
+            "description" : "uses",
+            "destinationId" : "12",
+            "id" : "43",
+            "properties" : {
+              "structurizr.dsl.identifier" : "34de2245-63a8-439f-ac57-e0480435c275"
+            },
+            "sourceId" : "11",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : ".Net ApiController"
+        }, {
+          "description" : "Provides functionality regarding event viewing, updating and creating",
+          "documentation" : { },
+          "id" : "12",
+          "name" : "Event Component",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.server.eventcomponent"
+          },
+          "relationships" : [ {
+            "description" : "interacts with the database via",
+            "destinationId" : "17",
+            "id" : "48",
+            "properties" : {
+              "structurizr.dsl.identifier" : "761576e0-6456-4ea8-8bd0-2b2c4c4139ba"
+            },
+            "sourceId" : "12",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Collection of C# classes"
+        }, {
+          "description" : "Provides general data for past events",
+          "documentation" : { },
+          "id" : "13",
+          "name" : "History Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.server.historycontroller"
+          },
+          "relationships" : [ {
+            "description" : "uses",
+            "destinationId" : "14",
+            "id" : "44",
+            "properties" : {
+              "structurizr.dsl.identifier" : "1d2e6c88-49ac-4e4f-b157-76dcf79f680f"
+            },
+            "sourceId" : "13",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : ".Net ApiController"
+        }, {
+          "description" : "Provides general past event data",
+          "documentation" : { },
+          "id" : "14",
+          "name" : "History Component",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.server.historycomponent"
+          },
+          "relationships" : [ {
+            "description" : "interacts with the database via",
+            "destinationId" : "17",
+            "id" : "49",
+            "properties" : {
+              "structurizr.dsl.identifier" : "16d6c5d4-83ce-43e0-a127-19c63f508fe2"
+            },
+            "sourceId" : "14",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Collection of C# classes"
+        }, {
+          "description" : "Provides events data based on user preferences",
+          "documentation" : { },
+          "id" : "15",
+          "name" : "Recommendation Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.server.recommendationcontroller"
+          },
+          "relationships" : [ {
+            "description" : "uses",
+            "destinationId" : "16",
+            "id" : "45",
+            "properties" : {
+              "structurizr.dsl.identifier" : "af26c047-c723-44d0-bdfc-dfd7ba20702d"
+            },
+            "sourceId" : "15",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : ".Net ApiController"
+        }, {
+          "description" : "Provides recommended events",
+          "documentation" : { },
+          "id" : "16",
+          "name" : "Recommendation Component",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.server.recommendationcomponent"
+          },
+          "relationships" : [ {
+            "description" : "interacts with the database via",
+            "destinationId" : "17",
+            "id" : "50",
+            "properties" : {
+              "structurizr.dsl.identifier" : "b64acbd8-5a35-4f49-ad37-32e4547a048d"
+            },
+            "sourceId" : "16",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Collection of C# classes"
+        }, {
+          "description" : "Provides CRUD functionality",
+          "documentation" : { },
+          "id" : "17",
+          "name" : "Database Component",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.server.databasecomponent"
+          },
+          "relationships" : [ {
+            "description" : "accesses database",
+            "destinationId" : "5",
+            "id" : "51",
+            "properties" : {
+              "structurizr.dsl.identifier" : "be62c7bc-8352-41a2-aef2-ed7f9805f46d"
+            },
+            "sourceId" : "17",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Collection of C# classes (repositories)"
+        } ],
+        "description" : "Provides events management via a JSON/HTTP Api",
+        "documentation" : { },
+        "id" : "6",
+        "name" : "Api Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "vibesync.server"
+        },
+        "relationships" : [ {
+          "description" : "queries and updates",
+          "destinationId" : "5",
+          "id" : "33",
+          "properties" : {
+            "structurizr.dsl.identifier" : "785161f0-0bc0-4a60-bf72-2c6549bdb7f5"
+          },
+          "sourceId" : "6",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "C# and .Net"
+      }, {
+        "components" : [ {
+          "description" : "Allows users to signup/login to the platform",
+          "documentation" : { },
+          "id" : "19",
+          "name" : "Account Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.web.accountmodule"
+          },
+          "relationships" : [ {
+            "description" : "Gets user account via",
+            "destinationId" : "3",
+            "id" : "58",
+            "properties" : {
+              "structurizr.dsl.identifier" : "1df0b77e-e8b1-4d6c-855b-811d030aa6ce"
+            },
+            "sourceId" : "19",
+            "tags" : "Relationship"
+          }, {
+            "description" : "makes HTTP requests to",
+            "destinationId" : "6",
+            "id" : "59",
+            "properties" : {
+              "structurizr.dsl.identifier" : "af33594e-fd14-4442-87ae-00b03ba2d79c"
+            },
+            "sourceId" : "19",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Allows users to browse future events",
+          "documentation" : { },
+          "id" : "20",
+          "name" : "Browse Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.web.browsemodule"
+          },
+          "relationships" : [ {
+            "description" : "makes HTTP requests to",
+            "destinationId" : "6",
+            "id" : "60",
+            "properties" : {
+              "structurizr.dsl.identifier" : "72be678b-43ac-4009-84c6-21b1c46f2428"
+            },
+            "sourceId" : "20",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Allows users to create events",
+          "documentation" : { },
+          "id" : "21",
+          "name" : "Event Creation Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.web.eventcreationmodule"
+          },
+          "relationships" : [ {
+            "description" : "makes HTTP requests to",
+            "destinationId" : "6",
+            "id" : "61",
+            "properties" : {
+              "structurizr.dsl.identifier" : "de56a9b2-3f0f-412b-a810-e107c938c7e9"
+            },
+            "sourceId" : "21",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Allows users to view event details",
+          "documentation" : { },
+          "id" : "22",
+          "name" : "Event View Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.web.eventviewmodule"
+          },
+          "relationships" : [ {
+            "description" : "makes HTTP requests to",
+            "destinationId" : "6",
+            "id" : "62",
+            "properties" : {
+              "structurizr.dsl.identifier" : "b2b1c4f5-70df-4b15-a86d-1c8aa556462a"
+            },
+            "sourceId" : "22",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Allows users to view past events they participated in",
+          "documentation" : { },
+          "id" : "23",
+          "name" : "History Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.web.historymodule"
+          },
+          "relationships" : [ {
+            "description" : "makes HTTP requests to",
+            "destinationId" : "6",
+            "id" : "63",
+            "properties" : {
+              "structurizr.dsl.identifier" : "80771e65-222c-4589-9961-5fa54ee1dcc3"
+            },
+            "sourceId" : "23",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Displays a list of recommended future events based on user preferences",
+          "documentation" : { },
+          "id" : "24",
+          "name" : "Recommendation Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "vibesync.web.recommendationmodule"
+          },
+          "relationships" : [ {
+            "description" : "makes HTTP requests to",
+            "destinationId" : "6",
+            "id" : "64",
+            "properties" : {
+              "structurizr.dsl.identifier" : "d399988c-765e-4723-8e2a-fd186b26485b"
+            },
+            "sourceId" : "24",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        } ],
+        "description" : "Provides all the platform functionality via a web browser",
+        "documentation" : { },
+        "id" : "18",
+        "name" : "Web Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "vibesync.web"
+        },
+        "relationships" : [ {
+          "description" : "makes HTTP/HTTPS requests",
+          "destinationId" : "6",
+          "id" : "34",
+          "properties" : {
+            "structurizr.dsl.identifier" : "d6b09213-7bb8-44bd-8d7e-ed442e0a102e"
+          },
+          "sourceId" : "18",
+          "tags" : "Relationship"
+        }, {
+          "description" : "gets user account from",
+          "destinationId" : "3",
+          "id" : "35",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fd3b30be-8f31-416c-94ce-97fac2ff810b"
+          },
+          "sourceId" : "18",
+          "tags" : "Relationship"
+        }, {
+          "description" : "makes API calls to",
+          "destinationId" : "7",
+          "id" : "36",
+          "properties" : {
+            "structurizr.dsl.identifier" : "2acf49b9-44c7-4c7c-b5c9-2e6f6357cc3c"
+          },
+          "sourceId" : "18",
+          "tags" : "Relationship"
+        }, {
+          "description" : "makes API calls to",
+          "destinationId" : "9",
+          "id" : "37",
+          "properties" : {
+            "structurizr.dsl.identifier" : "45a6ac1b-720b-4218-a906-2552a406e394"
+          },
+          "sourceId" : "18",
+          "tags" : "Relationship"
+        }, {
+          "description" : "makes API calls to",
+          "destinationId" : "11",
+          "id" : "38",
+          "properties" : {
+            "structurizr.dsl.identifier" : "56a98849-4061-4afe-b521-dd69c1426f17"
+          },
+          "sourceId" : "18",
+          "tags" : "Relationship"
+        }, {
+          "description" : "makes API calls to",
+          "destinationId" : "13",
+          "id" : "39",
+          "properties" : {
+            "structurizr.dsl.identifier" : "78d5619d-5ce9-48ef-9aca-c93fe109d87c"
+          },
+          "sourceId" : "18",
+          "tags" : "Relationship"
+        }, {
+          "description" : "makes API calls to",
+          "destinationId" : "15",
+          "id" : "40",
+          "properties" : {
+            "structurizr.dsl.identifier" : "c839048c-c427-4529-ae46-8a6b6357f2ed"
+          },
+          "sourceId" : "18",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "TypeScript and React"
+      } ],
+      "description" : "Allows users to browse, create and register to events and activities created by other users",
+      "documentation" : { },
+      "id" : "4",
+      "location" : "Unspecified",
+      "name" : "VibeSync",
+      "properties" : {
+        "structurizr.dsl.identifier" : "vibesync"
+      },
+      "relationships" : [ {
+        "description" : "gets user account data from",
+        "destinationId" : "3",
+        "id" : "30",
+        "properties" : {
+          "structurizr.dsl.identifier" : "2aaecee6-ccab-4274-a0e5-153884f28d5f"
+        },
+        "sourceId" : "4",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Software System"
+    } ]
+  },
+  "name" : "Name",
+  "properties" : {
+    "structurizr.dsl" : "d29ya3NwYWNlICJOYW1lIiAiRGVzY3JpcHRpb24iIHsKCiAgICAhaWRlbnRpZmllcnMgaGllcmFyY2hpY2FsCgogICAgbW9kZWwgewogICAgICAgIGV2ZW50T3JnYW5pemVyID0gcGVyc29uICJFdmVudCBPcmdhbml6ZXIiIHsKICAgICAgICAgICAgZGVzY3JpcHRpb24gIkEgcGVyc29uIHRoYXQgd2FudHMgdG8gZmluZCBvdGhlciBwZW9wbGUgdG8gam9pbiBoaXMgYWN0aXZpdGllcyIKICAgICAgICB9CiAgICAgICAgdXNlciA9IHBlcnNvbiAiVXNlciIgewogICAgICAgICAgICBkZXNjcmlwdGlvbiAiQSBwZXJzb24gdGhhdCB3YW50cyB0byBmaW5kIGZ1biBldmVudHMgdG8gdGFrZSBwYXJ0IGluIgogICAgICAgIH0KICAgICAgICBmYWNlYm9vayA9IHNvZnR3YXJlU3lzdGVtICJGYWNlYm9vayIgewogICAgICAgICAgICBkZXNjcmlwdGlvbiAiU29jaWFsIG1lZGlhIHBsYXRmb3JtIgogICAgICAgIH0KCiAgICAgICAgdmliZXN5bmMgPSBzb2Z0d2FyZVN5c3RlbSAiVmliZVN5bmMiIHsKICAgICAgICAgICAgZGVzY3JpcHRpb24gIkFsbG93cyB1c2VycyB0byBicm93c2UsIGNyZWF0ZSBhbmQgcmVnaXN0ZXIgdG8gZXZlbnRzIGFuZCBhY3Rpdml0aWVzIGNyZWF0ZWQgYnkgb3RoZXIgdXNlcnMiCiAgICAgICAgICAgIGRhdGFiYXNlID0gY29udGFpbmVyICJEYXRhYmFzZSIgewogICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlN0b3JlcyB1c2VyIGFuZCBldmVudCBkYXRhIgogICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiVE9ETyIKICAgICAgICAgICAgfQogICAgICAgICAgICBzZXJ2ZXIgPSBjb250YWluZXIgIkFwaSBBcHBsaWNhdGlvbiIgewogICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlByb3ZpZGVzIGV2ZW50cyBtYW5hZ2VtZW50IHZpYSBhIEpTT04vSFRUUCBBcGkiCiAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJDIyBhbmQgLk5ldCIKCiAgICAgICAgICAgICAgICBhY2NvdW50Q29udHJvbGxlciA9IGNvbXBvbmVudCAiQWNjb3VudCBDb250cm9sbGVyIiB7CiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkFsbG93cyB1c2VycyB0byBzaWduIGluIHRvIHRoZSBWaWJlU3luYyBwbGF0Zm9ybSIKICAgICAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICIuTmV0IEFwaUNvbnRyb2xsZXIiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBhY2NvdW50Q29tcG9uZW50ID0gY29tcG9uZW50ICJBY2NvdW50IENvbXBvbmVudCIgewogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJQcm92aWRlcyBmdW5jdGlvbmFsaXR5IHJlZ2FyZGluZyBhY2NvdW50IG1hbmFnbWVudCIKICAgICAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJDb2xsZWN0aW9uIG9mIEMjIGNsYXNzZXMiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBicm93c2VDb250cm9sbGVyID0gY29tcG9uZW50ICJCcm93c2UgQ29udHJvbGxlciIgewogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJQcm92aWRlcyBnZW5lcmFsIGV2ZW50cyBkYXRhIgogICAgICAgICAgICAgICAgICAgIHRlY2hub2xvZ3kgIi5OZXQgQXBpQ29udHJvbGxlciIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIGJyb3dzZUNvbXBvbmVudCA9IGNvbXBvbmVudCAiQnJvd3NlIENvbXBvbmVudCIgewogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJQcm92aWRlcyBmdW5jdGlvbmFsaXR5IHJlZ2FyZGluZyBmZXRjaGluZyBnZW5lcmFsIGZ1dHVyZSBldmVudHMgZGF0YSIKICAgICAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJDb2xsZWN0aW9uIG9mIEMjIGNsYXNzZXMiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBldmVudENvbnRyb2xsZXIgPSBjb21wb25lbnQgIkV2ZW50IENvbnRyb2xsZXIiIHsKICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiUHJvdmlkZXMgZXZlbnQgZmV0Y2hpbmcsIHVwZGF0aW5nIGFuZCBjcmVhdGluZyIKICAgICAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICIuTmV0IEFwaUNvbnRyb2xsZXIiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBldmVudENvbXBvbmVudCA9IGNvbXBvbmVudCAiRXZlbnQgQ29tcG9uZW50IiB7CiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlByb3ZpZGVzIGZ1bmN0aW9uYWxpdHkgcmVnYXJkaW5nIGV2ZW50IHZpZXdpbmcsIHVwZGF0aW5nIGFuZCBjcmVhdGluZyIKICAgICAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJDb2xsZWN0aW9uIG9mIEMjIGNsYXNzZXMiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBoaXN0b3J5Q29udHJvbGxlciA9IGNvbXBvbmVudCAiSGlzdG9yeSBDb250cm9sbGVyIiB7CiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlByb3ZpZGVzIGdlbmVyYWwgZGF0YSBmb3IgcGFzdCBldmVudHMiCiAgICAgICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiLk5ldCBBcGlDb250cm9sbGVyIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgaGlzdG9yeUNvbXBvbmVudCA9IGNvbXBvbmVudCAiSGlzdG9yeSBDb21wb25lbnQiIHsKICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiUHJvdmlkZXMgZ2VuZXJhbCBwYXN0IGV2ZW50IGRhdGEiCiAgICAgICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiQ29sbGVjdGlvbiBvZiBDIyBjbGFzc2VzIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgcmVjb21tZW5kYXRpb25Db250cm9sbGVyID0gY29tcG9uZW50ICJSZWNvbW1lbmRhdGlvbiBDb250cm9sbGVyIiB7CiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlByb3ZpZGVzIGV2ZW50cyBkYXRhIGJhc2VkIG9uIHVzZXIgcHJlZmVyZW5jZXMiCiAgICAgICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiLk5ldCBBcGlDb250cm9sbGVyIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgcmVjb21tZW5kYXRpb25Db21wb25lbnQgPSBjb21wb25lbnQgIlJlY29tbWVuZGF0aW9uIENvbXBvbmVudCIgewogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJQcm92aWRlcyByZWNvbW1lbmRlZCBldmVudHMiCiAgICAgICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiQ29sbGVjdGlvbiBvZiBDIyBjbGFzc2VzIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgZGF0YWJhc2VDb21wb25lbnQgPSBjb21wb25lbnQgIkRhdGFiYXNlIENvbXBvbmVudCIgewogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJQcm92aWRlcyBDUlVEIGZ1bmN0aW9uYWxpdHkiCiAgICAgICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiQ29sbGVjdGlvbiBvZiBDIyBjbGFzc2VzIChyZXBvc2l0b3JpZXMpIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgCiAgICAgICAgICAgIH0KICAgICAgICAgICAgd2ViID0gY29udGFpbmVyICJXZWIgQXBwbGljYXRpb24iIHsKICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJQcm92aWRlcyBhbGwgdGhlIHBsYXRmb3JtIGZ1bmN0aW9uYWxpdHkgdmlhIGEgd2ViIGJyb3dzZXIiCiAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJUeXBlU2NyaXB0IGFuZCBSZWFjdCIKCiAgICAgICAgICAgICAgICBhY2NvdW50TW9kdWxlID0gY29tcG9uZW50ICJBY2NvdW50IE1vZHVsZSIgewogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBbGxvd3MgdXNlcnMgdG8gc2lnbnVwL2xvZ2luIHRvIHRoZSBwbGF0Zm9ybSIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIGJyb3dzZU1vZHVsZSA9IGNvbXBvbmVudCAiQnJvd3NlIE1vZHVsZSIgewogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBbGxvd3MgdXNlcnMgdG8gYnJvd3NlIGZ1dHVyZSBldmVudHMiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBldmVudENyZWF0aW9uTW9kdWxlID0gY29tcG9uZW50ICJFdmVudCBDcmVhdGlvbiBNb2R1bGUiIHsKICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiQWxsb3dzIHVzZXJzIHRvIGNyZWF0ZSBldmVudHMiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBldmVudFZpZXdNb2R1bGUgPSBjb21wb25lbnQgIkV2ZW50IFZpZXcgTW9kdWxlIiB7CiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkFsbG93cyB1c2VycyB0byB2aWV3IGV2ZW50IGRldGFpbHMiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBoaXN0b3J5TW9kdWxlID0gY29tcG9uZW50ICJIaXN0b3J5IE1vZHVsZSIgewogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBbGxvd3MgdXNlcnMgdG8gdmlldyBwYXN0IGV2ZW50cyB0aGV5IHBhcnRpY2lwYXRlZCBpbiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIHJlY29tbWVuZGF0aW9uTW9kdWxlID0gY29tcG9uZW50ICJSZWNvbW1lbmRhdGlvbiBNb2R1bGUiIHsKICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiRGlzcGxheXMgYSBsaXN0IG9mIHJlY29tbWVuZGVkIGZ1dHVyZSBldmVudHMgYmFzZWQgb24gdXNlciBwcmVmZXJlbmNlcyIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgcmVwb3NpdG9yeU5vdGUgPSBlbGVtZW50ICJSZXBvc2l0b3J5Tm90ZSIgewogICAgICAgICAgICB0YWcgIm5vdGUiCiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJFYWNoIGNvbXBvbmVudCAoZXhjZXB0IERhdGFiYXNlIENvbXBvbmVudCkgbmVlZHMgdGhlIGhhdmUgYSByZXBvc2l0b3J5IGludGVyZmFjZSwgd2hpY2ggd2lsbCBiZSBpbXBsZW1lbnRlZCBpbiB0aGUgRGF0YWJhc2VDb21wb25lbnQKICAgICAgICB9CgogICAgICAgIHVzZXIgLT4gdmliZXN5bmMgImJyb3dzZXMgYW5kIHJlZ2lzdGVycyBmb3IgZXZlbnRzIHZpYSIKICAgICAgICBldmVudE9yZ2FuaXplciAtPiB2aWJlc3luYyAiY3JlYXRlcyBldmVudHMgdmlhIgogICAgICAgIHVzZXIgLT4gZmFjZWJvb2sgImNvbm5lY3RzIHRvIgogICAgICAgIGV2ZW50T3JnYW5pemVyIC0+IGZhY2Vib29rICJjb25uZWN0cyB0byIKICAgICAgICB2aWJlc3luYyAtPiBmYWNlYm9vayAiZ2V0cyB1c2VyIGFjY291bnQgZGF0YSBmcm9tIgogICAgICAgIHVzZXIgLT4gdmliZXN5bmMud2ViICJhY2Nlc3NlcyBwbGF0Zm9ybSB2aWEiCiAgICAgICAgZXZlbnRPcmdhbml6ZXIgLT4gdmliZXN5bmMud2ViICJhY2Nlc3NlcyBwbGF0Zm9ybSB2aWEiCiAgICAgICAgdmliZXN5bmMuc2VydmVyIC0+IHZpYmVzeW5jLmRhdGFiYXNlICJxdWVyaWVzIGFuZCB1cGRhdGVzIgogICAgICAgIHZpYmVzeW5jLndlYiAtPiB2aWJlc3luYy5zZXJ2ZXIgIm1ha2VzIEhUVFAvSFRUUFMgcmVxdWVzdHMiCiAgICAgICAgdmliZXN5bmMud2ViIC0+IGZhY2Vib29rICJnZXRzIHVzZXIgYWNjb3VudCBmcm9tIgoKICAgICAgICB2aWJlc3luYy53ZWIgLT4gdmliZXN5bmMuc2VydmVyLmFjY291bnRDb250cm9sbGVyICJtYWtlcyBBUEkgY2FsbHMgdG8iCiAgICAgICAgdmliZXN5bmMud2ViIC0+IHZpYmVzeW5jLnNlcnZlci5icm93c2VDb250cm9sbGVyICJtYWtlcyBBUEkgY2FsbHMgdG8iCiAgICAgICAgdmliZXN5bmMud2ViIC0+IHZpYmVzeW5jLnNlcnZlci5ldmVudENvbnRyb2xsZXIgIm1ha2VzIEFQSSBjYWxscyB0byIKICAgICAgICB2aWJlc3luYy53ZWIgLT4gdmliZXN5bmMuc2VydmVyLmhpc3RvcnlDb250cm9sbGVyICJtYWtlcyBBUEkgY2FsbHMgdG8iCiAgICAgICAgdmliZXN5bmMud2ViIC0+IHZpYmVzeW5jLnNlcnZlci5yZWNvbW1lbmRhdGlvbkNvbnRyb2xsZXIgIm1ha2VzIEFQSSBjYWxscyB0byIKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgIHZpYmVzeW5jLnNlcnZlci5hY2NvdW50Q29udHJvbGxlciAtPiB2aWJlc3luYy5zZXJ2ZXIuYWNjb3VudENvbXBvbmVudCAidXNlcyIKICAgICAgICB2aWJlc3luYy5zZXJ2ZXIuYnJvd3NlQ29udHJvbGxlciAtPiB2aWJlc3luYy5zZXJ2ZXIuYnJvd3NlQ29tcG9uZW50ICJ1c2VzIgogICAgICAgIHZpYmVzeW5jLnNlcnZlci5ldmVudENvbnRyb2xsZXIgLT4gdmliZXN5bmMuc2VydmVyLmV2ZW50Q29tcG9uZW50ICJ1c2VzIgogICAgICAgIHZpYmVzeW5jLnNlcnZlci5oaXN0b3J5Q29udHJvbGxlciAtPiB2aWJlc3luYy5zZXJ2ZXIuaGlzdG9yeUNvbXBvbmVudCAidXNlcyIKICAgICAgICB2aWJlc3luYy5zZXJ2ZXIucmVjb21tZW5kYXRpb25Db250cm9sbGVyIC0+IHZpYmVzeW5jLnNlcnZlci5yZWNvbW1lbmRhdGlvbkNvbXBvbmVudCAidXNlcyIKCiAgICAgICAgdmliZXN5bmMuc2VydmVyLmFjY291bnRDb21wb25lbnQgLT4gdmliZXN5bmMuc2VydmVyLmRhdGFiYXNlQ29tcG9uZW50ICJpbnRlcmFjdHMgd2l0aCB0aGUgZGF0YWJhc2UgdmlhIgogICAgICAgIHZpYmVzeW5jLnNlcnZlci5icm93c2VDb21wb25lbnQgLT4gdmliZXN5bmMuc2VydmVyLmRhdGFiYXNlQ29tcG9uZW50ICJpbnRlcmFjdHMgd2l0aCB0aGUgZGF0YWJhc2UgdmlhIgogICAgICAgIHZpYmVzeW5jLnNlcnZlci5ldmVudENvbXBvbmVudCAtPiB2aWJlc3luYy5zZXJ2ZXIuZGF0YWJhc2VDb21wb25lbnQgImludGVyYWN0cyB3aXRoIHRoZSBkYXRhYmFzZSB2aWEiCiAgICAgICAgdmliZXN5bmMuc2VydmVyLmhpc3RvcnlDb21wb25lbnQgLT4gdmliZXN5bmMuc2VydmVyLmRhdGFiYXNlQ29tcG9uZW50ICJpbnRlcmFjdHMgd2l0aCB0aGUgZGF0YWJhc2UgdmlhIgogICAgICAgIHZpYmVzeW5jLnNlcnZlci5yZWNvbW1lbmRhdGlvbkNvbXBvbmVudCAtPiB2aWJlc3luYy5zZXJ2ZXIuZGF0YWJhc2VDb21wb25lbnQgImludGVyYWN0cyB3aXRoIHRoZSBkYXRhYmFzZSB2aWEiCiAgICAgICAgCiAgICAgICAgdmliZXN5bmMuc2VydmVyLmRhdGFiYXNlQ29tcG9uZW50IC0+IHZpYmVzeW5jLmRhdGFiYXNlICJhY2Nlc3NlcyBkYXRhYmFzZSIKCiAgICAgICAgdXNlciAtPiB2aWJlc3luYy53ZWIuYWNjb3VudE1vZHVsZSAiQ29ubmVjdHMgdG8gdGhlIHBsYXRmb3JtIHZpYSIKICAgICAgICB1c2VyIC0+IHZpYmVzeW5jLndlYi5icm93c2VNb2R1bGUgIkJyb3dzZXMgZnV0dXJlIGV2ZW50cyB2aWEiCiAgICAgICAgZXZlbnRPcmdhbml6ZXIgLT4gdmliZXN5bmMud2ViLmV2ZW50Q3JlYXRpb25Nb2R1bGUgIkNyZWF0ZWQgYSBuZXcgZXZlbnQgdmlhIgogICAgICAgIHVzZXIgLT4gdmliZXN5bmMud2ViLmV2ZW50Vmlld01vZHVsZSAiVmlld3MgZXZlbnQgZGV0YWlscyB2aWEiCiAgICAgICAgdXNlciAtPiB2aWJlc3luYy53ZWIuaGlzdG9yeU1vZHVsZSAiVmlld3MgdGhlIGV2ZW50cyBoZSBwYXJ0aWNpcGF0ZWQgdG8gaW4gdGhlIHBhc3QgdmlhIgogICAgICAgIHVzZXIgLT4gdmliZXN5bmMud2ViLnJlY29tbWVuZGF0aW9uTW9kdWxlICJWaWV3cyBhIGxpc3Qgb2YgcmVjb21tZW5kZWQgZXZlbnRzIHZpYSIKICAgICAgICB2aWJlc3luYy53ZWIuYWNjb3VudE1vZHVsZSAtPiBmYWNlYm9vayAiR2V0cyB1c2VyIGFjY291bnQgdmlhIgogICAgICAgIHZpYmVzeW5jLndlYi5hY2NvdW50TW9kdWxlIC0+IHZpYmVzeW5jLnNlcnZlciAibWFrZXMgSFRUUCByZXF1ZXN0cyB0byIKICAgICAgICB2aWJlc3luYy53ZWIuYnJvd3NlTW9kdWxlIC0+IHZpYmVzeW5jLnNlcnZlciAibWFrZXMgSFRUUCByZXF1ZXN0cyB0byIKICAgICAgICB2aWJlc3luYy53ZWIuZXZlbnRDcmVhdGlvbk1vZHVsZSAtPiB2aWJlc3luYy5zZXJ2ZXIgIm1ha2VzIEhUVFAgcmVxdWVzdHMgdG8iCiAgICAgICAgdmliZXN5bmMud2ViLmV2ZW50Vmlld01vZHVsZSAtPiB2aWJlc3luYy5zZXJ2ZXIgIm1ha2VzIEhUVFAgcmVxdWVzdHMgdG8iCiAgICAgICAgdmliZXN5bmMud2ViLmhpc3RvcnlNb2R1bGUgLT4gdmliZXN5bmMuc2VydmVyICJtYWtlcyBIVFRQIHJlcXVlc3RzIHRvIgogICAgICAgIHZpYmVzeW5jLndlYi5yZWNvbW1lbmRhdGlvbk1vZHVsZSAtPiB2aWJlc3luYy5zZXJ2ZXIgIm1ha2VzIEhUVFAgcmVxdWVzdHMgdG8iCgogICAgfQoKICAgIHZpZXdzIHsKICAgICAgICBzeXN0ZW1Db250ZXh0IHZpYmVzeW5jICJWaWJlc3luYy1Db250ZXh0IiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgICAgICBhdXRvbGF5b3V0IGxyCiAgICAgICAgfQoKICAgICAgICBjb250YWluZXIgdmliZXN5bmMgIlZpYmVzeW5jLUNvbnRhaW5lciIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b2xheW91dCBscgogICAgICAgIH0KCiAgICAgICAgY29tcG9uZW50IHZpYmVzeW5jLndlYiAiV2ViQXBwLUNvbXBvbmVudCIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b2xheW91dCBscgogICAgICAgIH0KICAgICAgICBjb21wb25lbnQgdmliZXN5bmMuc2VydmVyICJBcGlBcHBsaWNhdGlvbi1Db21wb25lbnQiIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgICAgIGluY2x1ZGUgcmVwb3NpdG9yeU5vdGUKICAgICAgICAgICAgYXV0b2xheW91dCBscgogICAgICAgIH0KCiAgICAgICAgc3R5bGVzIHsKICAgICAgICAgICAgZWxlbWVudCAiRWxlbWVudCIgewogICAgICAgICAgICAgICAgY29sb3IgI2ZmZmZmZgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIlBlcnNvbiIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjMWE3M2U4CiAgICAgICAgICAgICAgICBzaGFwZSBwZXJzb24KICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJTb2Z0d2FyZSBTeXN0ZW0iIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzBkNDdhMQogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkNvbnRhaW5lciIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjMTk3NmQyCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiQ29tcG9uZW50IiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICMxOTc2ZDIKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJEYXRhYmFzZSIgewogICAgICAgICAgICAgICAgc2hhcGUgY3lsaW5kZXIKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzE1NjVjMAogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIm5vdGUiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzMzMzMzMwogICAgICAgICAgICB9CiAgICAgICAgfQogICAgfQoKICAgIGNvbmZpZ3VyYXRpb24gewogICAgICAgIHNjb3BlIHNvZnR3YXJlc3lzdGVtCiAgICB9Cgp9"
+  },
+  "views" : {
+    "componentViews" : [ {
+      "automaticLayout" : {
+        "applied" : true,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "containerId" : "18",
+      "dimensions" : {
+        "height" : 4491,
+        "width" : 2300
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 200,
+        "y" : 245
+      }, {
+        "id" : "2",
+        "x" : 200,
+        "y" : 2350
+      }, {
+        "id" : "3",
+        "x" : 1650,
+        "y" : 295
+      }, {
+        "id" : "6",
+        "x" : 1650,
+        "y" : 2400
+      }, {
+        "id" : "19",
+        "x" : 900,
+        "y" : 1500
+      }, {
+        "id" : "20",
+        "x" : 900,
+        "y" : 3900
+      }, {
+        "id" : "21",
+        "x" : 900,
+        "y" : 900
+      }, {
+        "id" : "22",
+        "x" : 900,
+        "y" : 2100
+      }, {
+        "id" : "23",
+        "x" : 900,
+        "y" : 3300
+      }, {
+        "id" : "24",
+        "x" : 900,
+        "y" : 2700
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "WebApp-Component",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "28",
+        "vertices" : [ {
+          "x" : 796,
+          "y" : 720
+        } ]
+      }, {
+        "id" : "29",
+        "vertices" : [ {
+          "x" : 796,
+          "y" : 216
+        }, {
+          "x" : 1454,
+          "y" : 216
+        } ]
+      }, {
+        "id" : "52",
+        "vertices" : [ {
+          "x" : 796,
+          "y" : 1950
+        } ]
+      }, {
+        "id" : "53",
+        "vertices" : [ {
+          "x" : 796,
+          "y" : 3750
+        } ]
+      }, {
+        "id" : "54"
+      }, {
+        "id" : "55"
+      }, {
+        "id" : "56",
+        "vertices" : [ {
+          "x" : 796,
+          "y" : 3150
+        } ]
+      }, {
+        "id" : "57"
+      }, {
+        "id" : "58",
+        "vertices" : [ {
+          "x" : 1454,
+          "y" : 1350
+        } ]
+      }, {
+        "id" : "59",
+        "vertices" : [ {
+          "x" : 1454,
+          "y" : 1950
+        } ]
+      }, {
+        "id" : "60",
+        "vertices" : [ {
+          "x" : 1454,
+          "y" : 3750
+        } ]
+      }, {
+        "id" : "61",
+        "vertices" : [ {
+          "x" : 1454,
+          "y" : 1350
+        } ]
+      }, {
+        "id" : "62"
+      }, {
+        "id" : "63",
+        "vertices" : [ {
+          "x" : 1454,
+          "y" : 3150
+        } ]
+      }, {
+        "id" : "64"
+      } ]
+    }, {
+      "automaticLayout" : {
+        "applied" : true,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "containerId" : "6",
+      "dimensions" : {
+        "height" : 3211,
+        "width" : 3850
+      },
+      "elements" : [ {
+        "id" : "5",
+        "x" : 3200,
+        "y" : 1419
+      }, {
+        "id" : "7",
+        "x" : 950,
+        "y" : 2019
+      }, {
+        "id" : "8",
+        "x" : 1700,
+        "y" : 2019
+      }, {
+        "id" : "9",
+        "x" : 950,
+        "y" : 2619
+      }, {
+        "id" : "10",
+        "x" : 1700,
+        "y" : 2619
+      }, {
+        "id" : "11",
+        "x" : 950,
+        "y" : 219
+      }, {
+        "id" : "12",
+        "x" : 1700,
+        "y" : 219
+      }, {
+        "id" : "13",
+        "x" : 950,
+        "y" : 819
+      }, {
+        "id" : "14",
+        "x" : 1700,
+        "y" : 819
+      }, {
+        "id" : "15",
+        "x" : 950,
+        "y" : 1419
+      }, {
+        "id" : "16",
+        "x" : 1700,
+        "y" : 1419
+      }, {
+        "id" : "17",
+        "x" : 2450,
+        "y" : 1419
+      }, {
+        "id" : "18",
+        "x" : 200,
+        "y" : 1419
+      }, {
+        "id" : "25",
+        "x" : 200,
+        "y" : 819
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "ApiApplication-Component",
+      "order" : 4,
+      "relationships" : [ {
+        "id" : "36"
+      }, {
+        "id" : "37",
+        "vertices" : [ {
+          "x" : 846,
+          "y" : 2469
+        } ]
+      }, {
+        "id" : "38",
+        "vertices" : [ {
+          "x" : 650,
+          "y" : 1269
+        }, {
+          "x" : 846,
+          "y" : 669
+        } ]
+      }, {
+        "id" : "39"
+      }, {
+        "id" : "40"
+      }, {
+        "id" : "41"
+      }, {
+        "id" : "42"
+      }, {
+        "id" : "43"
+      }, {
+        "id" : "44"
+      }, {
+        "id" : "45"
+      }, {
+        "id" : "46"
+      }, {
+        "id" : "47",
+        "vertices" : [ {
+          "x" : 2150,
+          "y" : 2469
+        } ]
+      }, {
+        "id" : "48",
+        "vertices" : [ {
+          "x" : 2150,
+          "y" : 669
+        } ]
+      }, {
+        "id" : "49"
+      }, {
+        "id" : "50"
+      }, {
+        "id" : "51"
+      } ]
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "lastSavedView" : "WebApp-Component",
+      "metadataSymbols" : "SquareBrackets",
+      "styles" : {
+        "elements" : [ {
+          "color" : "#ffffff",
+          "tag" : "Element"
+        }, {
+          "background" : "#1a73e8",
+          "shape" : "Person",
+          "tag" : "Person"
+        }, {
+          "background" : "#0d47a1",
+          "tag" : "Software System"
+        }, {
+          "background" : "#1976d2",
+          "tag" : "Container"
+        }, {
+          "background" : "#1976d2",
+          "tag" : "Component"
+        }, {
+          "background" : "#1565c0",
+          "shape" : "Cylinder",
+          "tag" : "Database"
+        }, {
+          "background" : "#333333",
+          "tag" : "note"
+        } ]
+      },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "applied" : true,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "dimensions" : {
+        "height" : 1925,
+        "width" : 3070
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 199,
+        "y" : 1028
+      }, {
+        "id" : "2",
+        "x" : 199,
+        "y" : 199
+      }, {
+        "id" : "3",
+        "x" : 1649,
+        "y" : 728
+      }, {
+        "id" : "5",
+        "x" : 2399,
+        "y" : 1333
+      }, {
+        "id" : "6",
+        "x" : 1649,
+        "y" : 1333
+      }, {
+        "id" : "18",
+        "x" : 899,
+        "y" : 1333
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Vibesync-Container",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "28"
+      }, {
+        "id" : "29"
+      }, {
+        "id" : "31"
+      }, {
+        "id" : "32"
+      }, {
+        "id" : "33"
+      }, {
+        "id" : "34"
+      }, {
+        "id" : "35"
+      } ],
+      "softwareSystemId" : "4"
+    } ],
+    "systemContextViews" : [ {
+      "automaticLayout" : {
+        "applied" : true,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "dimensions" : {
+        "height" : 1625,
+        "width" : 2300
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 199,
+        "y" : 200
+      }, {
+        "id" : "2",
+        "x" : 199,
+        "y" : 1025
+      }, {
+        "id" : "3",
+        "x" : 1649,
+        "y" : 725
+      }, {
+        "id" : "4",
+        "x" : 899,
+        "y" : 725
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "Vibesync-Context",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "26"
+      }, {
+        "id" : "27"
+      }, {
+        "id" : "28",
+        "vertices" : [ {
+          "x" : 1349,
+          "y" : 1175
+        } ]
+      }, {
+        "id" : "29",
+        "vertices" : [ {
+          "x" : 1349,
+          "y" : 575
+        } ]
+      }, {
+        "id" : "30"
+      } ],
+      "softwareSystemId" : "4"
+    } ]
+  }
+}
