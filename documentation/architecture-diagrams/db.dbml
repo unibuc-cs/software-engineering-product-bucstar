@@ -1,0 +1,56 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table Event {
+  id integer [primary key]
+  organizerId integer
+  name varchar
+  description varchar
+  date datetime
+  location varchar
+  participantsLimit integer
+}
+
+Table User {
+  id integer [primary key]
+  nickname varchar
+}
+
+Table Tag {
+  id integer [primary key]
+  eventId integer
+  name varchar
+}
+
+Table Participation {
+  id integer [primary key]
+  eventId integer
+  userId integer
+}
+
+Table Review {
+  id integer [primary key]
+  eventId integer
+  userId integer
+  score integer
+  text varchar
+}
+Table Comment {
+  id integer [primary key]
+  eventId integer
+  userId integer
+  text varchar2
+  timestamp datetime
+}
+
+
+
+Ref: Event.id < Tag.eventId
+Ref: Event.organizerId > User.id
+Ref: Event.id < Participation.eventId
+Ref: User.id < Participation.userId
+Ref: Event.id < Review.eventId
+Ref: Review.userId > User.id
+Ref: Event.id < Comment.eventId
+Ref: User.id < Comment.userId
+
