@@ -125,7 +125,7 @@ VibeSync is a web-based social platform
 
 ### Post-Event Features and User Interaction
 
-- [ ] As a user, I want to leave a review for organizers after an event so that future users can know more about them.
+- [ ] As a user, I want to leave a review for organizers after an event so that future users can know more about them
 - [ ] As a user, I want to comment on the event page directly if I have specific questions or need help.
 
 
