@@ -1,6 +1,6 @@
 # VibeSync
 
-[**Jira**](https://dumitresculeduard.atlassian.net/jira/software/projects/VS/settings/details)
+[**Jira**](https://dumitresculeduard.atlassian.net/jira/software/projects/VS/boards/5/backlog)
 
 ---
 
@@ -86,10 +86,6 @@ VibeSync is a web-based social platform
 - **Event Participation Confirmation:** Notify users with a confirmation after they join an event
 - **Event Update Notifications:** Notify users if an event they registered for is updated or canceled.
 
-
-## Scenarios
-<!-- TODO: -->
-
 ## User Stories
 
 ### User Registration and Authentication
@@ -128,7 +124,8 @@ VibeSync is a web-based social platform
 - [ ] As a user, I want to leave a review for organizers after an event so that future users can know more about them
 - [ ] As a user, I want to comment on the event page directly if I have specific questions or need help.
 
+## [User Personas](documentation/market-analysis/user-personas.md)
 
-## Requirements
-<!-- TODO: -->
+## [Scenarios](documentation/market-analysis/scenarios.md)
 
+## [Requirements](documentation/market-analysis/requirements.md)
