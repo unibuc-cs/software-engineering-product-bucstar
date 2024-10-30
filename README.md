@@ -6,7 +6,7 @@
 
 VibeSync is a web-based social platform that allows users to create, browse, and participate in casual events like sports games or meetups, featuring real-time updates, participant management, and event recommendations based on user preferences.
 
-## Our Team
+## Our Team 👥
 
 ### Team Name: Bucstăr
 
@@ -16,20 +16,20 @@ VibeSync is a web-based social platform that allows users to create, browse, and
 - [Alexandru Gavrila](https://github.com/GFA03)
 - [Adrian Mincu](https://github.com/skpha13/)
 
-## Product Vision
+## Product Vision ✨
 
 **FOR** social individuals and community seekers
 
-**WHO** want to easily discover and participate in casual events with others who share their interests, whether it’s sports, meetups, or social gatherings.
+**WHO** want to easily discover and participate in casual events with others who share their interests, whether it's sports, meetups, or social gatherings.
 VibeSync is a web-based social platform
 
 **THAT** enables users to create, browse, and join casual, interest-based events with real-time updates, seamless participant management, and personalized event recommendations.
 
-**UNLIKE** general-purpose social platforms that lack focus, we’re dedicated solely to seamless event planning, making the process simpler and more efficient,
+**UNLIKE** general-purpose social platforms that lack focus, we're dedicated solely to seamless event planning, making the process simpler and more efficient,
 
 **OUR PRODUCT** delivers a social experience that prioritizes spontaneous events, local connections, and personalized recommendations, allowing users to interact meaningfully and find the perfect event vibe anytime, anywhere.
 
-## Product Features
+## Product Features 📑
 
 ### User Registration
 
@@ -73,7 +73,7 @@ VibeSync is a web-based social platform
 
 ### User Event Management
 
-- **Registered Events View:** Allow users to view a list of events they’ve registered for.
+- **Registered Events View:** Allow users to view a list of events they've registered for.
 - **Event Unregistration:** Allow users to unregister from events they joined.
 - **Event History:** Provide a history of past events for users to track their attendance.
 
@@ -86,7 +86,7 @@ VibeSync is a web-based social platform
 - **Event Participation Confirmation:** Notify users with a confirmation after they join an event
 - **Event Update Notifications:** Notify users if an event they registered for is updated or canceled.
 
-## User Stories
+## User Stories 📖
 
 ### User Registration and Authentication
 
@@ -98,9 +98,7 @@ VibeSync is a web-based social platform
 
 - [ ] As a user, I want to browse upcoming events so that I can discover those that interest me.
 - [ ] As a user, I want to view event details so that I can decide if I want to participate.
-- [ ] As a user, I want to filter events by tags so that I can see the events I’m interested in.
-- [ ] As a user, I want to filter events by location so that I can see the events located in the same city as me.
-- [ ] As a user, I want to filter events by date so that I can see the events on a specified day.
+- [ ] As a user, I want to filter events by date, location, or tags so that I can see the events I'm interested in.
 - [ ] As a user, I want to order events by the number of participants so that I can prioritize popular events.
 - [ ] As a user, I want to see recommended events based on my interests to quickly find relevant activities.
 
@@ -108,9 +106,9 @@ VibeSync is a web-based social platform
 
 - [ ] As a user, I want to join events so that I can have some fun.
 - [ ] As a participant, I want to receive a notification confirming my spot once I join an event.
-- [ ] As a user, I want to view the events I’ve registered for so that I can easily remember where to go.
-- [ ] As a user, I want to have the option to unregister from events I’ve joined so that I can manage my schedule and commitments more effectively.
-- [ ] As a user, I want to see events I’ve attended in the past so that I can keep track of my history.
+- [ ] As a user, I want to view the events I've registered for so that I can easily remember where to go.
+- [ ] As a user, I want to have the option to unregister from events I've joined so that I can manage my schedule and commitments more effectively.
+- [ ] As a user, I want to see events I've attended in the past so that I can keep track of my history.
 
 ### Event Creation and Management (for Organizers)
 
@@ -124,8 +122,8 @@ VibeSync is a web-based social platform
 - [ ] As a user, I want to leave a review for organizers after an event so that future users can know more about them
 - [ ] As a user, I want to comment on the event page directly if I have specific questions or need help.
 
-## [User Personas](documentation/market-analysis/user-personas.md)
+## [User Personas](documentation/market-analysis/user-personas.md) 🔗 
 
-## [Scenarios](documentation/market-analysis/scenarios.md)
+## [Scenarios](documentation/market-analysis/scenarios.md) 🔗 
 
-## [Requirements](documentation/market-analysis/requirements.md)
+## [Requirements](documentation/market-analysis/requirements.md) 🔗 
