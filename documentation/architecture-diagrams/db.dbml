@@ -39,7 +39,15 @@ Table Comment {
   id integer [primary key]
   eventId integer
   userId integer
-  text varchar2
+  text varchar
+  timestamp datetime
+}
+
+Table Notification {
+  id integer [primary key]
+  userId integer
+  text varchar
+  seen bool
   timestamp datetime
 }
 
@@ -53,4 +61,4 @@ Ref: Event.id < Review.eventId
 Ref: Review.userId > User.id
 Ref: Event.id < Comment.eventId
 Ref: User.id < Comment.userId
-
+Ref: User.id < Notification.userId
