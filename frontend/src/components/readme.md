@@ -1,0 +1,1 @@
+This directory should be used exclusively for frontend components, containing reusable parts of the page such as buttons, forms, and layout elements.
