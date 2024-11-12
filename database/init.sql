@@ -10,6 +10,7 @@ CREATE TABLE Event (
     organizerId INT,
     name VARCHAR(255),
     description VARCHAR(2000),
+    dateCreated DATETIME,
     date DATETIME,
     location VARCHAR(255),
     participantsLimit INT,
