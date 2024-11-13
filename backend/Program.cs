@@ -2,6 +2,7 @@ using backend.Data;
 using backend.Helpers.Extensions;
 using backend.Helpers.Seeders;
 using Microsoft.EntityFrameworkCore;
+using IHostingEnvironment = Microsoft.Extensions.Hosting.IHostingEnvironment;
 
 var builder = WebApplication.CreateBuilder(args);
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -35,7 +36,17 @@ builder.Services.AddSeeders();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
-SeedData(app);
+
+// Run migrations before seeding data
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    // Ensure the database is up to date with migrations
+    dbContext.Database.Migrate();
+
+    // Now, seed the data
+    SeedData(app);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

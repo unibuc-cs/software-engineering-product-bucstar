@@ -1,0 +1,43 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: vibesyncpass
+      MYSQL_DATABASE: vibesyncdb
+      MYSQL_USER: vibesyncuser
+      MYSQL_PASSWORD: vibesyncpass
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$vibesyncpass"]
+      interval: 5s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - backend_network
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      - ASPNETCORE_URLS=http://+:5009
+      - ASPNETCORE_ENVIRONMENT=Development
+      - CONNECTION_STRING=server=mysql; port=3306; database=vibesyncdb; user=root; password=vibesyncpass; Persist Security Info=False; Convert Zero Datetime=True; Allow Zero Datetime=True; Connect Timeout=30;
+    ports:
+      - "5009:5009"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+    driver: bridge
+
+volumes:
+  mysql-data:

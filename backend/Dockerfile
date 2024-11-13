@@ -22,5 +22,4 @@ ENV ASPNETCORE_URLS="http://+:5009" \
 # Expose the necessary ports
 EXPOSE 5009
 
-# Start the application
 ENTRYPOINT ["dotnet", "backend.dll"]
