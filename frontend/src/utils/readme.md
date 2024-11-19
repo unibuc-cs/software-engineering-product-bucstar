@@ -1,0 +1,1 @@
+This directory should include utility functions and helper scripts that provide reusable functionality across the application.

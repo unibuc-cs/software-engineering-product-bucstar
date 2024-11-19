@@ -1,0 +1,1 @@
+This directory should contain the full page views, including the complete layout and structure for each page of the application.
