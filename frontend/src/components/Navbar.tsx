@@ -13,12 +13,28 @@ import {
 } from '@mui/material';
 import {Outlet} from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
+import Modal from '@mui/material/Modal';
 
 const drawerWidth = 240;
 const navItems = ["Home", "Placeholder", "Placeholder"];
 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
 const Navbar = () => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
@@ -65,7 +81,22 @@ const Navbar = () => {
                         ))}
                     </Box>
 
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit" onClick={handleOpen}>Login</Button>
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                                Log in
+                            </Typography>
+                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                TODO: add facebook login/signup button
+                            </Typography>
+                        </Box>
+                    </Modal>
                 </Toolbar>
             </AppBar>
 
@@ -75,7 +106,7 @@ const Navbar = () => {
                     open={mobileOpen}
                     onClose={handleDrawerToggle}
                     ModalProps={{
-                        keepMounted: true, // Better open performance on mobile.
+                        keepMounted: true,
                     }}
                     sx={{
                         display: { xs: 'block', sm: 'none' },

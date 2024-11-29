@@ -3,13 +3,8 @@ import './App.css';
 import Navbar from "./components/Navbar";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./views/Home";
-import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
-
-const theme = createTheme({
-    typography: {
-        fontFamily: '"Roboto", sans-serif'
-    }
-});
+import {CssBaseline, ThemeProvider} from "@mui/material";
+import theme from "./assets/theme";
 
 function App() {
   return (
