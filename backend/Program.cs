@@ -26,8 +26,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
+
+var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? builder.Configuration.GetConnectionString("DefaultConnectionMySQL");
 builder.Services.AddDbContext<DatabaseContext>(
-    options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnectionMySQL")!)
+    options => options.UseMySQL(connectionString!)
 );
 
 builder.Services.AddRepositories();

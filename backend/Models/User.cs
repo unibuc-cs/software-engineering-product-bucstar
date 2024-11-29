@@ -1,9 +1,11 @@
+using System.ComponentModel.DataAnnotations;
 using backend.Models.Base;
 
 namespace backend.Models;
 
 public class User : BaseEntity
 {
+    [MaxLength(50)]
     public required string Nickname { get; set; }
     
     public ICollection<Notification>? Notifications { get; set; }

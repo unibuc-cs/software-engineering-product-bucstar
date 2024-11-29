@@ -7,6 +7,7 @@ public class MapperProfile : AutoMapper.Profile
 {
     public MapperProfile()
     {
-        CreateMap<User, UserGetDto>();
+        CreateMap<User, UserDto>();
+        CreateMap<UserDto, User>();
     }
 }

@@ -4,5 +4,7 @@ namespace backend.Services.UserService;
 
 public interface IUserService
 {
-    Task<List<UserGetDto>> GetAllUsers();
+    Task<List<UserDto>> GetAllUsers();
+    Task RegisterUser(UserDto userDto);
+    Task<UserDto> GetUserById(Guid userId);
 }
