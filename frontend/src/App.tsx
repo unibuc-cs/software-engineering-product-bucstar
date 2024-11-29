@@ -7,7 +7,7 @@ import {CssBaseline, ThemeProvider} from "@mui/material";
 import theme from "./assets/theme";
 
 function App() {
-  return (
+    return (
       <BrowserRouter>
           <ThemeProvider theme={theme}>
               <CssBaseline />
@@ -19,7 +19,7 @@ function App() {
               </div>
           </ThemeProvider>
       </BrowserRouter>
-  );
+    );
 }
 
 export default App;

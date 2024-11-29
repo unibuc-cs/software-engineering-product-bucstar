@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import {Outlet} from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
+import {FacebookLoginHelper, LoginResponse} from "../utils/facebookLoginHelper";
 
 const drawerWidth = 240;
 const navItems = ["Home", "Placeholder01", "Placeholder02"];
@@ -20,50 +21,9 @@ const navItems = ["Home", "Placeholder01", "Placeholder02"];
 
 const Navbar = () => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
-    const handleLoginClick = () => {
-        checkLoginStatus(); // Check login status when modal opens
-    };
-
-    const checkLoginStatus = () => {
-        window.FB.getLoginStatus(function (response: any) {
-            statusChangeCallback(response);
-        });
-    };
-
-    const statusChangeCallback = (response: any) => {
-        console.log("Login status response:", response);
-
-        if (response.status === "connected") {
-            console.log("User is already logged in with Facebook!");
-
-            fetchUserInfo(response.authResponse.accessToken);
-        } else if (response.status === "not_authorized") {
-            console.warn("User is logged into Facebook but not authorized for this app.");
-        } else {
-            console.warn("User is not logged into Facebook.");
-            signupUser();
-        }
-    };
-
-    // New signup logic when user is not logged in
-    const signupUser = () => {
-        console.log("Triggering signup flow...");
-
-        window.FB.login(function (response: any) {
-            if (response.authResponse) {
-                console.log("User logged in with Facebook during signup.");
-
-                fetchUserInfo(response.authResponse.accessToken);
-            } else {
-                console.warn("User cancelled the login or failed to log in.");
-            }
-        });
-    };
-
-    const fetchUserInfo = (accessToken: string) => {
-        window.FB.api('/me', { fields: 'id,name,email' }, function(response: any) {
-            console.log("User info:", response);
-        });
+    const handleLoginClick = async () => {
+        let user: LoginResponse = await FacebookLoginHelper.checkLoginStatus(); // Check login status when modal opens
+        console.log(user);
     };
 
     const handleDrawerToggle = () => {
