@@ -13,28 +13,58 @@ import {
 } from '@mui/material';
 import {Outlet} from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
-import Modal from '@mui/material/Modal';
 
 const drawerWidth = 240;
-const navItems = ["Home", "Placeholder", "Placeholder"];
+const navItems = ["Home", "Placeholder01", "Placeholder02"];
 
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
 
 const Navbar = () => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleLoginClick = () => {
+        checkLoginStatus(); // Check login status when modal opens
+    };
+
+    const checkLoginStatus = () => {
+        window.FB.getLoginStatus(function (response: any) {
+            statusChangeCallback(response);
+        });
+    };
+
+    const statusChangeCallback = (response: any) => {
+        console.log("Login status response:", response);
+
+        if (response.status === "connected") {
+            console.log("User is already logged in with Facebook!");
+
+            fetchUserInfo(response.authResponse.accessToken);
+        } else if (response.status === "not_authorized") {
+            console.warn("User is logged into Facebook but not authorized for this app.");
+        } else {
+            console.warn("User is not logged into Facebook.");
+            signupUser();
+        }
+    };
+
+    // New signup logic when user is not logged in
+    const signupUser = () => {
+        console.log("Triggering signup flow...");
+
+        window.FB.login(function (response: any) {
+            if (response.authResponse) {
+                console.log("User logged in with Facebook during signup.");
+
+                fetchUserInfo(response.authResponse.accessToken);
+            } else {
+                console.warn("User cancelled the login or failed to log in.");
+            }
+        });
+    };
+
+    const fetchUserInfo = (accessToken: string) => {
+        window.FB.api('/me', { fields: 'id,name,email' }, function(response: any) {
+            console.log("User info:", response);
+        });
+    };
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
@@ -81,22 +111,7 @@ const Navbar = () => {
                         ))}
                     </Box>
 
-                    <Button color="inherit" onClick={handleOpen}>Login</Button>
-                    <Modal
-                        open={open}
-                        onClose={handleClose}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                    >
-                        <Box sx={style}>
-                            <Typography id="modal-modal-title" variant="h6" component="h2">
-                                Log in
-                            </Typography>
-                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                TODO: add facebook login/signup button
-                            </Typography>
-                        </Box>
-                    </Modal>
+                    <Button color="inherit" onClick={handleLoginClick}>Login</Button>
                 </Toolbar>
             </AppBar>
 
