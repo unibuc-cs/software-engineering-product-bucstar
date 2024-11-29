@@ -1,14 +1,29 @@
 import React from 'react';
-import { Button } from '@mui/material';
 import './App.css';
+import Navbar from "./components/Navbar";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Home from "./views/Home";
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+
+const theme = createTheme({
+    typography: {
+        fontFamily: '"Roboto", sans-serif'
+    }
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Button variant="contained">Hello World!</Button>
-      </header>
-    </div>
+      <BrowserRouter>
+          <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <div className="App">
+                  <Navbar />
+                  <Routes>
+                      <Route path="/" element={<Home />} />
+                  </Routes>
+              </div>
+          </ThemeProvider>
+      </BrowserRouter>
   );
 }
 
