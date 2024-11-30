@@ -1,3 +1,5 @@
+import {User} from "../models/user";
+
 export interface FacebookResponse {
     status: string,
     authResponse: {
@@ -15,9 +17,11 @@ export interface UserInfo {
 
 export interface LoginResponse {
     status: 'connected' | 'not_authorized' | 'unknown',
+    accessToken: string,
     userInfo: UserInfo | null
 }
 
+const userApi = new User();
 
 export class FacebookLoginHelper {
     static checkLoginStatus = async (): Promise<LoginResponse> => {
@@ -37,32 +41,42 @@ export class FacebookLoginHelper {
         if (response.status === "connected") {
             console.log("User is already logged in with Facebook!");
             const userInfo = await FacebookLoginHelper.fetchUserInfo();
-            return { status: "connected", userInfo };
-
+            return { status: "connected", userInfo, accessToken: response.authResponse?.accessToken ?? "" };
         } else if (response.status === "not_authorized") {
             console.warn("User is logged into Facebook but not authorized for this app.");
-            return { status: "not_authorized", userInfo: null };
-
+            return { status: "not_authorized", userInfo: null, accessToken: "" };
         } else {
             console.warn("User is not logged into Facebook.");
-            await FacebookLoginHelper.signupUser();
-            return { status: "unknown", userInfo: null };
+            let user: UserInfo = await FacebookLoginHelper.signupUser();
+
+            await userApi.register({
+                facebookId: user.id!,
+                nickname: user.name!
+            })
+
+            return { status: "connected", userInfo: user, accessToken: response.authResponse?.accessToken ?? "" };
         }
     };
 
-    static signupUser = async (): Promise<void> => {
+    static signupUser = async (): Promise<UserInfo> => {
         console.log("User is not logged in. Triggering signup flow...");
 
-        return new Promise<void>((resolve, reject) => {
-            window.FB.login(async (response: FacebookResponse) => {
-                if (response.authResponse) {
-                    console.log("User logged in with Facebook during signup.");
-                    let user: UserInfo = await FacebookLoginHelper.fetchUserInfo();
-                    resolve();
-                } else {
-                    console.warn("User cancelled the login or failed to log in.");
-                    reject("Login failed");
-                }
+        return new Promise<UserInfo>((resolve, reject) => {
+            window.FB.login((response: FacebookResponse) => {
+                (async () => {
+                    if (response.authResponse) {
+                        console.log("User logged in with Facebook during signup.");
+                        try {
+                            let user: UserInfo = await FacebookLoginHelper.fetchUserInfo();
+                            resolve(user);
+                        } catch (error) {
+                            reject("Failed to fetch user info");
+                        }
+                    } else {
+                        console.warn("User cancelled the login or failed to log in.");
+                        reject("Login failed");
+                    }
+                })();
             });
         });
     }

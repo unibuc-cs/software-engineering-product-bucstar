@@ -1,11 +1,13 @@
 using backend.Models.DTOs.UserDTOs;
 using backend.Services.UserService;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("_myAllowSpecificOrigins")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -16,7 +18,7 @@ namespace backend.Controllers
         }
 
         [HttpPost("register")]
-        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(RegisterDto), 200)]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto userDto)
         {
             var createdUser = await _userService.RegisterUser(userDto);

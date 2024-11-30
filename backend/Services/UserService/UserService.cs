@@ -25,11 +25,17 @@ public class UserService : IUserService
     public async Task<UserDto> RegisterUser(UserRegisterDto userDto)
     {
         var user = _mapper.Map<User>(userDto);
+
+        var existingUser = await _userRepository.GetByFacebookIdAsync(userDto.FacebookId);
+
+        if (existingUser != null)
+        {
+            return _mapper.Map<UserDto>(existingUser);
+        }
         
         await _userRepository.CreateAsync(user);
         await _userRepository.SaveAsync();
-
-        // # TODO: getByFacebookIdAsync
+        
         var createdUser =  await _userRepository.GetByFacebookIdAsync(userDto.FacebookId);
         return _mapper.Map<UserDto>(createdUser);
     }
