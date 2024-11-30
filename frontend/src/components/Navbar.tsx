@@ -14,16 +14,21 @@ import {
 import {Outlet} from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import {FacebookLoginHelper, LoginResponse} from "../utils/facebookLoginHelper";
+import {User} from "../models/user";
 
 const drawerWidth = 240;
 const navItems = ["Home", "Placeholder01", "Placeholder02"];
-
+const userApi = new User();
 
 const Navbar = () => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const handleLoginClick = async () => {
         let user: LoginResponse = await FacebookLoginHelper.checkLoginStatus(); // Check login status when modal opens
-        console.log(user);
+
+        await userApi.register({
+            facebookId: user.userInfo?.id!,
+            nickname: user.userInfo?.name!
+        })
     };
 
     const handleDrawerToggle = () => {
