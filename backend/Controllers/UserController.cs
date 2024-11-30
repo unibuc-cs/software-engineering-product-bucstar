@@ -17,14 +17,14 @@ namespace backend.Controllers
 
         [HttpPost("register")]
         [ProducesResponseType(typeof(object), 200)]
-        public async Task<IActionResult> Register([FromBody] UserDto userDto)
+        public async Task<IActionResult> Register([FromBody] UserRegisterDto userDto)
         {
-            await _userService.RegisterUser(userDto);
+            var createdUser = await _userService.RegisterUser(userDto);
             
             return Ok(new
             {
                 message = "Registration successful", 
-                user = userDto
+                user = createdUser
             });
         }
 
@@ -40,6 +40,21 @@ namespace backend.Controllers
             catch (Exception)
             {
                 return BadRequest($"User with ID: {userId} was not found.");
+            }
+        }
+        
+        [HttpGet("user")]
+        [ProducesResponseType(typeof(UserDto), 200)]
+        [ProducesResponseType(typeof(object), 400)]
+        public async Task<IActionResult> GetUserByFacebookId([FromQuery(Name = "facebookId")] string facebookId)
+        {
+            try
+            {
+                return Ok(await _userService.GetUserByFacebookId(facebookId));
+            } 
+            catch (Exception)
+            {
+                return BadRequest($"User with ID: {facebookId} was not found.");
             }
         }
 

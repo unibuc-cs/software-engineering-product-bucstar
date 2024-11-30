@@ -5,6 +5,8 @@ namespace backend.Models;
 
 public class User : BaseEntity
 {
+    [MaxLength(16)]
+    public required string FacebookId { get; set; }
     [MaxLength(50)]
     public required string Nickname { get; set; }
     

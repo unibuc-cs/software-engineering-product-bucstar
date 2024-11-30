@@ -22,12 +22,16 @@ public class UserService : IUserService
         return _mapper.Map<List<UserDto>>(userList);
     }
 
-    public async Task RegisterUser(UserDto userDto)
+    public async Task<UserDto> RegisterUser(UserRegisterDto userDto)
     {
         var user = _mapper.Map<User>(userDto);
         
         await _userRepository.CreateAsync(user);
         await _userRepository.SaveAsync();
+
+        // # TODO: getByFacebookIdAsync
+        var createdUser =  await _userRepository.GetByFacebookIdAsync(userDto.FacebookId);
+        return _mapper.Map<UserDto>(createdUser);
     }
 
     public async Task<UserDto> GetUserById(Guid userId)
@@ -35,6 +39,14 @@ public class UserService : IUserService
         var user = await _userRepository.GetByIdAsync(userId);
         if (user == null) throw new Exception("User not found");
         
+        return _mapper.Map<UserDto>(user);
+    }
+
+    public async Task<UserDto> GetUserByFacebookId(string facebookId)
+    {
+        var user = await _userRepository.GetByFacebookIdAsync(facebookId);
+        
+        if (user == null) throw new Exception("User not found");
         return _mapper.Map<UserDto>(user);
     }
 }

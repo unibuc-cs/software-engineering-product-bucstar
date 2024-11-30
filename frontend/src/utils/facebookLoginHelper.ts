@@ -57,7 +57,7 @@ export class FacebookLoginHelper {
             window.FB.login(async (response: FacebookResponse) => {
                 if (response.authResponse) {
                     console.log("User logged in with Facebook during signup.");
-                    await FacebookLoginHelper.fetchUserInfo();
+                    let user: UserInfo = await FacebookLoginHelper.fetchUserInfo();
                     resolve();
                 } else {
                     console.warn("User cancelled the login or failed to log in.");

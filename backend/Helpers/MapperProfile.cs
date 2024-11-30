@@ -9,5 +9,9 @@ public class MapperProfile : AutoMapper.Profile
     {
         CreateMap<User, UserDto>();
         CreateMap<UserDto, User>();
+        
+        CreateMap<UserRegisterDto, User>()
+            .ForMember(u => u.Id, opt => opt.MapFrom(src => new Guid()));
+        CreateMap<User, UserRegisterDto>();
     }
 }
