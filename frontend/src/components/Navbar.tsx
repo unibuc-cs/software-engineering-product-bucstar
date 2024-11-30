@@ -9,23 +9,39 @@ import {
     Divider,
     List,
     ListItem,
-    ListItemButton, ListItemText, CssBaseline, Drawer
+    ListItemButton, ListItemText, CssBaseline, Drawer, Snackbar, Alert
 } from '@mui/material';
 import {Outlet} from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
-import {FacebookLoginHelper} from "../utils/facebookLoginHelper";
+import {FacebookLoginHelper, LoginResponse} from "../utils/facebookLoginHelper";
 
 const drawerWidth = 240;
 const navItems = ["Home", "Placeholder01", "Placeholder02"];
 
 const Navbar = () => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [openSnackbar, setOpenSnackbar] = React.useState(false);
+    const [snackbarMessage, setSnackbarMessage] = React.useState("");
     const handleLoginClick = async () => {
         try {
-            await FacebookLoginHelper.checkLoginStatus(); // Check login status when modal opens
+            let loginResponse: LoginResponse = await FacebookLoginHelper.checkLoginStatus(); // Check login status when modal opens
+
+            if (loginResponse.status === "connected") {
+                setSnackbarMessage("Login successful!");
+                setOpenSnackbar(true);  // Show Snackbar
+            } else {
+                setSnackbarMessage("Login failed. Please try again.");
+                setOpenSnackbar(true);  // Show Snackbar
+            }
         } catch (error) {
             console.log(`Error during login: ${error}`);
+            setSnackbarMessage("An error occurred. Please try again later.");
+            setOpenSnackbar(true);
         }
+    };
+
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false); // Close Snackbar when the user dismisses it
     };
 
     const handleDrawerToggle = () => {
@@ -93,6 +109,17 @@ const Navbar = () => {
                     {drawer}
                 </Drawer>
             </nav>
+
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000} // Auto-hide after 6 seconds
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert onClose={handleCloseSnackbar} severity="success">
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
 
             <Outlet/>
         </Box>
