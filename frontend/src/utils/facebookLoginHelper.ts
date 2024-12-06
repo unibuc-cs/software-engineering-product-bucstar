@@ -42,13 +42,8 @@ export class FacebookLoginHelper {
             console.log("User is already logged in with Facebook!");
             const userInfo = await FacebookLoginHelper.fetchUserInfo();
             return { status: "connected", userInfo, accessToken: response.authResponse?.accessToken ?? "" };
-        } else if (response.status === "not_authorized") {
-            console.warn("User is logged into Facebook but not authorized for this app.");
-            let user: UserInfo = await FacebookLoginHelper.loginUser();
-
-            return { status: "connected", userInfo: user, accessToken: response.authResponse?.accessToken ?? "" };
         } else {
-            console.warn("User is not logged into Facebook.");
+            console.warn("User is not_connected or not_authorized.");
             let user: UserInfo = await FacebookLoginHelper.loginUser();
 
             await userApi.register({
