@@ -4,5 +4,8 @@ namespace backend.Services.UserService;
 
 public interface IUserService
 {
-    Task<List<UserGetDto>> GetAllUsers();
+    Task<List<UserDto>> GetAllUsers();
+    Task<UserDto> RegisterUser(UserRegisterDto userDto);
+    Task<UserDto> GetUserById(Guid userId);
+    Task<UserDto> GetUserByFacebookId(string facebookId);
 }
