@@ -11,21 +11,24 @@ import {
     ListItem,
     ListItemButton, ListItemText, CssBaseline, Drawer, Snackbar, Alert
 } from '@mui/material';
-import {Outlet} from 'react-router-dom';
+import {Link, Outlet} from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import {FacebookLoginHelper, LoginResponse} from "../../utils/facebookLoginHelper";
 import {NavItem} from "./NavItem";
 
+
 const drawerWidth = 240;
 const navItems = [
-    new NavItem("Home", () => {}),
-    new NavItem("Browse Events", () => {console.log("clicked")}),
+    new NavItem("Home", "/"),
+    new NavItem("Browse Events", "/events"),
 ];
 
 const Navbar = () => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [snackbarMessage, setSnackbarMessage] = React.useState("");
+
+
     const handleLoginClick = async () => {
         try {
             let loginResponse: LoginResponse = await FacebookLoginHelper.checkLoginStatus(); // Check login status when modal opens
@@ -61,7 +64,7 @@ const Navbar = () => {
             <List>
                 {navItems.map((navItem) => (
                     <ListItem key={navItem.text} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'center' }} onClick={navItem.onClick}>
+                        <ListItemButton sx={{ textAlign: 'center' }} component={Link} to={navItem.to}>
                             <ListItemText primary={navItem.text} />
                         </ListItemButton>
                     </ListItem>
@@ -87,7 +90,7 @@ const Navbar = () => {
 
                     <Box sx={{ display: {xs: 'none', sm: 'flex'}, justifyContent: 'flex-start', flexGrow: 1 }}>
                         {navItems.map((navItem) => (
-                            <Button key={navItem.text} sx={{ color: '#fff' }} onClick={navItem.onClick}>
+                            <Button key={navItem.text} sx={{ color: '#fff' }} component={Link} to={navItem.to}>
                                 {navItem.text}
                             </Button>
                         ))}

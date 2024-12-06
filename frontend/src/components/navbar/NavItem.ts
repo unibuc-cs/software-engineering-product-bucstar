@@ -1,12 +1,12 @@
 export class NavItem {
     public text: string = "";
-    public onClick: () => void = () => {};
+    public to: string = "";
 
     constructor(
         text: string,
-        onClick: () => void
+        to: string
     ) {
         this.text = text;
-        this.onClick = onClick;
+        this.to = to;
     }
 }
