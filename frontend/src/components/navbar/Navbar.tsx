@@ -13,10 +13,14 @@ import {
 } from '@mui/material';
 import {Outlet} from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
-import {FacebookLoginHelper, LoginResponse} from "../utils/facebookLoginHelper";
+import {FacebookLoginHelper, LoginResponse} from "../../utils/facebookLoginHelper";
+import {NavItem} from "./NavItem";
 
 const drawerWidth = 240;
-const navItems = ["Home", "Placeholder01", "Placeholder02"];
+const navItems = [
+    new NavItem("Home", () => {}),
+    new NavItem("Browse Events", () => {console.log("clicked")}),
+];
 
 const Navbar = () => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -55,10 +59,10 @@ const Navbar = () => {
             </Typography>
             <Divider />
             <List>
-                {navItems.map((item) => (
-                    <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'center' }}>
-                            <ListItemText primary={item} />
+                {navItems.map((navItem) => (
+                    <ListItem key={navItem.text} disablePadding>
+                        <ListItemButton sx={{ textAlign: 'center' }} onClick={navItem.onClick}>
+                            <ListItemText primary={navItem.text} />
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -82,9 +86,9 @@ const Navbar = () => {
                     </IconButton>
 
                     <Box sx={{ display: {xs: 'none', sm: 'flex'}, justifyContent: 'flex-start', flexGrow: 1 }}>
-                        {navItems.map((item) => (
-                            <Button key={item} sx={{ color: '#fff' }}>
-                                {item}
+                        {navItems.map((navItem) => (
+                            <Button key={navItem.text} sx={{ color: '#fff' }} onClick={navItem.onClick}>
+                                {navItem.text}
                             </Button>
                         ))}
                     </Box>
