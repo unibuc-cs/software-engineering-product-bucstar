@@ -1,10 +1,10 @@
+using backend.account;
 using backend.Data;
 using backend.Models;
-using backend.Models.DTOs.UserDTOs;
 using backend.Repositories.GenericRepository;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend.Repositories.UserRepository;
+namespace backend.database.repositories;
 
 public class UserRepository : GenericRepository<User>, IUserRepository 
 {

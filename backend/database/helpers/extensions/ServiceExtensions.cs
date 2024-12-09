@@ -1,5 +1,6 @@
+using backend.account;
+using backend.database.repositories;
 using backend.Helpers.Seeders;
-using backend.Repositories.UserRepository;
 using backend.Services.UserService;
 
 namespace backend.Helpers.Extensions;

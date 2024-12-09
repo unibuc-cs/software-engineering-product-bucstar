@@ -1,7 +1,7 @@
 using AutoMapper;
+using backend.account;
 using backend.Models;
 using backend.Models.DTOs.UserDTOs;
-using backend.Repositories.UserRepository;
 
 namespace backend.Services.UserService;
 
