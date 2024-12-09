@@ -2,10 +2,14 @@ import {Card, CardContent, CardHeader, CssBaseline, Icon, Typography} from "@mui
 import { EventCardModel } from "./EventCardModel";
 import { EventNote, GroupAdd, LocationOn } from "@mui/icons-material";
 import Grid from '@mui/material/Grid2';
-import EventInfoPanel from "./EventInfoPanel";
+import EventInfoPanel from "../eventInfoPanel/EventInfoPanel";
 import Tag from "../tag/Tag";
+import TagList from "../tagList/TagList";
+import TagListModel from "../tagList/TagListModel";
 
 const EventCard = ({ model }: { model: EventCardModel }) => {
+    const tagListModel = new TagListModel(model.tags);
+    
     return (
         <Card>
             <CssBaseline />
@@ -30,17 +34,7 @@ const EventCard = ({ model }: { model: EventCardModel }) => {
                         />
                     </Grid>
 
-                    <Grid
-                        container
-                        spacing={1}
-                        sx={{ flexWrap: 'wrap', justifyContent: 'flex-end', ml: 'auto' }}
-                    >
-                        {model.tags.map(tag => (
-                            <Grid key={tag}>
-                                <Tag text={tag} />
-                            </Grid>
-                        ))}
-                    </Grid>
+                    <TagList model={tagListModel} />
                     
 
                     <Grid size={12}>
