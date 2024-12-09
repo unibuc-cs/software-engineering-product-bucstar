@@ -2,6 +2,8 @@ import {Card, CardContent, CardHeader, CssBaseline, Icon, Typography} from "@mui
 import { EventCardModel } from "./EventCardModel";
 import { EventNote, GroupAdd, LocationOn } from "@mui/icons-material";
 import Grid from '@mui/material/Grid2';
+import EventInfoPanel from "./EventInfoPanel";
+import Tag from "../tag/Tag";
 
 const EventCard = ({ model }: { model: EventCardModel }) => {
     return (
@@ -19,34 +21,27 @@ const EventCard = ({ model }: { model: EventCardModel }) => {
 
             <CardContent>
                 <Grid container spacing={2}>
-                    <Grid size={6} container>
-                        <Icon>
-                            <LocationOn />
-                        </Icon>
-                        <Typography variant="body1">
-                            {model.location}
-                        </Typography>
+                    <Grid size={6}>
+                        <EventInfoPanel
+                            location={model.location}
+                            registeredParticipants={model.registeredParticipants}
+                            maximumParticipants={model.maximumParticipants}
+                            dateString={model.date.toDateString()}
+                        />
                     </Grid>
 
-                    {model.maximumParticipants > 0 && (
-                        <Grid size={12} container>
-                            <Icon>
-                                <GroupAdd />
-                            </Icon>
-                            <Typography variant="body1">
-                                {model.registeredParticipants + "/" + model.maximumParticipants + " participants"}
-                            </Typography>
-                        </Grid>
-                    )}
-
-                    <Grid size={12} container>
-                        <Icon>
-                            <EventNote />
-                        </Icon>
-                        <Typography variant="body1" >
-                            {model.date.toLocaleString("en-US")}
-                        </Typography>
+                    <Grid
+                        container
+                        spacing={1}
+                        sx={{ flexWrap: 'wrap', justifyContent: 'flex-end', ml: 'auto' }}
+                    >
+                        {model.tags.map(tag => (
+                            <Grid key={tag}>
+                                <Tag text={tag} />
+                            </Grid>
+                        ))}
                     </Grid>
+                    
 
                     <Grid size={12}>
                         <Typography variant="body1" align="left">

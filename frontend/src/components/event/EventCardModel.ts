@@ -5,8 +5,9 @@ export class EventCardModel {
     public readonly location: string;
     public readonly date: Date;
     public readonly organizer: String;
-    public readonly maximumParticipants: Number;
-    public readonly registeredParticipants: Number;
+    public readonly maximumParticipants: number;
+    public readonly registeredParticipants: number;
+    public readonly tags: string[];
     
     constructor(
         name: string, 
@@ -14,8 +15,9 @@ export class EventCardModel {
         location: string,
         date: Date,
         organizer: String,
-        maximumParticipants: Number,
-        registeredParticipants: Number,
+        maximumParticipants: number,
+        registeredParticipants: number,
+        tags: string[],
     ) {
         this.name = name;
         this.description = description;
@@ -24,6 +26,7 @@ export class EventCardModel {
         this.organizer = organizer; 
         this.maximumParticipants = maximumParticipants;
         this.registeredParticipants = registeredParticipants;
+        this.tags = tags;
     }
     
     
