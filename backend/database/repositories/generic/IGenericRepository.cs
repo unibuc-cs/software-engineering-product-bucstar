@@ -1,6 +1,6 @@
 using backend.Models.Base;
 
-namespace backend.Repositories.GenericRepository;
+namespace backend.database.repositories.generic;
 
 public interface IGenericRepository<TEntity> where TEntity : BaseEntity
 {
