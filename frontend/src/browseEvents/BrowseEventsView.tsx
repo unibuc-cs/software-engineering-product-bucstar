@@ -4,6 +4,7 @@ import {EventCardModel} from "./eventCard/EventCardModel";
 import EventCard from "./eventCard/EventCard";
 import {BrowseEventsModel} from "./BrowseEventsModel";
 import {BrowseEventsService} from "./BrowseEventsService";
+import Grid from "@mui/material/Grid2";
 
 const BrowseEvents = (
 ) => {
@@ -18,11 +19,15 @@ const BrowseEvents = (
             <Typography variant="h3" gutterBottom>
                 Browse Events
             </Typography>
-            <>
-                {eventCardModels.map(eventCardModel => {
-                    return <EventCard key={eventCardModel.name} model={eventCardModel} />
-                })}
-            </>
+            
+            <Grid container spacing={8}>
+                {eventCardModels.map((eventCardModel, index) => (
+                    <Grid size={12} key={index}>
+                        <EventCard model={eventCardModel} />
+                    </Grid>
+                ))}
+            </Grid>
+                
 
         </Container>
     )
