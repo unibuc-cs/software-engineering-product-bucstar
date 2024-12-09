@@ -1,3 +1,5 @@
+using backend.account.dto;
+
 namespace backend.Models.DTOs.UserDTOs;
 
 public class RegisterDto

@@ -1,8 +1,9 @@
 using backend.Data;
 using backend.Models.Base;
+using backend.Repositories.GenericRepository;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend.Repositories.GenericRepository;
+namespace backend.database.repositories.generic;
 
 public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
 {

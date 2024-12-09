@@ -1,10 +1,15 @@
 using System.ComponentModel.DataAnnotations;
-using backend.Models.Base;
+using System.ComponentModel.DataAnnotations.Schema;
+using backend.Models;
 
-namespace backend.Models;
+namespace backend.database.models;
 
-public class Event : BaseEntity
+public class Event
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+    
     [MaxLength(255)]
     public required string Name { get; set; }
     

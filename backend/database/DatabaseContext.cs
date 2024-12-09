@@ -1,3 +1,4 @@
+using backend.database.models;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
 

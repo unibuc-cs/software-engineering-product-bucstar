@@ -1,9 +1,10 @@
 using AutoMapper;
-using backend.account;
+using backend.account.dto;
 using backend.Models;
 using backend.Models.DTOs.UserDTOs;
+using backend.Services.UserService;
 
-namespace backend.Services.UserService;
+namespace backend.account;
 
 public class UserService : IUserService
 {

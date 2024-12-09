@@ -1,17 +1,53 @@
 import {EventCardModel} from "./eventCard/EventCardModel";
 import {BrowseEventsModel} from "./BrowseEventsModel";
 
+export interface EventSummaryDto {
+    id: number;
+    name: string;
+    description: string;
+    location: string;
+    date: string;
+    organizer: string;
+    maximumParticipants: number;
+    registeredParticipants: number;
+    tags: string[];
+}
+
 export class BrowseEventsService {
-    private readonly eventCardModel: EventCardModel = new EventCardModel(1, "name", "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"", "location", new Date(Date.now()),
-        "organizer", 12, 6, ["sport", "outdoor", "teams"]);
-    
-    private readonly browseEventsModel: BrowseEventsModel;
-    constructor() {
-        this.browseEventsModel = new BrowseEventsModel(
-            [this.eventCardModel, this.eventCardModel, this.eventCardModel],
-        )
-    }
-    public getBrowseEventsModel(): BrowseEventsModel {
-        return this.browseEventsModel;
+    private apiUrl: string = 'http://localhost:5009/api/Event/events/all';
+
+    public async getBrowseEventsModel(): Promise<BrowseEventsModel> {
+        try {
+            const response = await fetch(this.apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add any authentication headers here, if needed
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const eventSummaryDtos: EventSummaryDto[] = await response.json();
+            const eventCardModels: EventCardModel[] = eventSummaryDtos.map((summary) => {
+                return new EventCardModel(
+                    summary.id,
+                    summary.name,
+                    summary.description,
+                    summary.location, 
+                    new Date(Date.parse(summary.date)),
+                    summary.organizer,
+                    summary.maximumParticipants,
+                    summary.registeredParticipants,
+                    summary.tags
+                )
+            })
+            return new BrowseEventsModel(eventCardModels);
+        } catch (error) {
+            console.error('Error fetching events:', error);
+            throw error;
+        }
     }
 }

@@ -1,9 +1,10 @@
+using backend.account.dto;
 using backend.Models.DTOs.UserDTOs;
 using backend.Services.UserService;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
-namespace backend.Controllers
+namespace backend.account
 {
     [Route("api/[controller]")]
     [ApiController]
