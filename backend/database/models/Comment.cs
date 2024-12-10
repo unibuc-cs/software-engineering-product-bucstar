@@ -12,6 +12,6 @@ public class Comment : BaseEntity
     public required Guid UserId { get; set; }
     public required User User { get; set; }
     
-    public required int EventId { get; set; }
+    public required Guid EventId { get; set; }
     public required Event Event { get; set; }
 }

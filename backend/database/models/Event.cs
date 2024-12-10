@@ -1,14 +1,15 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using backend.Models;
+using backend.Models.Base;
 
 namespace backend.database.models;
 
-public class Event
+public class Event: BaseEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     
     [MaxLength(255)]
     public required string Name { get; set; }
@@ -25,8 +26,8 @@ public class Event
     public required Guid OrganizerId { get; set; }
     public required User Organizer { get; set; }
     
-    public ICollection<Comment>? Comments { get; set; }
-    public ICollection<Tag>? Tags { get; set; }
-    public ICollection<Participation>? Participations { get; set; }
-    public ICollection<Review>? Reviews { get; set; }
+    public ICollection<Comment> Comments { get; set; }
+    public ICollection<Tag> Tags { get; set; }
+    public ICollection<Participation> Participations { get; set; }
+    public ICollection<Review> Reviews { get; set; }
 }

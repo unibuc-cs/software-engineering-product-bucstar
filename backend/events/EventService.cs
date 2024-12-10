@@ -1,27 +1,25 @@
+using backend.database.repositories;
 using backend.events.browse;
 
 namespace backend.events;
 
-public class EventService
+public class EventService //: IEventService
 {
-    public List<EventSummaryDto> GetEventSummaryDtos()
-    {
-        var summary = new EventSummaryDto(
-            1,
-            "event 1",
-            "description 1",
-            "Bucharest",
-            DateTime.Now,
-            "organizer 1",
-            12,
-            6,
-            ["sport", "outside", "casual"]
-        );
+    private readonly IEventRepository _eventRepository;
 
-        var summaries = new List<EventSummaryDto>{
-            summary, summary, summary, summary
-        };
-        
+    public EventService(IEventRepository eventRepository)
+    {
+        _eventRepository = eventRepository;
+    }
+    public async Task<List<EventSummaryDto>> GetEventSummaryDtos()
+    {
+        var events = await _eventRepository.GetAllEventsAsync();
+        var summaries = events.Select(ev => new EventSummaryDto(ev)).ToList();
         return summaries;
     }
 }
+
+// public interface IEventService
+// {
+//     public Task<List<EventSummaryDto>> GetEventSummaryDtos();
+// }
