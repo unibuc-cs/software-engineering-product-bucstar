@@ -1,11 +1,9 @@
 import {Button, Card, CardContent, CardHeader, CssBaseline, Icon, Typography} from "@mui/material";
 import { EventCardModel } from "./EventCardModel";
-import { EventNote, GroupAdd, LocationOn } from "@mui/icons-material";
 import Grid from '@mui/material/Grid2';
-import EventInfoPanel from "../eventInfoPanel/EventInfoPanel";
-import Tag from "../tag/Tag";
-import TagList from "../tagList/TagList";
-import TagListModel from "../tagList/TagListModel";
+import EventInfoPanel from "../../components/eventInfoPanel/EventInfoPanel";
+import TagList from "../../components/tagList/TagList";
+import TagListModel from "../../components/tagList/TagListModel";
 import {Link} from "react-router-dom";
 
 const EventCard = ({ model }: { model: EventCardModel }) => {
