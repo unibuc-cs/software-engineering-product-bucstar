@@ -1,4 +1,4 @@
-import {Card, CardContent, CardHeader, CssBaseline, Icon, Typography} from "@mui/material";
+import {Button, Card, CardContent, CardHeader, CssBaseline, Icon, Typography} from "@mui/material";
 import { EventCardModel } from "./EventCardModel";
 import { EventNote, GroupAdd, LocationOn } from "@mui/icons-material";
 import Grid from '@mui/material/Grid2';
@@ -41,6 +41,14 @@ const EventCard = ({ model }: { model: EventCardModel }) => {
                         <Typography variant="body1" align="left">
                             {model.description}
                         </Typography>
+                    </Grid>
+                    <Grid size={12} display="flex" justifyContent="right"> 
+                        <Button 
+                            variant="contained"
+                            sx={{ flexWrap: 'wrap', justifyContent: 'flex-end', ml: 'auto' }}
+                        >
+                            View Event
+                        </Button>
                     </Grid>
                 </Grid>
             </CardContent>
