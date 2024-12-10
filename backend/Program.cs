@@ -1,6 +1,6 @@
 using backend.Data;
+using backend.database.seeders;
 using backend.Helpers.Extensions;
-using backend.Helpers.Seeders;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -73,5 +73,7 @@ void SeedData(IHost app)
     {
         var userService = scope.ServiceProvider.GetService<UserSeeder>();
         userService.SeedInitialUsers();
+        var eventSeeder = scope.ServiceProvider.GetService<EventSeeder>();
+        eventSeeder.SeedInitialEvents();
     }
 }

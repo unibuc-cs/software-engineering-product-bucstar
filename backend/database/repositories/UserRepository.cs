@@ -1,7 +1,7 @@
 using backend.account;
 using backend.Data;
+using backend.database.models;
 using backend.database.repositories.generic;
-using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.database.repositories;

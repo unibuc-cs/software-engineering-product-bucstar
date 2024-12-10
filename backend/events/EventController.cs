@@ -16,7 +16,7 @@ namespace backend.events
         {
             try
             {
-                var summaries = eventService.GetEventSummaryDtos();
+                var summaries = await eventService.GetEventSummaryDtos();
                 return Ok(summaries);
             }
             catch (Exception ex)

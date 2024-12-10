@@ -1,7 +1,7 @@
 using backend.account;
 using backend.database.repositories;
+using backend.database.seeders;
 using backend.events;
-using backend.Helpers.Seeders;
 using backend.Services.UserService;
 
 namespace backend.Helpers.Extensions;
@@ -25,6 +25,7 @@ public static class ServiceExtensions
     public static IServiceCollection AddSeeders(this IServiceCollection services)
     {
         services.AddTransient<UserSeeder>();
+        services.AddTransient<EventSeeder>();
 
         return services;
     }

@@ -30,10 +30,8 @@ export class BrowseEventsService {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const data = await response.json();
-            const eventSummaryDtos: EventSummaryDto[] = data.result;
-            console.log(eventSummaryDtos);
-            const eventCardModels: EventCardModel[] = eventSummaryDtos.map((summary) => {
+            const eventSummaryDtos = await response.json();
+            const eventCardModels: EventCardModel[] = eventSummaryDtos.map((summary: EventSummaryDto) => {
                 return new EventCardModel(
                     summary.id,
                     summary.name,

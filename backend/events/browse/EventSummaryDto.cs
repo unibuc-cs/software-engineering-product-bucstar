@@ -9,7 +9,7 @@ public class EventSummaryDto(
     string location,
     DateTime date,
     string organizer,
-    int maximumParticipants,
+    int participantsLimit,
     int registeredParticipants,
     string[] tags)
 {
@@ -19,7 +19,7 @@ public class EventSummaryDto(
     public string Location { get; init; } = location;
     public DateTime Date { get; init; } = date;
     public string Organizer { get; init; } = organizer;
-    public int MaximumParticipants { get; init; } = maximumParticipants;
+    public int ParticipantsLimit { get; init; } = participantsLimit;
     public int RegisteredParticipants { get; init; } = registeredParticipants;
     public string[] Tags { get; init; } = tags;
 

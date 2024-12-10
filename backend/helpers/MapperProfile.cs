@@ -1,5 +1,5 @@
 using backend.account.dto;
-using backend.Models;
+using backend.database.models;
 using backend.Models.DTOs.UserDTOs;
 
 namespace backend.Helpers;

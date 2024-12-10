@@ -1,7 +1,7 @@
 using backend.Data;
-using backend.Models;
+using backend.database.models;
 
-namespace backend.Helpers.Seeders;
+namespace backend.database.seeders;
 
 public class UserSeeder
 {

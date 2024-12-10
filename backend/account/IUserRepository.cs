@@ -1,4 +1,4 @@
-using backend.Models;
+using backend.database.models;
 
 namespace backend.account;
 

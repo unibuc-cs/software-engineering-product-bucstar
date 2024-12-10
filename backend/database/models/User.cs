@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using backend.database.models;
+using backend.Models;
 using backend.Models.Base;
 
-namespace backend.Models;
+namespace backend.database.models;
 
 public class User : BaseEntity
 {

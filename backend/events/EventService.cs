@@ -1,4 +1,3 @@
-using backend.database.repositories;
 using backend.events.browse;
 
 namespace backend.events;
