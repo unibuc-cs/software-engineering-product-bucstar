@@ -1,8 +1,7 @@
 using backend.Data;
+using backend.database.seeders;
 using backend.Helpers.Extensions;
-using backend.Helpers.Seeders;
 using Microsoft.EntityFrameworkCore;
-using IHostingEnvironment = Microsoft.Extensions.Hosting.IHostingEnvironment;
 
 var builder = WebApplication.CreateBuilder(args);
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -11,7 +10,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: myAllowSpecificOrigins, policy =>
     {
-        policy.WithOrigins("http://localhost:5009", "https://localhost:5009", "https://localhost:7285")
+        policy.WithOrigins("http://localhost:5009", "https://localhost:5009", "https://localhost:7285", "http://localhost:3000", "https://localhost:3000")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -26,8 +25,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
+
+var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? builder.Configuration.GetConnectionString("DefaultConnectionMySQL");
 builder.Services.AddDbContext<DatabaseContext>(
-    options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnectionMySQL")!)
+    options => options.UseMySQL(connectionString!)
 );
 
 builder.Services.AddRepositories();
@@ -72,5 +73,7 @@ void SeedData(IHost app)
     {
         var userService = scope.ServiceProvider.GetService<UserSeeder>();
         userService.SeedInitialUsers();
+        var eventSeeder = scope.ServiceProvider.GetService<EventSeeder>();
+        eventSeeder.SeedInitialEvents();
     }
 }
