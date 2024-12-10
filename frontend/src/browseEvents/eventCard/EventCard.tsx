@@ -6,6 +6,7 @@ import EventInfoPanel from "../eventInfoPanel/EventInfoPanel";
 import Tag from "../tag/Tag";
 import TagList from "../tagList/TagList";
 import TagListModel from "../tagList/TagListModel";
+import {Link} from "react-router-dom";
 
 const EventCard = ({ model }: { model: EventCardModel }) => {
     const tagListModel = new TagListModel(model.tags);
@@ -44,6 +45,7 @@ const EventCard = ({ model }: { model: EventCardModel }) => {
                     </Grid>
                     <Grid size={12} display="flex" justifyContent="right"> 
                         <Button 
+                            component={Link} to={`/events/${model.id}`}
                             variant="contained"
                             sx={{ flexWrap: 'wrap', justifyContent: 'flex-end', ml: 'auto' }}
                         >

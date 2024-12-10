@@ -2,7 +2,7 @@ import {EventCardModel} from "./eventCard/EventCardModel";
 import {BrowseEventsModel} from "./BrowseEventsModel";
 
 export interface EventSummaryDto {
-    id: number;
+    id: string;
     name: string;
     description: string;
     location: string;
