@@ -14,7 +14,7 @@ export interface EventSummaryDto {
 }
 
 export class BrowseEventsService {
-    private apiUrl: string = 'http://localhost:5009/api/Event/events/all';
+    private apiUrl: string = 'http://localhost:5009/api/Event/events/browse';
 
     public async getBrowseEventsModel(): Promise<BrowseEventsModel> {
         try {

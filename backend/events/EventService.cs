@@ -10,10 +10,11 @@ public class EventService //: IEventService
     {
         _eventRepository = eventRepository;
     }
-    public async Task<List<EventSummaryDto>> GetEventSummaryDtos()
+    public async Task<List<EventSummaryDto>> GetFutureEvents()
     {
         var events = await _eventRepository.GetAllEventsAsync();
-        var summaries = events.Select(ev => new EventSummaryDto(ev)).ToList();
+        var futureEvents = events.FindAll(ev => ev.Date > DateTime.Now);
+        var summaries = futureEvents.Select(ev => new EventSummaryDto(ev)).ToList();
         return summaries;
     }
 }
