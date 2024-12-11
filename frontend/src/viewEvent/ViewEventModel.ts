@@ -5,6 +5,7 @@ import {Comment} from "./Comment";
 
 export class ViewEventModel {
     public readonly name: string;
+    public readonly description: string;
     public readonly organizerName: string;
     public readonly location: string;
     public readonly date: Date;
@@ -16,6 +17,7 @@ export class ViewEventModel {
     
     constructor(
         name: string = "name", 
+        description: string = "description",
         organizerName: string = "organizerName", 
         location: string = "Bucharest",
         date: Date = new Date(),
@@ -26,6 +28,7 @@ export class ViewEventModel {
         comments: Comment[] = [],
     ) {
         this.name = name;
+        this.description = description;
         this.organizerName = organizerName;
         this.location = location;
         this.date = date;

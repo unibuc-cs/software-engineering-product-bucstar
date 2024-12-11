@@ -29,7 +29,7 @@ interface EventDetailedDto {
 }
 
 export class ViewEventService {
-    private apiUrl: string = 'http://localhost:5009/api/Event/events/:id';
+    private apiUrl: string = 'http://localhost:5009/api/Event/events/';
     
     public async getViewEventModel(id: string): Promise<ViewEventModel> {
         try {
@@ -50,11 +50,12 @@ export class ViewEventService {
             return new ViewEventModel(
                 eventDetailedDto.name,
                 eventDetailedDto.description,
-                eventDetailedDto.location,
-                eventDetailedDto.date,
                 eventDetailedDto.organizer,
+                eventDetailedDto.location,
+                new Date(Date.parse(eventDetailedDto.date)),
                 eventDetailedDto.maximumParticipants,
                 eventDetailedDto.participants,
+                eventDetailedDto.tags,
                 eventDetailedDto.reviews,
                 eventDetailedDto.comments
             )
