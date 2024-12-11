@@ -10,11 +10,10 @@ const ViewEventView = () => {
     const {id} = useParams();
     return (
         <>
-            <Grid container marginX={"auto"} marginY={4} maxWidth="1000px" >
+            <Grid container marginX={"auto"} marginY={4} maxWidth="1000px"
+                  sx={{ borderRadius: '32px', overflow: 'hidden', backgroundColor: '#EEEEFF'}}>
                 <Grid size={12} container spacing={1} padding={4}
-                      sx={{ borderRadius: '32px 32px 0px 0px', clip:'true'}}
-                      style={{ backgroundColor: '#1976d2', color: 'white' }}
-                      >
+                      style={{ backgroundColor: '#1976d2', color: 'white' }}>
                     <Grid size={12}>
                         <Typography variant="h4" align="left">
                             Event Name {id}
@@ -27,7 +26,7 @@ const ViewEventView = () => {
                     </Grid>
                 </Grid>
 
-                <Grid container size={12} margin="auto" padding={4} spacing={2} style={{ backgroundColor: '#EEEEFF'}}>
+                <Grid container size={12} margin="auto" padding={4} spacing={2}>
                     <Grid container size={12} spacing={1}>
                         <EventInfoPanel location="Bucharest" registeredParticipants={6} maximumParticipants={12} dateString="Monday"/>
                         <TagList model={new TagListModel(["tag1", "tag2"])} />
@@ -40,7 +39,7 @@ const ViewEventView = () => {
                     <Divider orientation="horizontal"/>
                 </Grid>
                 <Divider orientation="horizontal" flexItem/>
-                <Grid container size={12} spacing={2} padding={4} margin="auto" style={{ backgroundColor: '#EEEEFF'}}>
+                <Grid container size={12} spacing={2} padding={4} margin="auto">
                     <Grid size={12} marginBottom={2}>
                         <Typography variant="h5" align="left">
                             6 registered participants:
@@ -70,7 +69,7 @@ const ViewEventView = () => {
                 <Grid size={12}>
                     <Divider orientation="horizontal"/>
                 </Grid>
-                <Grid container size={12} spacing={2} padding={4} margin="auto" style={{ backgroundColor: '#EEEEFF'}}>
+                <Grid container size={12} spacing={2} padding={4} margin="auto">
                     <Grid container size={12} marginBottom={2}>
                         <Icon sx={{margin: '0px 0px 6px 0px'}}>
                             <StarRounded/>
@@ -81,7 +80,7 @@ const ViewEventView = () => {
                     </Grid>
                     <Grid container size={12} alignItems={"left"} spacing={0}>
                         <Grid container size={12} alignItems={"center"} spacing={2}>
-                            <Icon sx={{margin: '0px 0px 6px 0px'}}>
+                            <Icon sx={{margin: '0px 0px 6px 0px', color: 'rgba(0, 0, 0, 0.5)'}}>
                                 <AccountBoxRounded/>
                             </Icon>
                             <Typography variant="body1" align="left" margin={"auto 0"}>
@@ -110,7 +109,7 @@ const ViewEventView = () => {
                     <Divider orientation="horizontal"/>
                 </Grid>
                 
-                <Grid container size={12} spacing={2} padding={4} margin="auto" style={{ backgroundColor: '#EEEEFF'}}>
+                <Grid container size={12} spacing={2} padding={4} margin="auto">
                     <Grid container size={12} marginBottom={2}>
                         <Icon sx={{margin: '0px 0px 6px 0px'}}>
                             <CommentRounded/>
@@ -120,7 +119,7 @@ const ViewEventView = () => {
                         </Typography>
                     </Grid>
                     <Grid container size={3} spacing={2} >
-                        <Icon sx={{margin: '0px 0px 6px 0px'}}>
+                        <Icon sx={{margin: '0px 0px 6px 0px', color: 'rgba(0, 0, 0, 0.5)'}}>
                             <AccountBoxRounded/>
                         </Icon>
                         <Typography variant="body1" align="left" marginTop={0.5}>
