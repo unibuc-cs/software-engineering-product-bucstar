@@ -17,4 +17,15 @@ public class EventRepository(DatabaseContext dbContext) : GenericRepository<Even
             .Include(ev => ev.Participations)
             .ToListAsync();
     }
+
+    public async Task<Event?> GetEventAsync(Guid id)
+    {
+        return await _table
+            .Include(ev => ev.Organizer)
+            .Include(ev => ev.Tags)
+            .Include(ev => ev.Participations)
+            .Include(ev => ev.Reviews)
+            .Include(ev => ev.Comments)
+            .FirstOrDefaultAsync(ev => ev.Id == id);
+    }
 }

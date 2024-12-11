@@ -15,15 +15,15 @@ export class ViewEventModel {
     public readonly comments: Comment[];
     
     constructor(
-        name: string, 
-        organizerName: string, 
-        location: string,
-        date: Date,
-        maximumParticipants: number,
-        participants: Participant[],
-        tags: Tag[],
-        reviews: Review[],
-        comments: Comment[],
+        name: string = "name", 
+        organizerName: string = "organizerName", 
+        location: string = "Bucharest",
+        date: Date = new Date(),
+        maximumParticipants: number = 12,
+        participants: Participant[] = [],
+        tags: Tag[] = [],
+        reviews: Review[] = [],
+        comments: Comment[] = [],
     ) {
         this.name = name;
         this.organizerName = organizerName;

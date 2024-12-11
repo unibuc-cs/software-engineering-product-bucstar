@@ -1,4 +1,5 @@
 using backend.events.browse;
+using backend.events.dto;
 
 namespace backend.events;
 
@@ -16,6 +17,14 @@ public class EventService //: IEventService
         var futureEvents = events.FindAll(ev => ev.Date > DateTime.Now);
         var summaries = futureEvents.Select(ev => new EventSummaryDto(ev)).ToList();
         return summaries;
+    }
+
+    public async Task<EventDetailedDto?> getDetailedEvent(string id)
+    {
+        var ev = await _eventRepository.GetEventAsync(Guid.Parse(id));
+        if (ev != null)
+            return new EventDetailedDto(ev);
+        return null;
     }
 }
 

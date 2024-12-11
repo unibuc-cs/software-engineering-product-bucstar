@@ -16,22 +16,31 @@ import {Review} from "./Review";
 import {EventReviewsModel} from "./eventReviewsPanel/EventReviewsModel";
 import {Comment} from "./Comment";
 import {EventCommentsModel} from "./eventComentsPanel/EventCommentsModel";
+import {useEffect, useState} from "react";
+import {BrowseEventsModel} from "../browseEvents/BrowseEventsModel";
+import {BrowseEventsService} from "../browseEvents/BrowseEventsService";
+import {ViewEventService} from "./ViewEventService";
 
 const ViewEventView = (
 ) => {
     const {id} = useParams();
-    const model: ViewEventModel = new ViewEventModel(
-        "event name",
-        "organizer name",
-        "Bucharest",
-        new Date(Date.now()),
-        12,
-        [new Participant("participant 1"), new Participant("participant 2")],
-        [new Tag("sports"), new Tag("outdoor")],
-        [new Review("reviewer 1", 9, "review 1"), new Review("reviewer 2", 4, "review 2"),],
-        [new Comment("username 1", "comment 1"), new Comment("username 2", "comment 2"),]
+    const [model, setModel] = useState<ViewEventModel>(
+        new ViewEventModel()
+    );
+
+    useEffect(() => {
+        try {
+            const service = new ViewEventService();
+
+            service.getViewEventModel(id as string)
+                .then(model => setModel(model))
+                .catch(error => console.error("Error fetching event:", error));
+        }
+        catch (error) {
+            console.error("Error fetching event:", error)
+        }
+    }, []);
     
-    )
     return (
         <>
             <Grid container marginX={"auto"} marginY={4} maxWidth="1000px"
