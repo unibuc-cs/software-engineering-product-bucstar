@@ -1,8 +1,11 @@
 import Grid from "@mui/material/Grid2";
 import {Icon, Rating, Typography} from "@mui/material";
 import {AccountBoxRounded} from "@mui/icons-material";
+import {ReviewModel} from "./ReviewModel";
 
-const ReviewRow = () => {
+const ReviewRow = (
+    {model} : {model: ReviewModel }
+) => {
     return (
         <Grid container size={12} alignItems={"left"} spacing={0}>
             <Grid container size={3}>
@@ -11,13 +14,13 @@ const ReviewRow = () => {
                         <AccountBoxRounded/>
                     </Icon>
                     <Typography variant="body1" align="left" margin={"auto 0"}>
-                        Account Nickname
+                        {model.reviewerName}
                     </Typography>
                 </Grid>
                 <Grid container size={12} alignItems={"center"}>
                     <Rating
                         name="read-only"
-                        value={4.5}
+                        value={model.score / 2}
                         precision={0.5}
                         readOnly
                     />
@@ -26,7 +29,7 @@ const ReviewRow = () => {
            
             <Grid size={9} marginTop={1}>
                 <Typography variant="body2" align="left" margin={"auto 0"}>
-                    This is a review
+                    {model.text}
                 </Typography>
             </Grid>
 

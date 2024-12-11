@@ -1,19 +1,22 @@
 import Grid from "@mui/material/Grid2";
 import {Typography} from "@mui/material";
+import {EventHeaderModel} from "./EventHeaderModel";
 
-const EventHeader = () => {
+const EventHeader = (
+    {model} : {model: EventHeaderModel},
+) => {
 
     return (
         <Grid size={12} container spacing={1} padding={4}
               style={{ backgroundColor: '#1976d2', color: 'white' }}>
             <Grid size={12}>
                 <Typography variant="h4" align="left">
-                    Event Name
+                    {model.eventName}
                 </Typography>
             </Grid>
             <Grid size={12}>
                 <Typography variant="h6" align="left">
-                    Created by Organizer
+                    Created by {model.organizerName}
                 </Typography>
             </Grid>
         </Grid>

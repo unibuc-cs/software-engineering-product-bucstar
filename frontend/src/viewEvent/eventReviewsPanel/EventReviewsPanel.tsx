@@ -1,9 +1,12 @@
 import Grid from "@mui/material/Grid2";
-import {Icon, Rating, Typography} from "@mui/material";
-import {AccountBoxRounded, StarRounded} from "@mui/icons-material";
+import {Icon, Typography} from "@mui/material";
+import {StarRounded} from "@mui/icons-material";
 import ReviewRow from "../reviewRow/ReviewRow";
+import {EventReviewsModel} from "./EventReviewsModel";
 
-const EventReviewsPanel = () => {
+const EventReviewsPanel = (
+    {model} : {model: EventReviewsModel},
+) => {
     return (
         <Grid container size={12} spacing={2} padding={4} margin="auto">
             <Grid container size={12} marginBottom={2}>
@@ -14,7 +17,9 @@ const EventReviewsPanel = () => {
                     Reviews
                 </Typography>
             </Grid>
-            <ReviewRow/>
+            {model.reviews.map(review => (
+                <ReviewRow model={review}/>
+            ))}
         </Grid>
     )
 }
