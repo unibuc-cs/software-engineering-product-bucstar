@@ -1,6 +1,7 @@
 import Grid from "@mui/material/Grid2";
 import {Typography} from "@mui/material";
 import {EventParticipantsModel} from "./EventParticipantsModel";
+import {useEffect} from "react";
 
 const EventParticipantsPanel = (
     {model} : {model: EventParticipantsModel}
@@ -14,10 +15,10 @@ const EventParticipantsPanel = (
                             {model.participants.length} registered participants:
                         </Typography>
                     </Grid>
-                    {model.participants.map(participant => (
+                    { model.participants.map(participant => (
                         <Grid size={12}>
                             <Typography variant="body1" align="left">
-                                {participant.nickname}
+                                {participant.username}
                             </Typography>
                         </Grid>
                     ))}

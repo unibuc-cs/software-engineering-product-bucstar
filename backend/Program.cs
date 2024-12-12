@@ -75,5 +75,7 @@ void SeedData(IHost app)
         userService.SeedInitialUsers();
         var eventSeeder = scope.ServiceProvider.GetService<EventSeeder>();
         eventSeeder.SeedInitialEvents();
+        var participationSeeder = scope.ServiceProvider.GetService<ParticipationSeeder>();
+        participationSeeder.SeedInitialParticipations();
     }
 }

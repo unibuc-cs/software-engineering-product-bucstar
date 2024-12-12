@@ -19,7 +19,7 @@ public class EventService //: IEventService
         return summaries;
     }
 
-    public async Task<EventDetailedDto?> getDetailedEvent(string id)
+    public async Task<EventDetailedDto?> GetDetailedEvent(string id)
     {
         var ev = await _eventRepository.GetEventAsync(Guid.Parse(id));
         if (ev != null)

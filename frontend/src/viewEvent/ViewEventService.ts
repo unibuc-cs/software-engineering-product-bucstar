@@ -1,4 +1,7 @@
 import {ViewEventModel} from "./ViewEventModel";
+import {Participant} from "./Participant";
+import {Review} from "./Review";
+import {Comment} from "./Comment";
 
 interface CommentDto {
     username: string;
@@ -45,7 +48,8 @@ export class ViewEventService {
             if(!response.ok) {
                 throw new Error(response.statusText);
             }
-            
+
+
             const eventDetailedDto = await response.json();
             return new ViewEventModel(
                 eventDetailedDto.name,
@@ -54,10 +58,10 @@ export class ViewEventService {
                 eventDetailedDto.location,
                 new Date(Date.parse(eventDetailedDto.date)),
                 eventDetailedDto.maximumParticipants,
-                eventDetailedDto.participants,
+                eventDetailedDto.participants.map((dto: ParticipantDto) => new Participant(dto.username)),
                 eventDetailedDto.tags,
-                eventDetailedDto.reviews,
-                eventDetailedDto.comments
+                eventDetailedDto.reviews.map((dto: ReviewDto) => new Review(dto.username, dto.score, dto.text)),
+                eventDetailedDto.comments.map((dto: CommentDto) => new Comment(dto.username, dto.text))
             )
         }
         catch (error) {

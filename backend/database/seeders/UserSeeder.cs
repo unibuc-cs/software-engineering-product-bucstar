@@ -24,6 +24,12 @@ public class UserSeeder
                 Id = new Guid("10e1fd21-38d9-4c83-a7b2-c370e53b95d6"),
                 Nickname = "skpha",
                 FacebookId = "2371556636519262"
+            },
+            new User()
+            {
+                Id = new Guid("022a8895-fe55-4e13-8bd9-402709435f78"),
+                Nickname = "Edi",
+                FacebookId = "2371556636519262"
             }
         };
         

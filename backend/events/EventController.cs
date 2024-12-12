@@ -35,7 +35,7 @@ namespace backend.events
         {
             try
             {
-                var eventDetailedDto = (await eventService.getDetailedEvent(id))!;
+                var eventDetailedDto = (await eventService.GetDetailedEvent(id))!;
                 return Ok(eventDetailedDto);
             }
             catch (Exception ex)

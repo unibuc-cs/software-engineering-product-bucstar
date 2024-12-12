@@ -1,7 +1,7 @@
 export class Participant {
-    public readonly nickname: string;
+    public readonly username: string;
     
-    constructor(nickname: string) {
-        this.nickname = nickname;
+    constructor(username: string) {
+        this.username = username;
     }
 }

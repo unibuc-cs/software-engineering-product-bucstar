@@ -24,7 +24,7 @@ public class Event: BaseEntity
     public required int ParticipantsLimit { get; set; }
     
     public required Guid OrganizerId { get; set; }
-    public required User Organizer { get; set; }
+    public User Organizer { get; set; }
     
     public ICollection<Comment> Comments { get; set; }
     public ICollection<Tag> Tags { get; set; }
