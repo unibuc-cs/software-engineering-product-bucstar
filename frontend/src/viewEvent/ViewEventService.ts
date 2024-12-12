@@ -51,7 +51,6 @@ export class ViewEventService {
 
 
             const eventDetailedDto = await response.json();
-            console.log(eventDetailedDto);
             return new ViewEventModel(
                 eventDetailedDto.name,
                 eventDetailedDto.description,

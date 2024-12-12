@@ -81,5 +81,7 @@ void SeedData(IHost app)
         reviewSeeder.SeedInitialReviews();
         var commentSeeder = scope.ServiceProvider.GetService<CommentSeeder>();
         commentSeeder.SeedInitialComments();
+        var tagSeeder = scope.ServiceProvider.GetService<TagSeeder>();
+        tagSeeder.SeedInitialTags();
     }
 }

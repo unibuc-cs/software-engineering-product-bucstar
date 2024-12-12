@@ -11,6 +11,7 @@ public class EventDetailedDto(
     DateTime date,
     string organizer,
     int maximumParticipants,
+    List<TagDto> tags,
     List<ParticipantDto> participants,
     List<ReviewDto> reviews,
     List<CommentDto> comments
@@ -23,6 +24,7 @@ public class EventDetailedDto(
     public DateTime Date { get; init; } = date;
     public string Organizer { get; init; } = organizer;
     public int MaximumParticipants { get; init; } = maximumParticipants;
+    public List<TagDto> Tags { get; init; } = tags;
     public List<ParticipantDto> Participants { get; init; } = participants;
     public List<ReviewDto> Reviews { get; init; } = reviews;
     public List<CommentDto> Comments { get; init; } = comments;
@@ -36,6 +38,7 @@ public class EventDetailedDto(
         ev.Date, 
         ev.Organizer.Nickname,
         ev.ParticipantsLimit,
+        ev.Tags.Select(t => new TagDto(t)).ToList(),
         ev.Participations.Select(p => new ParticipantDto(p)).ToList(),
         ev.Reviews.Select(r => new ReviewDto(r)).ToList(),
         ev.Comments.Select(c => new CommentDto(c)).ToList()
