@@ -79,5 +79,7 @@ void SeedData(IHost app)
         participationSeeder.SeedInitialParticipations();
         var reviewSeeder = scope.ServiceProvider.GetService<ReviewSeeder>();
         reviewSeeder.SeedInitialReviews();
+        var commentSeeder = scope.ServiceProvider.GetService<CommentSeeder>();
+        commentSeeder.SeedInitialComments();
     }
 }
