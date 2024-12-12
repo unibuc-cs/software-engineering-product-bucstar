@@ -77,5 +77,7 @@ void SeedData(IHost app)
         eventSeeder.SeedInitialEvents();
         var participationSeeder = scope.ServiceProvider.GetService<ParticipationSeeder>();
         participationSeeder.SeedInitialParticipations();
+        var reviewSeeder = scope.ServiceProvider.GetService<ReviewSeeder>();
+        reviewSeeder.SeedInitialReviews();
     }
 }

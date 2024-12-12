@@ -17,8 +17,6 @@ public class EventSeeder
         if (_dbContext.Events.Any())
             return;
         
-        var user = _dbContext.Users.FirstOrDefault();
-        
         var events = new List<Event>
         {
             new Event

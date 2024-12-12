@@ -27,6 +27,7 @@ public static class ServiceExtensions
         services.AddTransient<UserSeeder>();
         services.AddTransient<EventSeeder>();
         services.AddTransient<ParticipationSeeder>();
+        services.AddTransient<ReviewSeeder>();
 
         return services;
     }
