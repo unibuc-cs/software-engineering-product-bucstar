@@ -1,28 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Box,
     Button,
     Checkbox,
     Divider,
     FormControlLabel,
-    Icon,
     InputAdornment,
     TextField,
     Typography
 } from '@mui/material';
 import {
-    CalendarIcon,
-    DateTimePicker,
     LocalizationProvider,
     MobileDateTimePicker,
-    StaticDateTimePicker
 } from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
+import dayjs, {Dayjs} from 'dayjs';
 import Grid from "@mui/material/Grid2";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {ConfirmationNumberRounded, DescriptionRounded, LocationOnRounded} from "@mui/icons-material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { ConfirmationNumberRounded, DescriptionRounded, LocationOnRounded } from "@mui/icons-material";
+import { CreateEventModel } from "./CreateEventModel";
 
-const EventForm = () => {
+const CreateEventView = () => {
+    const [model, setModel] = useState(new CreateEventModel());
+
+    const setName = (name: string) => {
+        setModel(prevModel => ({ ...prevModel, name }));
+    }
+
+    const setDescription = (description: string) => {
+        setModel(prevModel => ({ ...prevModel, description }));
+    }
+
+    const setLocation = (location: string) => {
+        setModel(prevModel => ({ ...prevModel, location }));
+    }
+
+    const setParticipantLimitEnable = (value: boolean) => {
+        setModel(prevModel => ({ ...prevModel, participantLimitEnabled: value }));
+    }
+
+    const setParticipantLimit = (limit: number) => {
+        setModel(prevModel => ({ ...prevModel, participantLimit: limit }));
+    }
+    
+    const setDate = (date: Dayjs) => {
+        setModel(prevModel => ({ ...prevModel, date: date.toDate() }));
+    }
+
+    const dateToShow = () => {
+        if (model.date == null) {
+            return dayjs(); // Current date and time
+        }
+        return dayjs(model.date); // Convert model.date to dayjs object
+    }
+
     return (
         <Grid
             container
@@ -36,63 +66,78 @@ const EventForm = () => {
                 backgroundColor: '#EEEEFF',
             }}
         >
-            {/* Header Section */}
             <Grid padding={4} size={12} style={{ backgroundColor: '#1976d2', color: 'white' }}>
                 <Typography variant="h4" align="left">
                     New Event
                 </Typography>
             </Grid>
-            
-            <Grid size={{xs:12, md:12}} padding={4} display="flex" flexDirection="column" gap={4}>
+
+            <Grid size={{ xs: 12, md: 12 }} padding={4} display="flex" flexDirection="column" gap={4}>
                 <Box component="form" noValidate autoComplete="off">
-                    
-                    <TextField variant="outlined" label="Event name" fullWidth
-                               slotProps={{
-                                   input: {
-                                       startAdornment: (
-                                           <InputAdornment position="start">
-                                               <ConfirmationNumberRounded />
-                                           </InputAdornment>
-                                       ),
-                                   },
-                               }}/>
+                    <TextField
+                        variant="outlined"
+                        label="Event name"
+                        fullWidth
+                        onChange={(event) => setName(event.target.value)}
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <ConfirmationNumberRounded />
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
+                    />
                 </Box>
                 <Box component="form" noValidate autoComplete="off">
-                    <TextField variant="outlined" label="Event description" multiline fullWidth
-                               slotProps={{
-                                   input: {
-                                       startAdornment: (
-                                           <InputAdornment position="start">
-                                               <DescriptionRounded />
-                                           </InputAdornment>
-                                       ),
-                                   },
-                               }}/>
+                    <TextField
+                        variant="outlined"
+                        label="Event description"
+                        multiline
+                        fullWidth
+                        onChange={(event) => setDescription(event.target.value)}
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <DescriptionRounded />
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
+                    />
                 </Box>
                 <Box component="form" noValidate autoComplete="off">
-                    <TextField variant="outlined" label="Location" fullWidth
-                               slotProps={{
-                                   input: {
-                                       startAdornment: (
-                                           <InputAdornment position="start">
-                                               <LocationOnRounded />
-                                           </InputAdornment>
-                                       ),
-                                   },
-                               }}/>
+                    <TextField
+                        variant="outlined"
+                        label="Location"
+                        fullWidth
+                        onChange={(event) => setLocation(event.target.value)}
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <LocationOnRounded />
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
+                    />
                 </Box>
-                
 
                 <Grid size={12}>
-                    <Divider orientation="horizontal"/>
+                    <Divider orientation="horizontal" />
                 </Grid>
-                <Grid display="flex" justifyContent="left" alignItems="left"
-                >
+                <Grid display="flex" justifyContent="left" alignItems="left">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <MobileDateTimePicker
-                            defaultValue={dayjs(Date.now())}
+                            defaultValue={
+                                dateToShow()
+                            }
                             disablePast={true}
-                            sx={{background: "transparent"}}
+                            sx={{ background: "transparent" }}
+                            onAccept={(value) => { if(value != null) setDate(value)}}
                         />
                     </LocalizationProvider>
                 </Grid>
@@ -110,40 +155,36 @@ const EventForm = () => {
                         <FormControlLabel
                             control={
                                 <Checkbox
-                                    checked={true}
-                                    onChange={() => {}}
+                                    checked={model.participantLimitEnabled}
+                                    onChange={(event) => setParticipantLimitEnable(event.target.checked)}
                                     color="primary"
                                 />
                             }
                             label="Enable participant limit"
                         />
 
-                        {/* Conditionally enabled TextField for participant limit */}
-                        {true && (
+                        {model.participantLimitEnabled && (
                             <TextField
                                 label="Participant Limit"
                                 variant="outlined"
                                 type="number"
-                                value={20}
-                                onChange={() => {}}
-                                fullWidth
-                                inputProps={{
-                                    min: 1,
+                                value={model.participantLimit}
+                                onChange={(event) => {
+                                    setParticipantLimit(Number.parseInt(event.target.value))
                                 }}
+                                fullWidth
                             />
                         )}
                     </Box>
                 </Grid>
-                <Button variant={"contained"}>
+                <Button variant={"contained"} onClick={() => { console.log(model) }}>
                     <Typography variant="h6" component="div">
                         Create
                     </Typography>
                 </Button>
             </Grid>
-
-
         </Grid>
     );
 };
 
-export default EventForm;
+export default CreateEventView;
