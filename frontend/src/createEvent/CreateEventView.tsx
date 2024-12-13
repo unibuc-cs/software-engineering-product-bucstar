@@ -20,6 +20,8 @@ import Grid from "@mui/material/Grid2";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { ConfirmationNumberRounded, DescriptionRounded, LocationOnRounded } from "@mui/icons-material";
 import { CreateEventModel } from "./CreateEventModel";
+import {CreateEventDto, CreateEventService} from "./CreateEventService";
+import {FacebookLoginHelper} from "../utils/facebookLoginHelper";
 
 const CreateEventView = () => {
     const [model, setModel] = useState(new CreateEventModel());
@@ -63,9 +65,9 @@ const CreateEventView = () => {
 
     const dateToShow = () => {
         if (model.date == null) {
-            return dayjs(); // Current date and time
+            return dayjs();
         }
-        return dayjs(model.date); // Convert model.date to dayjs object
+        return dayjs(model.date);
     }
 
     const validateForm = () => {
@@ -82,9 +84,26 @@ const CreateEventView = () => {
         return !Object.values(newErrors).some(error => error !== '');
     }
 
-    const tryToSave = () => {
+    const tryToSave = async () => {
         if (validateForm()) {
-            console.log('Form is valid, saving data:', model);
+            try {
+                let service: CreateEventService = new CreateEventService();
+                let loginResponse = await FacebookLoginHelper.checkLoginStatus();
+                let userId = loginResponse.userInfo?.id!
+                let dto: CreateEventDto = {
+                    name: model.name,
+                    description: model.description,
+                    location: model.location,
+                    date: model.date!.toLocaleString(),
+                    participantsLimit: model.participantLimit,
+                    participantsLimitEnabled: model.participantLimitEnabled,
+                    organizerId: userId
+                };
+                await service.createEvent(dto);
+            }
+            catch (error) {
+                console.log(error);
+            }
         } else {
             console.log('Form is invalid');
         }
