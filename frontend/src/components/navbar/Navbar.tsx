@@ -21,6 +21,7 @@ const drawerWidth = 240;
 const navItems = [
     new NavItem("Home", "/"),
     new NavItem("Browse Events", "/events"),
+    new NavItem("Create Event", "/events/new"),
 ];
 
 const Navbar = () => {
