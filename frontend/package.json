@@ -48,6 +48,8 @@
     ]
   },
   "devDependencies": {
+    "@mui/x-date-pickers": "^7.23.2",
+    "dayjs": "^1.11.13",
     "react-icons": "^5.4.0"
   }
 }
