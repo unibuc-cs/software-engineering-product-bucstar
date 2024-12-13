@@ -7,13 +7,15 @@ import {
     FormControlLabel,
     InputAdornment,
     TextField,
-    Typography
+    Typography,
+    FormControl,
+    FormHelperText
 } from '@mui/material';
 import {
     LocalizationProvider,
     MobileDateTimePicker,
 } from '@mui/x-date-pickers';
-import dayjs, {Dayjs} from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import Grid from "@mui/material/Grid2";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { ConfirmationNumberRounded, DescriptionRounded, LocationOnRounded } from "@mui/icons-material";
@@ -21,29 +23,42 @@ import { CreateEventModel } from "./CreateEventModel";
 
 const CreateEventView = () => {
     const [model, setModel] = useState(new CreateEventModel());
+    const [errors, setErrors] = useState({
+        name: '',
+        description: '',
+        location: '',
+        date: '',
+        limit: ''
+    });
 
     const setName = (name: string) => {
         setModel(prevModel => ({ ...prevModel, name }));
+        setErrors(prevErrors => ({ ...prevErrors, name: '' }));
     }
 
     const setDescription = (description: string) => {
         setModel(prevModel => ({ ...prevModel, description }));
+        setErrors(prevErrors => ({ ...prevErrors, description: '' }));
     }
 
     const setLocation = (location: string) => {
         setModel(prevModel => ({ ...prevModel, location }));
+        setErrors(prevErrors => ({ ...prevErrors, location: '' }));
     }
 
     const setParticipantLimitEnable = (value: boolean) => {
         setModel(prevModel => ({ ...prevModel, participantLimitEnabled: value }));
+        setErrors(prevErrors => ({ ...prevErrors, limit: '' }));
     }
 
     const setParticipantLimit = (limit: number) => {
         setModel(prevModel => ({ ...prevModel, participantLimit: limit }));
+        setErrors(prevErrors => ({ ...prevErrors, limit: '' }));
     }
-    
+
     const setDate = (date: Dayjs) => {
         setModel(prevModel => ({ ...prevModel, date: date.toDate() }));
+        setErrors(prevErrors => ({ ...prevErrors, date: '' }));
     }
 
     const dateToShow = () => {
@@ -51,6 +66,28 @@ const CreateEventView = () => {
             return dayjs(); // Current date and time
         }
         return dayjs(model.date); // Convert model.date to dayjs object
+    }
+
+    const validateForm = () => {
+        const newErrors = {
+            name: model.name ? '' : 'Event name is required',
+            description: model.description ? '' : 'Event description is required',
+            location: model.location ? '' : 'Location is required',
+            date: model.date && dayjs(model.date).isAfter(dayjs()) ? '' : 'Event date must be in the future',
+            limit: !(model.participantLimitEnabled && model.participantLimit < 1) ? '' : 'Event participant limit must be at least 1'
+        };
+
+        setErrors(newErrors);
+
+        return !Object.values(newErrors).some(error => error !== '');
+    }
+
+    const tryToSave = () => {
+        if (validateForm()) {
+            console.log('Form is valid, saving data:', model);
+        } else {
+            console.log('Form is invalid');
+        }
     }
 
     return (
@@ -79,6 +116,8 @@ const CreateEventView = () => {
                         label="Event name"
                         fullWidth
                         onChange={(event) => setName(event.target.value)}
+                        error={Boolean(errors.name)}
+                        helperText={errors.name}
                         slotProps={{
                             input: {
                                 startAdornment: (
@@ -90,6 +129,7 @@ const CreateEventView = () => {
                         }}
                     />
                 </Box>
+
                 <Box component="form" noValidate autoComplete="off">
                     <TextField
                         variant="outlined"
@@ -97,6 +137,8 @@ const CreateEventView = () => {
                         multiline
                         fullWidth
                         onChange={(event) => setDescription(event.target.value)}
+                        error={Boolean(errors.description)}
+                        helperText={errors.description}
                         slotProps={{
                             input: {
                                 startAdornment: (
@@ -108,12 +150,15 @@ const CreateEventView = () => {
                         }}
                     />
                 </Box>
+
                 <Box component="form" noValidate autoComplete="off">
                     <TextField
                         variant="outlined"
                         label="Location"
                         fullWidth
                         onChange={(event) => setLocation(event.target.value)}
+                        error={Boolean(errors.location)}
+                        helperText={errors.location}
                         slotProps={{
                             input: {
                                 startAdornment: (
@@ -129,18 +174,22 @@ const CreateEventView = () => {
                 <Grid size={12}>
                     <Divider orientation="horizontal" />
                 </Grid>
+
+                {/* Custom Error Handling for MobileDateTimePicker */}
                 <Grid display="flex" justifyContent="left" alignItems="left">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <MobileDateTimePicker
-                            defaultValue={
-                                dateToShow()
-                            }
-                            disablePast={true}
-                            sx={{ background: "transparent" }}
-                            onAccept={(value) => { if(value != null) setDate(value)}}
-                        />
+                        <FormControl error={Boolean(errors.date)}>
+                            <MobileDateTimePicker
+                                defaultValue={dateToShow()}
+                                disablePast={true}
+                                sx={{ background: "transparent" }}
+                                onAccept={(value) => { if (value != null) setDate(value) }}
+                            />
+                            {errors.date && <FormHelperText>{errors.date}</FormHelperText>}
+                        </FormControl>
                     </LocalizationProvider>
                 </Grid>
+
                 <Grid container display="flex" justifyContent="left">
                     <Box
                         sx={{
@@ -150,7 +199,6 @@ const CreateEventView = () => {
                             gap: 2,
                         }}
                     >
-
                         {/* Checkbox to enable participant limit input */}
                         <FormControlLabel
                             control={
@@ -172,12 +220,15 @@ const CreateEventView = () => {
                                 onChange={(event) => {
                                     setParticipantLimit(Number.parseInt(event.target.value))
                                 }}
+                                error={Boolean(errors.limit)}
+                                helperText={errors.limit}
                                 fullWidth
                             />
                         )}
                     </Box>
                 </Grid>
-                <Button variant={"contained"} onClick={() => { console.log(model) }}>
+
+                <Button variant={"contained"} onClick={tryToSave}>
                     <Typography variant="h6" component="div">
                         Create
                     </Typography>
