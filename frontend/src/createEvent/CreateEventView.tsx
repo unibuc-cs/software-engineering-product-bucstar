@@ -22,11 +22,11 @@ import { ConfirmationNumberRounded, DescriptionRounded, LocationOnRounded } from
 import { CreateEventModel } from "./CreateEventModel";
 import {CreateEventDto, CreateEventService} from "./CreateEventService";
 import {FacebookLoginHelper} from "../utils/facebookLoginHelper";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const CreateEventView = () => {
     const {id} = useParams();
-    
+    const navigate = useNavigate();
     const [model, setModel] = useState(new CreateEventModel());
     const [errors, setErrors] = useState({
         name: '',
@@ -38,7 +38,7 @@ const CreateEventView = () => {
 
     useEffect(() => {
         const service = new CreateEventService();
-        if(id != "") {
+        if(id != null) {
             service.getEventModel(id!)
                 .then(model => setModel(model))
                 .catch(error => console.error("Error fetching events:", error));
@@ -113,6 +113,7 @@ const CreateEventView = () => {
                     organizerId: userId
                 };
                 await service.createEvent(dto);
+                navigate(-1);
             }
             catch (error) {
                 console.log(error);
@@ -139,6 +140,7 @@ const CreateEventView = () => {
                     organizerId: userId
                 };
                 await service.updateEvent(dto);
+                navigate(-1);
             }
             catch (error) {
                 console.log(error);
@@ -289,14 +291,14 @@ const CreateEventView = () => {
                     </Box>
                 </Grid>
 
-                {id == "" && (
+                {id == null && (
                     <Button variant={"contained"} onClick={tryToSave}>
                         <Typography variant="h6" component="div">
                             Create
                         </Typography>
                     </Button>
                 )}
-                {id != "" && (
+                {id != null && (
                     <Button variant={"contained"} onClick={tryToUpdate}>
                         <Typography variant="h6" component="div">
                             Update

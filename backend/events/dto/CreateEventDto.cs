@@ -32,12 +32,12 @@ public class CreateEventDto
     {
         return new Event
         {
-            Id = Guid.Parse(Id),
+            Id = (Id == "") ? Guid.Empty: Guid.Parse(Id),
             Name = Name,
             Description = Description,
             Location = Location,
             OrganizerId = Guid.Empty,
-            Date = DateTime.Parse(Date),  // Assuming DateString is in a valid format.
+            Date = DateTime.Parse(Date), 
             ParticipantsLimit = (ParticipantsLimitEnabled) ? ParticipantsLimit : 0
         };
     }
