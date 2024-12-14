@@ -9,6 +9,7 @@ public class EventDetailedDto(
     string description,
     string location,
     DateTime date,
+    string organizerFacebookId,
     string organizer,
     int maximumParticipants,
     List<TagDto> tags,
@@ -22,6 +23,7 @@ public class EventDetailedDto(
     public string Description { get; init; } = description;
     public string Location { get; init; } = location;
     public DateTime Date { get; init; } = date;
+    public string OrganizerFacebookId { get; init; } = organizerFacebookId;
     public string Organizer { get; init; } = organizer;
     public int MaximumParticipants { get; init; } = maximumParticipants;
     public List<TagDto> Tags { get; init; } = tags;
@@ -36,6 +38,7 @@ public class EventDetailedDto(
         ev.Description, 
         ev.Location,
         ev.Date, 
+        ev.Organizer.FacebookId,
         ev.Organizer.Nickname,
         ev.ParticipantsLimit,
         ev.Tags.Select(t => new TagDto(t)).ToList(),
