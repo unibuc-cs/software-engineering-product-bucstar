@@ -2,10 +2,13 @@ import Grid from "@mui/material/Grid2";
 import {Button, Typography} from "@mui/material";
 import {EventHeaderModel} from "./EventHeaderModel";
 import {useState} from "react";
+import {Link} from "react-router-dom";
 
 const EventHeader = (
     {model} : {model: EventHeaderModel},
 ) => {
+    const currentPath = window.location.pathname; // Get the current path
+    const editPath = `${currentPath}/edit`;
     
     return (
         <Grid size={12} container spacing={1} padding={4}
@@ -17,7 +20,8 @@ const EventHeader = (
             </Grid>
             {model.showEditButton && (
                 <Grid size={2}>
-                    <Button variant={"outlined"} color={"inherit"}>
+                    <Button variant={"outlined"} color={"inherit"}
+                            component={Link} to={editPath}>
                         Edit
                     </Button>
                 </Grid>
