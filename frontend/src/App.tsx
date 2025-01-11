@@ -21,6 +21,7 @@ function App() {
                       <Route path="/events" element={<BrowseEventsView />} />
                       <Route path="/events/:id" element={<ViewEventView/>} />
                       <Route path="/events/new" element={<CreateEventView/>} />
+                      <Route path="/events/:id/edit" element={<CreateEventView/>} />
                   </Routes>
               </div>
           </ThemeProvider>

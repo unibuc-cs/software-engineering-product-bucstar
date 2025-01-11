@@ -37,4 +37,10 @@ public class EventRepository(DatabaseContext dbContext) : GenericRepository<Even
         await _table.AddAsync(newEvent);
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task UpdateEvent(Event newEvent)
+    {
+        _table.Update(newEvent);
+        await _dbContext.SaveChangesAsync();
+    }
 }

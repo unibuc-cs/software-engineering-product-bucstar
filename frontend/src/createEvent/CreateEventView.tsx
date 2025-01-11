@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box,
     Button,
@@ -22,8 +22,11 @@ import { ConfirmationNumberRounded, DescriptionRounded, LocationOnRounded } from
 import { CreateEventModel } from "./CreateEventModel";
 import {CreateEventDto, CreateEventService} from "./CreateEventService";
 import {FacebookLoginHelper} from "../utils/facebookLoginHelper";
+import {useNavigate, useParams} from "react-router-dom";
 
 const CreateEventView = () => {
+    const {id} = useParams();
+    const navigate = useNavigate();
     const [model, setModel] = useState(new CreateEventModel());
     const [errors, setErrors] = useState({
         name: '',
@@ -32,6 +35,15 @@ const CreateEventView = () => {
         date: '',
         limit: ''
     });
+
+    useEffect(() => {
+        const service = new CreateEventService();
+        if(id != null) {
+            service.getEventModel(id!)
+                .then(model => setModel(model))
+                .catch(error => console.error("Error fetching events:", error));
+        }
+    }, []);
 
     const setName = (name: string) => {
         setModel(prevModel => ({ ...prevModel, name }));
@@ -91,6 +103,7 @@ const CreateEventView = () => {
                 let loginResponse = await FacebookLoginHelper.checkLoginStatus();
                 let userId = loginResponse.userInfo?.id!
                 let dto: CreateEventDto = {
+                    id: model.id,
                     name: model.name,
                     description: model.description,
                     location: model.location,
@@ -100,6 +113,34 @@ const CreateEventView = () => {
                     organizerId: userId
                 };
                 await service.createEvent(dto);
+                navigate(-1);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        } else {
+            console.log('Form is invalid');
+        }
+    }
+
+    const tryToUpdate = async () => {
+        if (validateForm()) {
+            try {
+                let service: CreateEventService = new CreateEventService();
+                let loginResponse = await FacebookLoginHelper.checkLoginStatus();
+                let userId = loginResponse.userInfo?.id!
+                let dto: CreateEventDto = {
+                    id: model.id,
+                    name: model.name,
+                    description: model.description,
+                    location: model.location,
+                    date: model.date!.toLocaleString(),
+                    participantsLimit: model.participantLimit,
+                    participantsLimitEnabled: model.participantLimitEnabled,
+                    organizerId: userId
+                };
+                await service.updateEvent(dto);
+                navigate(-1);
             }
             catch (error) {
                 console.log(error);
@@ -133,6 +174,7 @@ const CreateEventView = () => {
                     <TextField
                         variant="outlined"
                         label="Event name"
+                        value={model.name}
                         fullWidth
                         onChange={(event) => setName(event.target.value)}
                         error={Boolean(errors.name)}
@@ -153,6 +195,7 @@ const CreateEventView = () => {
                     <TextField
                         variant="outlined"
                         label="Event description"
+                        value={model.description}
                         multiline
                         fullWidth
                         onChange={(event) => setDescription(event.target.value)}
@@ -174,6 +217,7 @@ const CreateEventView = () => {
                     <TextField
                         variant="outlined"
                         label="Location"
+                        value={model.location}
                         fullWidth
                         onChange={(event) => setLocation(event.target.value)}
                         error={Boolean(errors.location)}
@@ -247,11 +291,20 @@ const CreateEventView = () => {
                     </Box>
                 </Grid>
 
-                <Button variant={"contained"} onClick={tryToSave}>
-                    <Typography variant="h6" component="div">
-                        Create
-                    </Typography>
-                </Button>
+                {id == null && (
+                    <Button variant={"contained"} onClick={tryToSave}>
+                        <Typography variant="h6" component="div">
+                            Create
+                        </Typography>
+                    </Button>
+                )}
+                {id != null && (
+                    <Button variant={"contained"} onClick={tryToUpdate}>
+                        <Typography variant="h6" component="div">
+                            Update
+                        </Typography>
+                    </Button>
+                )}
             </Grid>
         </Grid>
     );

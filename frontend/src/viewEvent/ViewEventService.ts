@@ -29,6 +29,7 @@ interface EventDetailedDto {
     description: string;
     location: string;
     date: string;
+    organizerFacebookId: string;
     organizer: string;
     maximumParticipants: number;
     tags: TagDto[];
@@ -60,6 +61,7 @@ export class ViewEventService {
             return new ViewEventModel(
                 eventDetailedDto.name,
                 eventDetailedDto.description,
+                eventDetailedDto.organizerFacebookId,
                 eventDetailedDto.organizer,
                 eventDetailedDto.location,
                 new Date(Date.parse(eventDetailedDto.date)),
