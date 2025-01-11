@@ -43,6 +43,41 @@ namespace backend.events
                 return StatusCode(500, ex.Message);
             }
         }
+        
+        [HttpPost("events/create")]
+        [ProducesResponseType(typeof(CreateEventDto), 201)]   // Success, return created event details
+        [ProducesResponseType(400)]                      // Bad Request if validation fails
+        [ProducesResponseType(500)]                      // Internal Server Error
+        public async Task<IActionResult> CreateEvent([FromBody] CreateEventDto? createEventDto)
+        {
+            Console.WriteLine(createEventDto);
+            if (createEventDto == null)
+            {
+                return BadRequest("Event data is required.");
+            }
+
+            try
+            {
+                if (string.IsNullOrEmpty(createEventDto.Name) || string.IsNullOrEmpty(createEventDto.Description) ||
+                    string.IsNullOrEmpty(createEventDto.Location) || string.IsNullOrEmpty(createEventDto.Date))
+                {
+                    return BadRequest("Name, description, location, and date are required.");
+                }
+                
+                var createdEvent = await eventService.CreateEventAsync(createEventDto);
+
+                return Ok(new
+                {
+                    message = "Event created successfully",
+                    ev = createdEvent
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+        
     }
 }
 

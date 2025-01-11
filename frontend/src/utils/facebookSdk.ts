@@ -1,3 +1,5 @@
+import {FacebookLoginHelper} from "./facebookLoginHelper";
+
 declare global {
     interface Window {
         FB: {
@@ -20,7 +22,6 @@ export const initFacebookSdk = () => {
                 xfbml: true,
                 version: 'v21.0'
             });
-
             resolve();
         };
     });

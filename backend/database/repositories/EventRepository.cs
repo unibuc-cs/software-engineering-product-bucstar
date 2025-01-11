@@ -31,4 +31,10 @@ public class EventRepository(DatabaseContext dbContext) : GenericRepository<Even
             .ThenInclude(comment => comment.User)
             .FirstOrDefaultAsync(ev => ev.Id == id);
     }
+
+    public async Task AddEvent(Event newEvent)
+    {
+        await _table.AddAsync(newEvent);
+        await _dbContext.SaveChangesAsync();
+    }
 }
