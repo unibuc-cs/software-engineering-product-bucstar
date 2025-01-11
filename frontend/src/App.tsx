@@ -6,6 +6,7 @@ import {CssBaseline, ThemeProvider} from "@mui/material";
 import theme from "./assets/theme";
 import Navbar from "./components/navbar/Navbar";
 import BrowseEventsView from "./browseEvents/BrowseEventsView";
+import ViewEventView from "./viewEvent/ViewEventView";
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                   <Routes>
                       <Route path="/" element={<Home />} />
                       <Route path="/events" element={<BrowseEventsView />} />
+                      <Route path="/events/:id" element={<ViewEventView/>} />
                   </Routes>
               </div>
           </ThemeProvider>

@@ -1,6 +1,6 @@
 using backend.database.models;
 
-namespace backend.events.browse;
+namespace backend.events.dto;
 
 public class EventSummaryDto(
     string id,

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,8 @@ namespace backend.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    Nickname = table.Column<string>(type: "longtext", nullable: false),
+                    FacebookId = table.Column<string>(type: "varchar(16)", maxLength: 16, nullable: false),
+                    Nickname = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
@@ -92,7 +93,6 @@ namespace backend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
-                    table.UniqueConstraint("AK_Comments_UserId_EventId", x => new { x.UserId, x.EventId });
                     table.ForeignKey(
                         name: "FK_Comments_Events_EventId",
                         column: x => x.EventId,
@@ -194,6 +194,11 @@ namespace backend.Migrations
                 name: "IX_Comments_EventId",
                 table: "Comments",
                 column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_UserId",
+                table: "Comments",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Events_OrganizerId",

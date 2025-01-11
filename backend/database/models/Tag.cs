@@ -10,5 +10,5 @@ public class Tag : BaseEntity
     public required string Name { get; set; }
     
     public required Guid EventId { get; set; }
-    public required Event Event { get; set; }
+    public Event Event { get; set; }
 }

@@ -75,5 +75,13 @@ void SeedData(IHost app)
         userService.SeedInitialUsers();
         var eventSeeder = scope.ServiceProvider.GetService<EventSeeder>();
         eventSeeder.SeedInitialEvents();
+        var participationSeeder = scope.ServiceProvider.GetService<ParticipationSeeder>();
+        participationSeeder.SeedInitialParticipations();
+        var reviewSeeder = scope.ServiceProvider.GetService<ReviewSeeder>();
+        reviewSeeder.SeedInitialReviews();
+        var commentSeeder = scope.ServiceProvider.GetService<CommentSeeder>();
+        commentSeeder.SeedInitialComments();
+        var tagSeeder = scope.ServiceProvider.GetService<TagSeeder>();
+        tagSeeder.SeedInitialTags();
     }
 }

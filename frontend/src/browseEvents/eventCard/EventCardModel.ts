@@ -1,6 +1,6 @@
 
 export class EventCardModel {
-    public readonly id: number;
+    public readonly id: string;
     public readonly name: string;
     public readonly description: string;
     public readonly location: string;
@@ -11,7 +11,7 @@ export class EventCardModel {
     public readonly tags: string[];
     
     constructor(
-        id: number,
+        id: string,
         name: string, 
         description: string,
         location: string,

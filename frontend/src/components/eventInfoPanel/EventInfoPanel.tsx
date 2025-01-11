@@ -17,7 +17,7 @@ const EventInfoPanel = (
 ) => {
     return (
         <Grid container spacing={2}>
-            <Grid size={6} container>
+            <Grid size={4} container>
                 <Icon>
                     <LocationOn />
                 </Icon>

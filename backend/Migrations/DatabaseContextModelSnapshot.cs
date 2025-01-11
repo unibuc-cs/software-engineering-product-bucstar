@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Data;
 
@@ -11,11 +10,9 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241129114522_MaxLengthToUserNickname")]
-    partial class MaxLengthToUserNickname
+    partial class DatabaseContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,54 +44,11 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("UserId", "EventId");
-
                     b.HasIndex("EventId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("backend.Models.Event", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("varchar(2000)");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<Guid>("OrganizerId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("ParticipantsLimit")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrganizerId");
-
-                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("backend.Models.Notification", b =>
@@ -216,7 +170,50 @@ namespace backend.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("backend.Models.User", b =>
+            modelBuilder.Entity("backend.database.models.Event", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("varchar(2000)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<Guid>("OrganizerId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("ParticipantsLimit")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizerId");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("backend.database.models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -224,6 +221,11 @@ namespace backend.Migrations
 
                     b.Property<DateTime?>("DateCreated")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FacebookId")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime(6)");
@@ -240,13 +242,13 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.Comment", b =>
                 {
-                    b.HasOne("backend.Models.Event", "Event")
+                    b.HasOne("backend.database.models.Event", "Event")
                         .WithMany("Comments")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.Models.User", "User")
+                    b.HasOne("backend.database.models.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -257,20 +259,9 @@ namespace backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("backend.Models.Event", b =>
-                {
-                    b.HasOne("backend.Models.User", "Organizer")
-                        .WithMany("CreatedEvents")
-                        .HasForeignKey("OrganizerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Organizer");
-                });
-
             modelBuilder.Entity("backend.Models.Notification", b =>
                 {
-                    b.HasOne("backend.Models.User", "User")
+                    b.HasOne("backend.database.models.User", "User")
                         .WithMany("Notifications")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -281,13 +272,13 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.Participation", b =>
                 {
-                    b.HasOne("backend.Models.Event", "Event")
+                    b.HasOne("backend.database.models.Event", "Event")
                         .WithMany("Participations")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.Models.User", "User")
+                    b.HasOne("backend.database.models.User", "User")
                         .WithMany("Participations")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -300,13 +291,13 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.Review", b =>
                 {
-                    b.HasOne("backend.Models.Event", "Event")
+                    b.HasOne("backend.database.models.Event", "Event")
                         .WithMany("Reviews")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.Models.User", "User")
+                    b.HasOne("backend.database.models.User", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -319,7 +310,7 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.Tag", b =>
                 {
-                    b.HasOne("backend.Models.Event", "Event")
+                    b.HasOne("backend.database.models.Event", "Event")
                         .WithMany("Tags")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -328,7 +319,18 @@ namespace backend.Migrations
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("backend.Models.Event", b =>
+            modelBuilder.Entity("backend.database.models.Event", b =>
+                {
+                    b.HasOne("backend.database.models.User", "Organizer")
+                        .WithMany("CreatedEvents")
+                        .HasForeignKey("OrganizerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organizer");
+                });
+
+            modelBuilder.Entity("backend.database.models.Event", b =>
                 {
                     b.Navigation("Comments");
 
@@ -339,7 +341,7 @@ namespace backend.Migrations
                     b.Navigation("Tags");
                 });
 
-            modelBuilder.Entity("backend.Models.User", b =>
+            modelBuilder.Entity("backend.database.models.User", b =>
                 {
                     b.Navigation("Comments");
 

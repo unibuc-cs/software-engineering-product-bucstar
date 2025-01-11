@@ -55,14 +55,14 @@ public class DatabaseContext : DbContext
             .HasForeignKey(e => e.OrganizerId);
 
         // User - Comment - Event
-        modelBuilder.Entity<Comment>()
-            .HasAlternateKey(c => new { c.UserId, c.EventId });
+        // modelBuilder.Entity<Comment>()
+        //     .HasAlternateKey(c => new { c.UserId, c.EventId });
 
         // User - Comment
         modelBuilder.Entity<User>()
             .HasMany(u => u.Comments)
             .WithOne(c => c.User)
-            .HasForeignKey(c => c.UserId);
+            .HasForeignKey(c => c.UserId);  
 
         // Comment - Event
         modelBuilder.Entity<Event>()
