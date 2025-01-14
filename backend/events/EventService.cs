@@ -1,8 +1,7 @@
 using backend.account;
-using backend.database.models;
 using backend.events.browse;
 using backend.events.dto;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.View;
+using backend.Models;
 
 namespace backend.events;
 
@@ -90,9 +89,12 @@ public class EventService //: IEventService
             return null;
         }
     }
-}
 
-// public interface IEventService
-// {
-//     public Task<List<EventSummaryDto>> GetEventSummaryDtos();
-// }
+    public async Task<ParticipantDto> addParticipantToEvent(string userId, string eventId)
+    {
+        try
+        {
+            var newParticipation = new Participation({UserId = userId, EventId = eventId});
+        }
+    }
+}

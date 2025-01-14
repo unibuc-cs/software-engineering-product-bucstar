@@ -1,7 +1,6 @@
 import Grid from "@mui/material/Grid2";
 import {Button, Typography} from "@mui/material";
 import {EventHeaderModel} from "./EventHeaderModel";
-import {useState} from "react";
 import {Link} from "react-router-dom";
 
 const EventHeader = (
