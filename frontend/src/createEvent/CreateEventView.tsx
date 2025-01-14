@@ -43,7 +43,7 @@ const CreateEventView = () => {
                 .then(model => setModel(model))
                 .catch(error => console.error("Error fetching events:", error));
         }
-    }, []);
+    }, [id]);
 
     const setName = (name: string) => {
         setModel(prevModel => ({ ...prevModel, name }));
