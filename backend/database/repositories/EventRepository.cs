@@ -2,6 +2,7 @@ using backend.Data;
 using backend.database.models;
 using backend.database.repositories.generic;
 using backend.events;
+using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.database.repositories;
@@ -31,6 +32,14 @@ public class EventRepository(DatabaseContext dbContext) : GenericRepository<Even
             .ThenInclude(comment => comment.User)
             .FirstOrDefaultAsync(ev => ev.Id == id);
     }
+    public async Task<Participation?> GetParticipationAsync(Guid userId, Guid eventId)
+    {
+        return await _dbContext.Set<Participation>()
+            .AsNoTracking()
+            .Include(participation => participation.User)
+            .Include(participation => participation.Event)
+            .FirstOrDefaultAsync(participation => participation.UserId == userId && participation.EventId == eventId);
+    }
 
     public async Task AddEvent(Event newEvent)
     {
@@ -38,6 +47,11 @@ public class EventRepository(DatabaseContext dbContext) : GenericRepository<Even
         await _dbContext.SaveChangesAsync();
     }
 
+    public async Task AddParticipation(Participation newParticipation)
+    {
+        await _dbContext.Set<Participation>().AddAsync(newParticipation);
+        await _dbContext.SaveChangesAsync();
+    }
     public async Task UpdateEvent(Event newEvent)
     {
         _table.Update(newEvent);

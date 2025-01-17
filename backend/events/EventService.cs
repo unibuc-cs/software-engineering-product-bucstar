@@ -1,6 +1,7 @@
 using backend.account;
 using backend.events.browse;
 using backend.events.dto;
+using backend.Helpers.exceptions;
 using backend.Models;
 
 namespace backend.events;
@@ -90,11 +91,43 @@ public class EventService //: IEventService
         }
     }
 
-    public async Task<ParticipantDto> addParticipantToEvent(string userId, string eventId)
+    public async Task<CreateParticipationDto?> JoinEventAsync(CreateParticipationDto createParticipationDto)
     {
-        try
-        {
-            var newParticipation = new Participation({UserId = userId, EventId = eventId});
-        }
+        
+            var user = await _userRepository.GetByFacebookIdAsync(createParticipationDto.UserId);
+            if (user == null)
+            {
+                throw new UserNotFoundException("User not found.");
+            }
+
+            createParticipationDto.UserId = user.Id.ToString();
+
+            var joinedEvent = await _eventRepository.GetEventAsync(Guid.Parse(createParticipationDto.EventId));
+            if (joinedEvent == null)
+            {
+                throw new EventNotFoundException("Event not found.");
+            }
+
+            // Check if user is already a participant
+            var existingParticipation = await _eventRepository.GetParticipationAsync(user.Id, joinedEvent.Id);
+            if (existingParticipation != null)
+            {
+                throw new ParticipationException("User is already a participant in this event.");
+            }
+
+            // Check participant limit
+            if (joinedEvent.ParticipantsLimit > 0 &&
+                joinedEvent.Participations.Count >= joinedEvent.ParticipantsLimit)
+            {
+                throw new ParticipationException("Participant limit reached for this event.");
+            }
+
+            // Add participation
+            var newParticipation = createParticipationDto.AsParticipation();
+
+            await _eventRepository.AddParticipation(newParticipation);
+
+            return createParticipationDto;
     }
+
 }
