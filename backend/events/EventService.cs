@@ -1,18 +1,23 @@
 using backend.account;
 using backend.events.dto;
+using backend.Helpers.exceptions;
+using backend.participations;
 
 namespace backend.events;
 
 public class EventService
 {
+    private readonly IParticipationRepository _participationRepository;
     private readonly IEventRepository _eventRepository;
     private readonly IUserRepository _userRepository;
 
     public EventService(
+        IParticipationRepository participationRepository,
         IEventRepository eventRepository,
         IUserRepository userRepository
         )
     {
+        _participationRepository = participationRepository;
         _eventRepository = eventRepository;
         _userRepository = userRepository;
     }
@@ -20,6 +25,22 @@ public class EventService
     {
         var events = await _eventRepository.GetAllEventsAsync();
         var futureEvents = events.FindAll(ev => ev.Date > DateTime.Now);
+        var summaries = futureEvents.Select(ev => new EventSummaryDto(ev)).ToList();
+        return summaries;
+    }
+
+    public async Task<List<EventSummaryDto>> GetFutureEventsForUser(string userId)
+    {
+        var user = await _userRepository.GetByFacebookIdAsync(userId);
+        if (user is null)
+        {
+            throw new UserNotFoundException("User not found");
+        }
+        var userRegisteredEvents = await _participationRepository.GetFutureUserParticipations(user.Id);
+        var futureEvents = userRegisteredEvents
+            .Select(p => p.Event)
+            .Where(e => e.Date > DateTime.Now)
+            .ToList();
         var summaries = futureEvents.Select(ev => new EventSummaryDto(ev)).ToList();
         return summaries;
     }

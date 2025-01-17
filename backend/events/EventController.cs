@@ -1,4 +1,5 @@
 using backend.events.dto;
+using backend.Helpers.exceptions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -124,8 +125,27 @@ namespace backend.events
                 return StatusCode(500, ex.Message);
             }
         }
-        
-        
+
+        [HttpGet("events/user/{userId}/future")]
+        [ProducesResponseType(typeof(List<EventSummaryDto>), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(object), 500)]
+        public async Task<IActionResult> GetFutureEventsForUser(string userId)
+        {
+            try
+            {
+                var summaries = await eventService.GetFutureEventsForUser(userId);
+                return Ok(summaries);
+            }
+            catch (UserNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            } 
+        }
     }
 }
 
