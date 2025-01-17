@@ -4,7 +4,7 @@ export interface JoinEventDto {
 }
 
 export class JoinEventService {
-    private apiUrl: string = 'http://localhost:5009/api/Event/events/join';
+    private apiUrl: string = 'http://localhost:5009/api/Participation/join';
 
     public async joinEvent(dto: JoinEventDto): Promise<any> {
         try {

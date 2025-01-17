@@ -70,7 +70,7 @@ const EventHeader = (
                     </Typography>
                 </Grid>
             </Grid>
-        <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}> 
+        <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}> 
             <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity}> 
                 {snackbarMessage} 
             </Alert> 

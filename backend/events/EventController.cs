@@ -1,7 +1,4 @@
-using backend.database.models;
-using backend.events.browse;
 using backend.events.dto;
-using backend.Helpers.exceptions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -72,42 +69,6 @@ namespace backend.events
                     message = "Event created successfully",
                     ev = createdEvent
                 });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-        
-        [HttpPost("events/join")]
-        [ProducesResponseType(typeof(CreateParticipationDto), 200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> JoinEvent([FromBody] CreateParticipationDto? createParticipationDto)
-        {
-            if (createParticipationDto == null || 
-                string.IsNullOrEmpty(createParticipationDto.UserId) || 
-                string.IsNullOrEmpty(createParticipationDto.EventId))
-            {
-                return BadRequest("UserId and EventId are required.");
-            }
-
-            try
-            {
-                var participant = await eventService.JoinEventAsync(createParticipationDto);
-                return Ok(new { message = "Joined event successfully", participant });
-            }
-            catch (UserNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (EventNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (ParticipationException ex)
-            {
-                return Conflict(ex.Message);
             }
             catch (Exception ex)
             {
