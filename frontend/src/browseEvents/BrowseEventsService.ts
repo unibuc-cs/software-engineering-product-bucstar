@@ -1,6 +1,6 @@
-import {EventCardModel} from "./eventCard/EventCardModel";
 import {BrowseEventsModel} from "./BrowseEventsModel";
 import { FacebookLoginHelper } from "../utils/facebookLoginHelper";
+import { EventCardModel } from "../components/eventsList/eventCard/EventCardModel";
 
 export interface EventSummaryDto {
     id: string;
