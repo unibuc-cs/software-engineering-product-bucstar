@@ -1,11 +1,11 @@
 import {Container, Typography} from "@mui/material";
 import React, {useEffect, useState} from "react";
-import EventCard from "./eventCard/EventCard";
-import {BrowseEventsModel} from "./BrowseEventsModel";
-import {BrowseEventsService} from "./BrowseEventsService";
 import Grid from "@mui/material/Grid2";
+import { BrowseEventsModel } from "../browseEvents/BrowseEventsModel";
+import { BrowseEventsService } from "../browseEvents/BrowseEventsService";
+import EventCard from "../browseEvents/eventCard/EventCard";
 
-const BrowseEvents = (
+const RegisteredEvents = (
 ) => {
     const [model, setModel] = useState<BrowseEventsModel>(
         new BrowseEventsModel()
@@ -13,23 +13,18 @@ const BrowseEvents = (
 
     useEffect(() => {
         const service = new BrowseEventsService();
-        service.getBrowseEventsModel()
+        service.getBrowseRegisteredEventsModel()
             .then(model => setModel(model))
             .catch(error => console.error("Error fetching events:", error));
     }, []);
     
     const eventCardModels = model.eventCardModels
     
-    // const service: BrowseEventsService = new BrowseEventsService();
-    // const model: BrowseEventsModel = service.getBrowseEventsModel()
-    // const eventCardModels: EventCardModel[] = model.eventCardModels
-    
-    
     
     return (
         <Container>
             <Typography variant="h3" gutterBottom>
-                Browse Events
+                Registered Events
             </Typography>
             
             <Grid container spacing={8}>
@@ -45,4 +40,4 @@ const BrowseEvents = (
     )
 }
 
-export default BrowseEvents;
+export default RegisteredEvents;

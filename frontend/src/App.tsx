@@ -8,6 +8,7 @@ import Navbar from "./components/navbar/Navbar";
 import BrowseEventsView from "./browseEvents/BrowseEventsView";
 import ViewEventView from "./viewEvent/ViewEventView";
 import CreateEventView from "./createEvent/CreateEventView";
+import RegisteredEventsView from './registeredEvents/RegisteredEventsView';
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                       <Route path="/events/:id" element={<ViewEventView/>} />
                       <Route path="/events/new" element={<CreateEventView/>} />
                       <Route path="/events/:id/edit" element={<CreateEventView/>} />
+                      <Route path="/events/registered" element={<RegisteredEventsView />} />
                   </Routes>
               </div>
           </ThemeProvider>
