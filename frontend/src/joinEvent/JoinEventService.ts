@@ -17,8 +17,6 @@ export class JoinEventService {
                 body: JSON.stringify(dto),
             });
 
-            console.log(response);
-
             if (response.ok) {
                 const data = await response.json();
                 return data;

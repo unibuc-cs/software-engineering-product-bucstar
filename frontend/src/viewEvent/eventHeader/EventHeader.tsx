@@ -7,7 +7,7 @@ import { FacebookLoginHelper } from "../../utils/facebookLoginHelper";
 import { useState } from "react";
 
 const EventHeader = (
-    {model} : {model: EventHeaderModel},
+    {model, refreshEvent} : {model: EventHeaderModel, refreshEvent: () => Promise<void>},
 ) => {
     const currentPath = window.location.pathname; // Get the current path
     const editPath = `${currentPath}/edit`;
@@ -28,6 +28,9 @@ const EventHeader = (
             setSnackbarMessage(response.message || 'Joined event successfully'); 
             setSnackbarSeverity('success'); 
             setSnackbarOpen(true);
+
+            // Refetch event details after successful join
+            await refreshEvent();
         } catch (error) {
             setSnackbarMessage((error as Error).message || 'Error joining event'); 
             setSnackbarSeverity('error'); 
