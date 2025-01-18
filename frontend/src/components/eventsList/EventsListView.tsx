@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Divider, FormControl, FormHelperText, Typography } from "@mui/material";
+import { Container, Divider, FormHelperText, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import EventCard from "./eventCard/EventCard";
 import { BrowseEventsModel } from "../../browseEvents/BrowseEventsModel";
@@ -11,7 +11,7 @@ import dayjs, { Dayjs } from "dayjs";
 
 const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (service : BrowseEventsService) => Promise<BrowseEventsModel>}) => {
     const [model, setModel] = useState<BrowseEventsModel>(new BrowseEventsModel());
-    const [startDate, setStartDate] = useState<Dayjs | null>(null); 
+    const [startDate, setStartDate] = useState<Dayjs | null>(dayjs()); 
     const [endDate, setEndDate] = useState<Dayjs | null>(null); 
     const [filteredEvents, setFilteredEvents] = useState<EventCardModel[]>([]);
 
@@ -36,7 +36,7 @@ const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (serv
         if (startDate && endDate) {
              const filtered = model.eventCardModels.filter(event => { 
                 const eventDate = dayjs(event.date); 
-                return eventDate.isAfter(startDate) && eventDate.isBefore(endDate); 
+                return eventDate.isAfter(startDate) && eventDate.isBefore(endDate.add(1, 'day')); 
             }); 
             setFilteredEvents(filtered); 
         } else {
@@ -51,21 +51,20 @@ const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (serv
                 </Typography>
                 <Grid container spacing={2}> 
                     <Grid size={{xs: 12, sm: 6}}>
-                        <FormControl fullWidth> 
-                            <DatePicker
-                                label="Start Date" 
-                                defaultValue={dateToShow()}
-                                disablePast={true} 
-                                onChange={(newValue) => setStartDate(newValue)} 
-                                />
-                            {startDate && !endDate && ( 
-                                <FormHelperText>Please select an end date to apply the filter</FormHelperText> 
-                            )} 
-                        </FormControl>
+                        <DatePicker
+                            label="Start Date" 
+                            defaultValue={dateToShow()}
+                            disablePast={true} 
+                            onChange={(newValue) => setStartDate(newValue)} 
+                            />
+                        {startDate && !endDate && ( 
+                            <FormHelperText>Please select an end date to apply the filter</FormHelperText> 
+                        )} 
                     </Grid> 
                     <Grid size={{xs: 12, sm: 6}}> 
                         <DatePicker label="End Date" 
-                        value={endDate} 
+                        value={endDate}
+                        disablePast={true} 
                         onChange={(newValue) => setEndDate(newValue)} 
                         />
                     </Grid> 
