@@ -44,12 +44,10 @@ const ViewEventView = () => {
         const fetchData = async () => {
             try {
                 const response = await FacebookLoginHelper.checkLoginStatus();
-                console.log("Facebook Login Status:", response);
                 setUserFacebookId(response.userInfo?.id || '');  // Update the state with user ID
             } catch (error) {
                 await initFacebookSdk();
                 const response = await FacebookLoginHelper.checkLoginStatus();
-                console.log("Facebook Login Status:", response);
                 setUserFacebookId(response.userInfo?.id || '');
                 console.error("Error fetching Facebook user info:", error);
             } finally {
@@ -70,7 +68,7 @@ const ViewEventView = () => {
     return (
         <>
             <Grid container marginX={"auto"} marginY={4} maxWidth="1000px" sx={{ borderRadius: '32px', overflow: 'hidden', backgroundColor: '#EEEEFF' }}>
-                <EventHeader model={EventHeaderModel.fromViewEventModel(model, model.organizerFacebookId === userFacebookId)} refreshEvent={refreshEvent} />
+                <EventHeader model={EventHeaderModel.fromViewEventModel(model, model.organizerFacebookId === userFacebookId, userFacebookId)} refreshEvent={refreshEvent} />
 
                 <EventMainInfo model={EventMainInfoModel.fromViewEventModel(model)} />
 
