@@ -45,4 +45,15 @@ public class ParticipationRepository(DatabaseContext dbContext) : GenericReposit
         await _table.AddAsync(newParticipation);
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task RemoveParticipation(Guid userId, Guid eventId)
+    {
+        var participation = await _table 
+            .FirstOrDefaultAsync(p => p.UserId == userId && p.EventId == eventId);
+        if (participation != null)
+        {
+            _table.Remove(participation); 
+            await _dbContext.SaveChangesAsync();
+        }
+    }
 }
