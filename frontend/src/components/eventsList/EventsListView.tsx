@@ -11,10 +11,12 @@ import dayjs, { Dayjs } from "dayjs";
 
 const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (service : BrowseEventsService) => Promise<BrowseEventsModel>}) => {
     const [model, setModel] = useState<BrowseEventsModel>(new BrowseEventsModel());    
-    const [dateFilter, setDateFilter] = useState<string>("all"); // Dropdown selection
+    const [dateFilter, setDateFilter] = useState<string>("all");
     const [startDate, setStartDate] = useState<Dayjs | null>(dayjs()); 
     const [endDate, setEndDate] = useState<Dayjs | null>(null); 
     const [filteredEvents, setFilteredEvents] = useState<EventCardModel[]>([]);
+    const [sortBy, setSortBy] = useState<string>("date");
+    const [sortOrder, setSortOrder] = useState<string>("asc");
 
     const applyDateFilter = useCallback(() => {
         let filtered = model.eventCardModels;
@@ -26,18 +28,33 @@ const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (serv
         } else if (dateFilter === "today") {
             filtered = filtered.filter(event => dayjs(event.date).isSame(dayjs(), "day"));
         } else if (dateFilter === "week") {
-            filtered = filtered.filter(event => dayjs(event.date).isAfter(dayjs().startOf("week")) && dayjs(event.date).isBefore(dayjs().endOf("week").add(1, 'day')));
+            filtered = filtered.filter(
+                event => 
+                    dayjs(event.date).isAfter(dayjs().startOf("week")) && 
+                    dayjs(event.date).isBefore(dayjs().endOf("week").add(1, 'day'))
+                );
         } else if (dateFilter === "month") {
             filtered = filtered.filter(event => dayjs(event.date).isSame(dayjs(), "month"));
         }
         setFilteredEvents(filtered);
     }, [dateFilter, startDate, endDate, model]);
 
+    const applySorting = useCallback(() => {
+        console.log("Sorting by:", sortBy);
+        let sortedEvents = [...model.eventCardModels];
+        if (sortBy === "date") {
+            sortedEvents.sort((a, b) => (sortOrder === "asc" ? dayjs(a.date).diff(dayjs(b.date)) : dayjs(b.date).diff(dayjs(a.date))));
+        } else if (sortBy === "participants") {
+            sortedEvents.sort((a, b) => (sortOrder === "asc" ? a.registeredParticipants - b.registeredParticipants : b.registeredParticipants - a.registeredParticipants));
+        }
+        setFilteredEvents(sortedEvents);
+    }, [sortBy, sortOrder, model.eventCardModels]);
+
     useEffect(() => {
         const service = new BrowseEventsService();
         fetchEvents(service)
             .then(model => {
-                setModel(model)
+                setModel(model);
                 setFilteredEvents(model.eventCardModels);
             })
             .catch(error => console.error("Error fetching events:", error));
@@ -46,6 +63,10 @@ const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (serv
     useEffect(() => {
         applyDateFilter();
     }, [dateFilter, startDate, endDate, model, applyDateFilter]);
+
+    useEffect(() => {
+        applySorting();
+    }, [sortBy, sortOrder, applySorting]);
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -90,7 +111,28 @@ const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (serv
                                     />
                                 </Grid>
                             </>
-                        )} 
+                        )}
+
+                    <Grid size={{ xs: 8, sm: 4 }}>
+                        <FormControl fullWidth>
+                            <Select
+                                value={sortBy}
+                                onChange={(e) => setSortBy(e.target.value)}
+                            >
+                                <MenuItem value="date">Sort by Date</MenuItem>
+                                <MenuItem value="participants">Sort by Participants</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid size={{ xs: 8, sm: 4 }}>
+                        <FormControl fullWidth>
+                            <Select value={sortOrder} onChange={e => setSortOrder(e.target.value)}>
+                                <MenuItem value="asc">Ascending</MenuItem>
+                                <MenuItem value="desc">Descending</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
                 </Grid>
                 <Divider orientation="horizontal" sx={{ marginBottom: 3 }} />
                 <Grid container spacing={4}>
