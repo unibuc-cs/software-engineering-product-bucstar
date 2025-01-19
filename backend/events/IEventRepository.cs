@@ -1,4 +1,5 @@
 using backend.database.models;
+using backend.Models;
 
 namespace backend.events;
 

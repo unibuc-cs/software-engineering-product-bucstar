@@ -2,7 +2,7 @@ using backend.account;
 using backend.database.repositories;
 using backend.database.seeders;
 using backend.events;
-using backend.Models;
+using backend.participations;
 using backend.Services.UserService;
 
 namespace backend.Helpers.Extensions;
@@ -13,6 +13,7 @@ public static class ServiceExtensions
     {
         services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IEventRepository, EventRepository>();
+        services.AddTransient<IParticipationRepository, ParticipationRepository>();
         return services;
     }
     
@@ -20,6 +21,7 @@ public static class ServiceExtensions
     {
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<EventService>();
+        services.AddTransient<ParticipationService>();
         return services;
     }
     

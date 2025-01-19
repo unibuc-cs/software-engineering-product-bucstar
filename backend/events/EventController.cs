@@ -1,5 +1,3 @@
-using backend.database.models;
-using backend.events.browse;
 using backend.events.dto;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -126,6 +124,7 @@ namespace backend.events
                 return StatusCode(500, ex.Message);
             }
         }
+        
         
     }
 }

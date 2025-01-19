@@ -66,22 +66,32 @@ app.MapControllers();
 
 app.Run();
 
-void SeedData(IHost app)
+void SeedData(IHost appSeed)
 {
-    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+    var scopedFactory = appSeed.Services.GetService<IServiceScopeFactory>();
+    if (scopedFactory is null)
+    {
+        return;
+    }
     using (var scope = scopedFactory.CreateScope())
     {
         var userService = scope.ServiceProvider.GetService<UserSeeder>();
+        if (userService is null) return;
         userService.SeedInitialUsers();
         var eventSeeder = scope.ServiceProvider.GetService<EventSeeder>();
+        if (eventSeeder is null) return;
         eventSeeder.SeedInitialEvents();
         var participationSeeder = scope.ServiceProvider.GetService<ParticipationSeeder>();
+        if (participationSeeder is null) return;
         participationSeeder.SeedInitialParticipations();
         var reviewSeeder = scope.ServiceProvider.GetService<ReviewSeeder>();
+        if (reviewSeeder is null) return;
         reviewSeeder.SeedInitialReviews();
         var commentSeeder = scope.ServiceProvider.GetService<CommentSeeder>();
+        if (commentSeeder is null) return;
         commentSeeder.SeedInitialComments();
         var tagSeeder = scope.ServiceProvider.GetService<TagSeeder>();
+        if (tagSeeder is null) return;
         tagSeeder.SeedInitialTags();
     }
 }

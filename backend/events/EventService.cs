@@ -1,12 +1,9 @@
 using backend.account;
-using backend.database.models;
-using backend.events.browse;
 using backend.events.dto;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.View;
 
 namespace backend.events;
 
-public class EventService //: IEventService
+public class EventService
 {
     private readonly IEventRepository _eventRepository;
     private readonly IUserRepository _userRepository;
@@ -91,8 +88,3 @@ public class EventService //: IEventService
         }
     }
 }
-
-// public interface IEventService
-// {
-//     public Task<List<EventSummaryDto>> GetEventSummaryDtos();
-// }

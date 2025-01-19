@@ -63,7 +63,7 @@ const ViewEventView = () => {
     return (
         <>
             <Grid container marginX={"auto"} marginY={4} maxWidth="1000px" sx={{ borderRadius: '32px', overflow: 'hidden', backgroundColor: '#EEEEFF' }}>
-                <EventHeader model={EventHeaderModel.fromViewEventModel(model, model.organizerFacebookId == userFacebookId)} />
+                <EventHeader model={EventHeaderModel.fromViewEventModel(model, model.organizerFacebookId === userFacebookId)} />
 
                 <EventMainInfo model={EventMainInfoModel.fromViewEventModel(model)} />
 
