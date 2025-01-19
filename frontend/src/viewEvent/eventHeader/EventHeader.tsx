@@ -5,6 +5,7 @@ import {Link, useParams} from "react-router-dom";
 import { JoinEventDto, JoinEventService } from "../../joinEvent/JoinEventService";
 import { FacebookLoginHelper } from "../../utils/facebookLoginHelper";
 import { useState } from "react";
+import { UnjoinEventService } from "../../joinEvent/UnjoinEventService";
 
 const EventHeader = (
     {model, refreshEvent} : {model: EventHeaderModel, refreshEvent: () => Promise<void>},
@@ -38,6 +39,27 @@ const EventHeader = (
         }
     }
 
+    const onUnjoinEvent = async () => {
+         try {
+            const service = new UnjoinEventService();
+            let loginResponse = await FacebookLoginHelper.checkLoginStatus(); 
+            let userId = loginResponse.userInfo?.id!; 
+            const dto: JoinEventDto = { userId: userId, eventId: id! }; 
+            const response = await service.unjoinEvent(dto); 
+            
+            setSnackbarMessage(response.message || 'Unjoined event successfully'); 
+            setSnackbarSeverity('success');
+             setSnackbarOpen(true); 
+            
+            // Refetch event details after successful unjoin 
+            await refreshEvent(); 
+        } catch (error) { 
+            setSnackbarMessage((error as Error).message || 'Error unjoining event');
+            setSnackbarSeverity('error'); 
+            setSnackbarOpen(true); 
+        } 
+    }
+
     const handleCloseSnackbar = () => { 
         setSnackbarOpen(false); 
     };
@@ -59,13 +81,21 @@ const EventHeader = (
                         </Button>
                     </Grid>
                 )}
-                {!model.showEditButton && (
+                {!model.showEditButton && !model.isParticipating && (
                     <Grid size={2}>
                         <Button variant={"outlined"} color={"inherit"}
                                 onClick={onJoinEvent}>
                             Join Event
                         </Button>
                     </Grid>
+                )}
+                {model.isParticipating && ( 
+                    <Grid size={2}> 
+                        <Button variant={"outlined"} color={"inherit"} 
+                                onClick={onUnjoinEvent}> 
+                            Unjoin Event 
+                        </Button> 
+                    </Grid> 
                 )}
                 <Grid size={12}>
                     <Typography variant="h6" align="left">

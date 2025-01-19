@@ -11,6 +11,7 @@ interface CommentDto {
 
 interface ParticipantDto {
     username: string;
+    facebookId: string;
 }
 
 interface ReviewDto {
@@ -66,7 +67,7 @@ export class ViewEventService {
                 eventDetailedDto.location,
                 new Date(Date.parse(eventDetailedDto.date)),
                 eventDetailedDto.maximumParticipants,
-                eventDetailedDto.participants.map((dto: ParticipantDto) => new Participant(dto.username)),
+                eventDetailedDto.participants.map((dto: ParticipantDto) => new Participant(dto.username, dto.facebookId)),
                 eventDetailedDto.tags.map((dto: TagDto) => new Tag(dto.name)),
                 eventDetailedDto.reviews.map((dto: ReviewDto) => new Review(dto.username, dto.score, dto.text)),
                 eventDetailedDto.comments.map((dto: CommentDto) => new Comment(dto.username, dto.text))

@@ -45,4 +45,24 @@ public class ParticipationService(IUserRepository userRepository, IEventReposito
 
         return createParticipationDto;
     }
+    
+    public async Task UnjoinEventAsync(CreateParticipationDto createParticipationDto) 
+    {
+        var user = await userRepository.GetByFacebookIdAsync(createParticipationDto.UserId);
+        if (user == null)
+        {
+            throw new UserNotFoundException("User not found.");
+        } 
+        var joinedEvent = await eventRepository.GetEventAsync(Guid.Parse(createParticipationDto.EventId));
+        if (joinedEvent == null)
+        {
+            throw new EventNotFoundException("Event not found.");
+        } 
+        var existingParticipation = await participationRepository.GetParticipationAsync(user.Id, joinedEvent.Id);
+        if (existingParticipation == null)
+        {
+            throw new ParticipationException("User is not a participant in this event.");
+        } 
+        await participationRepository.RemoveParticipation(user.Id, joinedEvent.Id);
+    }
 }
