@@ -12,7 +12,7 @@ import {EventParticipantsModel} from "./eventParticipantsPanel/EventParticipants
 import {ViewEventModel} from "./ViewEventModel";
 import {EventReviewsModel} from "./eventReviewsPanel/EventReviewsModel";
 import {EventCommentsModel} from "./eventComentsPanel/EventCommentsModel";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useCallback} from "react";
 import {ViewEventService} from "./ViewEventService";
 import {FacebookLoginHelper} from "../utils/facebookLoginHelper";
 import {initFacebookSdk} from "../utils/facebookSdk";
@@ -23,13 +23,20 @@ const ViewEventView = () => {
     const [userFacebookId, setUserFacebookId] = useState<string>("");
     const [loading, setLoading] = useState(true);  // Track loading state
 
+    const refreshEvent = useCallback(async () => { 
+        const service = new ViewEventService(); 
+        try {
+            const refreshedModel = await service.getViewEventModel(id as string); 
+            setModel(refreshedModel); 
+        } catch (error) { 
+            console.error("Error fetching event:", error); 
+        } 
+    }, [id]);
+
     // Fetch event details
     useEffect(() => {
-        const service = new ViewEventService();
-        service.getViewEventModel(id as string)
-            .then((model) => setModel(model))
-            .catch((error) => console.error("Error fetching event:", error));
-    }, [id]);
+        refreshEvent();
+    }, [id, refreshEvent]);
 
     // Fetch user Facebook info
     useEffect(() => {
@@ -63,7 +70,7 @@ const ViewEventView = () => {
     return (
         <>
             <Grid container marginX={"auto"} marginY={4} maxWidth="1000px" sx={{ borderRadius: '32px', overflow: 'hidden', backgroundColor: '#EEEEFF' }}>
-                <EventHeader model={EventHeaderModel.fromViewEventModel(model, model.organizerFacebookId === userFacebookId)} />
+                <EventHeader model={EventHeaderModel.fromViewEventModel(model, model.organizerFacebookId === userFacebookId)} refreshEvent={refreshEvent} />
 
                 <EventMainInfo model={EventMainInfoModel.fromViewEventModel(model)} />
 

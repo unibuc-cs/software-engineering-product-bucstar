@@ -45,5 +45,4 @@ public class ParticipationService(IUserRepository userRepository, IEventReposito
 
         return createParticipationDto;
     }
-
 }

@@ -1,4 +1,4 @@
-import {EventCardModel} from "./eventCard/EventCardModel";
+import { EventCardModel } from "../components/eventsList/eventCard/EventCardModel";
 
 export class BrowseEventsModel {
     public readonly eventCardModels: EventCardModel[]

@@ -22,6 +22,7 @@ const navItems = [
     new NavItem("Home", "/"),
     new NavItem("Browse Events", "/events"),
     new NavItem("Create Event", "/events/new"),
+    new NavItem("Registered Events", "/events/registered"),
 ];
 
 const Navbar = () => {
