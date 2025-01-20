@@ -10,4 +10,12 @@ public interface IEventRepository
     Task AddEvent(Event newEvent);
     Task UpdateEvent(Event newEvent);
     Task DeleteEvent(Guid id);
+    
+    Task<List<Review>> GetAllReviewsAsync();
+    Task<List<Review>> GetAllReviewsByEventIdAsync(Guid eventId);
+    Task<List<Review>> GetReviewsByUserIdAsync(Guid userId);
+    Task CreateReviewAsync(Review review);
+    Task DeleteReviewAsync(Guid userId, Guid eventId);
+    Task<Review?> GetReviewOfUserByEventAsync(Guid userId, Guid eventId);
+
 }
