@@ -9,4 +9,5 @@ public interface IEventRepository
     Task<Event?> GetEventAsync(Guid id);
     Task AddEvent(Event newEvent);
     Task UpdateEvent(Event newEvent);
+    Task DeleteEvent(Guid id);
 }

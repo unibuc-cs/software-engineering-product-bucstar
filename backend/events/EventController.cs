@@ -146,6 +146,31 @@ namespace backend.events
                 return StatusCode(500, ex.Message);
             } 
         }
+        
+        [HttpDelete("events/delete/{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DeleteEvent(string id)
+        {
+            try
+            {
+                var success = await eventService.DeleteEventAsync(id);
+
+                if (success)
+                {
+                    return Ok(new { message = "Event deleted successfully." });
+                }
+                else
+                {
+                    return StatusCode(500, "Failed to delete the event.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = $"An unexpected error occurred: {ex.Message}" });
+            }
+        }
+
     }
 }
 

@@ -43,4 +43,17 @@ public class EventRepository(DatabaseContext dbContext) : GenericRepository<Even
         _table.Update(newEvent);
         await _dbContext.SaveChangesAsync();
     }
+    
+    public async Task DeleteEvent(Guid id)
+    {
+        var eventToDelete = await _table.FindAsync(id);
+    
+        if (eventToDelete == null)
+        {
+            throw new KeyNotFoundException($"Event with ID {id} not found.");
+        }
+        _table.Remove(eventToDelete);
+        await _dbContext.SaveChangesAsync();
+    }
+
 }

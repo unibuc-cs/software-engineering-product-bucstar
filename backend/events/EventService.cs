@@ -108,4 +108,21 @@ public class EventService
             return null;
         }
     }
+    
+    public async Task<bool> DeleteEventAsync(string id)
+    {
+        try
+        {
+            var eventId = Guid.Parse(id);
+            
+            await _eventRepository.DeleteEvent(eventId);
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
+
 }
