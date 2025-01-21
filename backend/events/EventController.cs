@@ -1,3 +1,4 @@
+using backend.events.browse;
 using backend.events.dto;
 using backend.Helpers.exceptions;
 using Microsoft.AspNetCore.Cors;
@@ -171,6 +172,7 @@ namespace backend.events
             }
         }
 
+        // Reviews
         
         // 1. Get all reviews
         [HttpGet("reviews")]
@@ -295,6 +297,108 @@ namespace backend.events
         }
     
         
+        
+        
+        // Comments
+        // 1. Get all comments
+        [HttpGet("comments")]
+        [ProducesResponseType(typeof(List<CommentDto>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetAllComments()
+        {
+            try
+            {
+                var comments = await eventService.GetAllCommentsAsync();
+                return Ok(comments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        // 2. Get all comments for a specific event
+        [HttpGet("comments/event/{eventId}")]
+        [ProducesResponseType(typeof(List<CommentDto>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetCommentsByEventId(string eventId)
+        {
+            try
+            {
+                var comments = await eventService.GetAllCommentsByEventIdAsync(eventId);
+                return Ok(comments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        // 3. Get all comments by a specific user
+        [HttpGet("comments/user/{userId}")]
+        [ProducesResponseType(typeof(List<CommentDto>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetCommentsByUserId(string userId)
+        {
+            try
+            {
+                var comments = await eventService.GetAllCommentsByUserIdAsync(userId);
+                return Ok(comments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        // 4. Get specific comments by user and event
+        [HttpGet("comments/{userId}/{eventId}")]
+        [ProducesResponseType(typeof(List<CommentDto>), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetCommentsOfUserByEvent(string userId, string eventId)
+        {
+            try
+            {
+                var comments = await eventService.GetCommentsOfUserByEventAsync(userId, eventId);
+                if (comments == null)
+                {
+                    return NotFound(new { message = "Review not found." });
+                }
+                return Ok(comments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        // 5. Create a comment
+        [HttpPost("comments/create")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CreateComment([FromBody] CreateCommentDto dto)
+        {
+            if (dto == null || string.IsNullOrEmpty(dto.UserId) || string.IsNullOrEmpty(dto.EventId) || string.IsNullOrEmpty(dto.Text) )
+            {
+                return BadRequest(new { error = "Invalid comment data." });
+            }
+
+            try
+            {
+                await eventService.CreateCommentAsync(dto.UserId, dto.EventId, dto.Text);
+                return StatusCode(201, new { message = "Comment created successfully." });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
         
     }
 }

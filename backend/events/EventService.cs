@@ -4,6 +4,7 @@ using backend.Helpers.exceptions;
 using backend.participations;
 using backend.Models;
 using backend.database.models;
+using backend.events.browse;
 
 namespace backend.events;
 
@@ -128,7 +129,7 @@ public class EventService
     }
     
     
-    
+    // Reviews
     public async Task<List<ReviewDto>> GetAllReviewsAsync()
     {
         var reviews = await _eventRepository.GetAllReviewsAsync();
@@ -192,5 +193,71 @@ public class EventService
 
         await _eventRepository.DeleteReviewAsync(userGuid, eventGuid);
     }
+    
+    
+    
+    
+    
+    // Comments
+    public async Task<List<CommentDto>> GetAllCommentsAsync()
+    {
+        var comments = await _eventRepository.GetAllCommentsAsync();
+        return comments.Select(c => new CommentDto(c)).ToList();
+    }
+
+    public async Task<List<CommentDto>> GetAllCommentsByEventIdAsync(string eventId)
+    {
+        var eventGuid = Guid.Parse(eventId);
+        var comments = await _eventRepository.GetAllCommentsByEventIdAsync(eventGuid);
+        return comments.Select(c => new CommentDto(c)).ToList();
+    }
+
+    public async Task<List<CommentDto>> GetAllCommentsByUserIdAsync(string userId)
+    {
+        var userGuid = Guid.Parse(userId);
+        var comments = await _eventRepository.GetCommentsByUserIdAsync(userGuid);
+        return comments.Select(c => new CommentDto(c)).ToList();
+    }
+
+    public async Task<List<CommentDto>?> GetCommentsOfUserByEventAsync(string userId, string eventId)
+    {
+        var userGuid = Guid.Parse(userId);
+        var eventGuid = Guid.Parse(eventId);
+        var comments = await _eventRepository.GetCommentsByUserIdAsync(userGuid);
+
+        if (!comments.Any())
+        {
+            return null;
+        }
+        
+        return comments.Select(c => new CommentDto(c)).ToList();
+    }
+
+    
+    public async Task CreateCommentAsync(string userId, string eventId, string text)
+    {
+        var userGuid = Guid.Parse(userId);
+        var eventGuid = Guid.Parse(eventId);
+
+        // Check if the user and event exist
+        var user = await _userRepository.GetByIdAsync(userGuid);
+        var ev = await _eventRepository.GetEventAsync(eventGuid);
+        if (user == null || ev == null)
+        {
+            throw new KeyNotFoundException("User or Event not found.");
+        }
+
+        var comment = new Comment()
+        {
+            UserId = userGuid,
+            EventId = eventGuid,
+            Text = text,
+            DateCreated = DateTime.UtcNow,
+            LastModified = DateTime.UtcNow
+        };
+
+        await _eventRepository.CreateCommentAsync(comment);
+    }
+    
 }
 
