@@ -109,7 +109,7 @@ const EventReviewsPanel = ({model, userFacebookId}: {model: EventReviewsModel; u
                 defaultValue={5}
                 step={1}
                 marks
-                min={0}
+                min={1}
                 max={10}
                 value={score}
                 onChange={(e, value) => setScore(value as number)}

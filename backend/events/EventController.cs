@@ -252,7 +252,7 @@ namespace backend.events
         [ProducesResponseType(500)]
         public async Task<IActionResult> CreateReview([FromBody] CreateReviewDto dto)
         {
-            if (dto == null || string.IsNullOrEmpty(dto.UserId) || string.IsNullOrEmpty(dto.EventId) || string.IsNullOrEmpty(dto.Text) || dto.Score < 0)
+            if (dto == null || string.IsNullOrEmpty(dto.UserId) || string.IsNullOrEmpty(dto.EventId) || string.IsNullOrEmpty(dto.Text) || dto.Score <= 0)
             {
                 return BadRequest(new { error = "Invalid review data." });
             }
