@@ -8,7 +8,7 @@ export class EventCardModel {
     public readonly maximumParticipants: number;
     public readonly registeredParticipants: number;
     public readonly tags: string[];
-    
+
     constructor(
         id: string,
         name: string, 

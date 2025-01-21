@@ -46,7 +46,16 @@ const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (serv
             sortedEvents.sort((a, b) => (sortOrder === "asc" ? dayjs(a.date).diff(dayjs(b.date)) : dayjs(b.date).diff(dayjs(a.date))));
         } else if (sortBy === "participants") {
             sortedEvents.sort((a, b) => (sortOrder === "asc" ? a.registeredParticipants - b.registeredParticipants : b.registeredParticipants - a.registeredParticipants));
+         }  else if (sortBy === "recommended") {
+            sortedEvents.sort((a, b) => {
+
+                const scoreA = a.registeredParticipants * 5 - dayjs(a.date).diff(dayjs(), 'day');
+                const scoreB = b.registeredParticipants * 5 - dayjs(b.date).diff(dayjs(), 'day');
+
+                return sortOrder === "desc" ? scoreA - scoreB : scoreB - scoreA;
+            });
         }
+
         setFilteredEvents(sortedEvents);
     }, [sortBy, sortOrder, model.eventCardModels]);
 
@@ -121,6 +130,7 @@ const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (serv
                             >
                                 <MenuItem value="date">Sort by Date</MenuItem>
                                 <MenuItem value="participants">Sort by Participants</MenuItem>
+                                <MenuItem value="recommended">Sort by Recommended</MenuItem>
                             </Select>
                         </FormControl>
                     </Grid>
