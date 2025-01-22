@@ -1,20 +1,23 @@
 import Grid from "@mui/material/Grid2";
-import {Icon, Typography, Button, TextField, Slider} from "@mui/material";
+import {Icon, Typography, Button, TextField, Slider, AlertColor, Alert, Snackbar} from "@mui/material";
 import {StarRounded} from "@mui/icons-material";
 import ReviewRow from "../reviewRow/ReviewRow";
 import {EventReviewsModel} from "./EventReviewsModel";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {ReviewEventService, ReviewDto} from "../../reviewEvents/ReviewEventService";
-import { useNavigate } from "react-router-dom";
 
-const EventReviewsPanel = ({model, userFacebookId}: {model: EventReviewsModel; userFacebookId: string}) => {
-    const navigate = useNavigate();
+const EventReviewsPanel = ({model, userFacebookId, refreshEvent}: {model: EventReviewsModel; userFacebookId: string; refreshEvent: () => Promise<void>}) => {
+
     const {id: eventId} = useParams(); // Get the event ID from the route
     const [userId, setUserId] = useState<string>("");
     const [text, setText] = useState<string>("");
     const [score, setScore] = useState<number>(5);
     const reviewService = new ReviewEventService();
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState<AlertColor>('success');
 
     useEffect(() => {
         const fetchUserId = async () => {
@@ -64,20 +67,40 @@ const EventReviewsPanel = ({model, userFacebookId}: {model: EventReviewsModel; u
                 await reviewService.deleteReview(userId, eventId);
             } catch (error) {
                 console.error("Error deleting existing review:", error);
-                alert("Failed to delete the existing review.");
+
+                setSnackbarMessage((error as Error).message || 'Error adding review');
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+
                 return;
             }
         }
 
             await reviewService.createOrUpdateReview(review);
-            alert("Review added successfully!");
+
+            setSnackbarMessage("Review added successfully!");
+            setSnackbarSeverity('success');
+            setSnackbarOpen(true);
+
+            // Refetch event details after successful join
+            await refreshEvent();
+
         } catch (error) {
             console.error("Error adding review:", error);
-            alert("Failed to add review.");
+
+            setSnackbarMessage((error as Error).message || 'Failed adding review');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
         }
 
-        //navigate(0);
-        navigate("/events") // Redirect to the events page, might change later
+        setText("");
+        setScore(5);
+
+    };
+
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+
     };
 
     return (
@@ -122,6 +145,13 @@ const EventReviewsPanel = ({model, userFacebookId}: {model: EventReviewsModel; u
             >
                 Add Review
             </Button>
+
+            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
+
         </Grid>
     );
 };
