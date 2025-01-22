@@ -42,9 +42,23 @@ public class EventService
         var userRegisteredEvents = await _participationRepository.GetFutureUserParticipations(user.Id);
         var futureEvents = userRegisteredEvents
             .Select(p => p.Event)
-            .Where(e => e.Date > DateTime.Now)
             .ToList();
         var summaries = futureEvents.Select(ev => new EventSummaryDto(ev)).ToList();
+        return summaries;
+    }
+    
+    public async Task<List<EventSummaryDto>> GetPastEventsForUser(string userId)
+    {
+        var user = await _userRepository.GetByFacebookIdAsync(userId);
+        if (user is null)
+        {
+            throw new UserNotFoundException("User not found");
+        }
+        var userRegisteredEvents = await _participationRepository.GetPastUserParticipations(user.Id);
+        var pastEvents = userRegisteredEvents
+            .Select(p => p.Event)
+            .ToList();
+        var summaries = pastEvents.Select(ev => new EventSummaryDto(ev)).ToList();
         return summaries;
     }
 

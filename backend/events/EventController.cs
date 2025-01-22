@@ -148,6 +148,27 @@ namespace backend.events
             } 
         }
         
+        [HttpGet("events/user/{userId}/past")]
+        [ProducesResponseType(typeof(List<EventSummaryDto>), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(object), 500)]
+        public async Task<IActionResult> GetPastEventsForUser(string userId)
+        {
+            try
+            {
+                var summaries = await eventService.GetPastEventsForUser(userId);
+                return Ok(summaries);
+            }
+            catch (UserNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            } 
+        }
+        
         [HttpDelete("events/delete/{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]

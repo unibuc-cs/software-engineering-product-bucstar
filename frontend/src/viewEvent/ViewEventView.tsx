@@ -44,6 +44,7 @@ const ViewEventView = () => {
         const fetchData = async () => {
             try {
                 const response = await FacebookLoginHelper.checkLoginStatus();
+                console.log("User is logged in with Facebook:", response);
                 setUserFacebookId(response.userInfo?.id || '');  // Update the state with user ID
             } catch (error) {
                 await initFacebookSdk();
