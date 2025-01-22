@@ -7,12 +7,11 @@ import {CommentModel} from "../commentRow/CommentModel";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {CommentEventService, CommentDto} from "../../commentEvents/CommentEventService";
-import { useNavigate } from "react-router-dom";
 
 const EventCommentsPanel = (
-    {model, userFacebookId}: {model: EventCommentsModel; userFacebookId: string}
+    {model, userFacebookId, refreshEvent}: {model: EventCommentsModel; userFacebookId: string; refreshEvent: () => Promise<void>}
 ) => {
-    const navigate = useNavigate();
+
     const {id: eventId} = useParams(); // Get the event ID from the route
     const [userId, setUserId] = useState<string>("");
     const [text, setText] = useState<string>("");
@@ -58,6 +57,9 @@ const EventCommentsPanel = (
             setSnackbarSeverity('success');
             setSnackbarOpen(true);
 
+            // Refetch event details after successful join
+            await refreshEvent();
+
         } catch (error) {
             console.error("Error adding comment:", error);
 
@@ -65,7 +67,9 @@ const EventCommentsPanel = (
             setSnackbarSeverity('error');
             setSnackbarOpen(true);
         }
-        navigate(0);
+
+        setText("");
+
     };
 
     const handleCloseSnackbar = () => {

@@ -95,6 +95,7 @@ const ViewEventView = () => {
 
                 <EventCommentsPanel model={EventCommentsModel.fromViewEventModel(model)}
                 userFacebookId={userFacebookId}
+                refreshEvent={refreshEvent}
                 />
 
             </Grid>
