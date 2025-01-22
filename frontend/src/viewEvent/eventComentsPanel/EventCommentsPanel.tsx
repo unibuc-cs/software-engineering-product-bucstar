@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid2";
-import {Icon, Typography, Button, TextField} from "@mui/material";
+import {Icon, Typography, Button, TextField, Alert, AlertColor, Snackbar} from "@mui/material";
 import {CommentRounded} from "@mui/icons-material";
 import CommentRow from "../commentRow/CommentRow";
 import {EventCommentsModel} from "./EventCommentsModel";
@@ -17,6 +17,10 @@ const EventCommentsPanel = (
     const [userId, setUserId] = useState<string>("");
     const [text, setText] = useState<string>("");
     const commentService = new CommentEventService();
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState<AlertColor>('success');
 
     useEffect(() => {
         const fetchUserId = async () => {
@@ -50,13 +54,25 @@ const EventCommentsPanel = (
             };
 
             await commentService.createComment(comment);
-            alert("Comment added successfully!");
+            setSnackbarMessage("Comment added successfully!");
+            setSnackbarSeverity('success');
+            setSnackbarOpen(true);
 
         } catch (error) {
             console.error("Error adding comment:", error);
+
+            setSnackbarMessage((error as Error).message || 'Error adding comment');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
         }
-        navigate("/events");
+        navigate(0);
     };
+
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+
+    };
+
 
 
     return (
@@ -90,6 +106,12 @@ const EventCommentsPanel = (
             >
                 Add Comment
             </Button>
+
+            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
 
         </Grid>
     )
