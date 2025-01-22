@@ -85,6 +85,7 @@ const ViewEventView = () => {
                 <EventReviewsPanel
                     model={EventReviewsModel.fromViewEventModel(model)}
                     userFacebookId={userFacebookId}
+                    refreshEvent={refreshEvent}
                 />
 
 
