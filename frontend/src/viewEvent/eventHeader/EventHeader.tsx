@@ -8,10 +8,12 @@ import { useState } from "react";
 import { UnjoinEventService } from "../../joinEvent/UnjoinEventService";
 import { useNavigate } from "react-router-dom";
 import { CancelEventService } from "../../cancelEvent/CancelEventService";
+import dayjs from "dayjs";
 
 const EventHeader = (
     {model, refreshEvent} : {model: EventHeaderModel, refreshEvent: () => Promise<void>},
 ) => {
+    const isActiveEvent = dayjs(model.date) > dayjs();
     const navigate = useNavigate();
     const currentPath = window.location.pathname; // Get the current path
     const editPath = `${currentPath}/edit`;
@@ -87,7 +89,7 @@ const EventHeader = (
                         {model.eventName}
                     </Typography>
                 </Grid>
-                {model.showEditButton && (
+                {isActiveEvent && model.showEditButton && (
                     <Grid size={2}>
                         <Button variant={"outlined"} color={"inherit"} sx={{ marginRight: 1, marginLeft: -1 }}
                                 component={Link} to={editPath}>
@@ -98,7 +100,7 @@ const EventHeader = (
                         </Button>
                     </Grid>
                 )}
-                {!model.showEditButton && !model.isParticipating && (
+                {isActiveEvent && !model.showEditButton && !model.isParticipating && (
                     <Grid size={2}>
                         <Button variant={"outlined"} color={"inherit"}
                                 onClick={onJoinEvent}>
@@ -106,7 +108,7 @@ const EventHeader = (
                         </Button>
                     </Grid>
                 )}
-                {model.isParticipating && (
+                {isActiveEvent && model.isParticipating && (
                     <Grid size={2}>
                         <Button variant={"outlined"} color={"inherit"}
                                 onClick={onUnjoinEvent}>
