@@ -53,7 +53,7 @@ export class BrowseEventsService {
         }
     }
 
-    public async getBrowseRegisteredEventsModel(): Promise<BrowseEventsModel> {
+    public async getRegisteredUpcomingEvents(): Promise<BrowseEventsModel> {
         try {
             let loginResponse = await FacebookLoginHelper.checkLoginStatus();
             let userId = loginResponse.userInfo?.id!
@@ -62,7 +62,43 @@ export class BrowseEventsService {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Add any authentication headers here, if needed
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const eventSummaryDtos = await response.json();
+            const eventCardModels: EventCardModel[] = eventSummaryDtos.map((summary: EventSummaryDto) => {
+                return new EventCardModel(
+                    summary.id,
+                    summary.name,
+                    summary.description,
+                    summary.location, 
+                    new Date(Date.parse(summary.date)),
+                    summary.organizer,
+                    summary.maximumParticipants,
+                    summary.registeredParticipants,
+                    summary.tags
+                )
+            })
+            return new BrowseEventsModel(eventCardModels);
+        } catch (error) {
+            console.error('Error fetching events:', error);
+            throw error;
+        }
+    }
+
+    public async getRegisteredPastEvents(): Promise<BrowseEventsModel> {
+        try {
+            let loginResponse = await FacebookLoginHelper.checkLoginStatus();
+            let userId = loginResponse.userInfo?.id!
+            this.browseRegisteredApiUrl = this.browseRegisteredApiUrl + userId + "/past";
+            const response = await fetch(this.browseRegisteredApiUrl, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
             });
 

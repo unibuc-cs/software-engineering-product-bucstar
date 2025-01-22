@@ -1,4 +1,4 @@
-import {Button, Card, CardContent, CardHeader, CssBaseline, Icon, Typography} from "@mui/material";
+import {Button, Card, CardContent, CardHeader, CssBaseline, Typography} from "@mui/material";
 import { EventCardModel } from "./EventCardModel";
 import Grid from '@mui/material/Grid2';
 import {Link} from "react-router-dom";

@@ -31,6 +31,18 @@ public class ParticipationRepository(DatabaseContext dbContext) : GenericReposit
             .Where(participation => participation.UserId == userId && participation.Event.Date > DateTime.Now)
             .ToListAsync();
     }
+    
+    public async Task<List<Participation>> GetPastUserParticipations(Guid userId)
+    {
+        return await _table
+            .AsNoTracking()
+            .Include(participation => participation.Event)
+            .ThenInclude(ev => ev.Organizer)
+            .Include(participation => participation.Event)
+            .ThenInclude(ev => ev.Tags)
+            .Where(participation => participation.UserId == userId && participation.Event.Date < DateTime.Now)
+            .ToListAsync();
+    }
 
     public async Task<Participation?> GetParticipationAsync(Guid userId, Guid eventId)
     {
