@@ -2,6 +2,8 @@ using backend.account;
 using backend.events.dto;
 using backend.Helpers.exceptions;
 using backend.participations;
+using backend.Models;
+using backend.database.models;
 
 namespace backend.events;
 
@@ -124,5 +126,71 @@ public class EventService
             return false;
         }
     }
+    
+    
+    
+    public async Task<List<ReviewDto>> GetAllReviewsAsync()
+    {
+        var reviews = await _eventRepository.GetAllReviewsAsync();
+        return reviews.Select(r => new ReviewDto(r)).ToList();
+    }
 
+    public async Task<List<ReviewDto>> GetAllReviewsByEventIdAsync(string eventId)
+    {
+        var eventGuid = Guid.Parse(eventId);
+        var reviews = await _eventRepository.GetAllReviewsByEventIdAsync(eventGuid);
+        return reviews.Select(r => new ReviewDto(r)).ToList();
+    }
+
+    public async Task<List<ReviewDto>> GetAllReviewsByUserIdAsync(string userId)
+    {
+        var userGuid = Guid.Parse(userId);
+        var reviews = await _eventRepository.GetReviewsByUserIdAsync(userGuid);
+        return reviews.Select(r => new ReviewDto(r)).ToList();
+    }
+
+    public async Task<ReviewDto?> GetReviewOfUserByEventAsync(string userId, string eventId)
+    {
+        var userGuid = Guid.Parse(userId);
+        var eventGuid = Guid.Parse(eventId);
+        var review = await _eventRepository.GetReviewOfUserByEventAsync(userGuid, eventGuid);
+
+        return review != null ? new ReviewDto(review) : null;
+    }
+    
+    public async Task CreateReviewAsync(string userId, string eventId, string text, int score)
+    {
+        var userGuid = Guid.Parse(userId);
+        var eventGuid = Guid.Parse(eventId);
+
+        // Check if the user and event exist
+        var user = await _userRepository.GetByIdAsync(userGuid);
+        var ev = await _eventRepository.GetEventAsync(eventGuid);
+        if (user == null || ev == null)
+        {
+            throw new KeyNotFoundException("User or Event not found.");
+        }
+
+        var review = new Review
+        {
+            UserId = userGuid,
+            EventId = eventGuid,
+            Text = text,
+            Score = score,
+            DateCreated = DateTime.UtcNow,
+            LastModified = DateTime.UtcNow
+        };
+
+        await _eventRepository.CreateReviewAsync(review);
+    }
+
+    
+    public async Task DeleteReviewAsync(string userId, string eventId)
+    {
+        var userGuid = Guid.Parse(userId);
+        var eventGuid = Guid.Parse(eventId);
+
+        await _eventRepository.DeleteReviewAsync(userGuid, eventGuid);
+    }
 }
+

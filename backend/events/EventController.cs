@@ -171,6 +171,131 @@ namespace backend.events
             }
         }
 
+        
+        // 1. Get all reviews
+        [HttpGet("reviews")]
+        [ProducesResponseType(typeof(List<ReviewDto>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetAllReviews()
+        {
+            try
+            {
+                var reviews = await eventService.GetAllReviewsAsync();
+                return Ok(reviews);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        // 2. Get all reviews for a specific event
+        [HttpGet("reviews/event/{eventId}")]
+        [ProducesResponseType(typeof(List<ReviewDto>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetReviewsByEventId(string eventId)
+        {
+            try
+            {
+                var reviews = await eventService.GetAllReviewsByEventIdAsync(eventId);
+                return Ok(reviews);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        // 3. Get all reviews by a specific user
+        [HttpGet("reviews/user/{userId}")]
+        [ProducesResponseType(typeof(List<ReviewDto>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetReviewsByUserId(string userId)
+        {
+            try
+            {
+                var reviews = await eventService.GetAllReviewsByUserIdAsync(userId);
+                return Ok(reviews);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        // 4. Get a specific review by user and event
+        [HttpGet("reviews/{userId}/{eventId}")]
+        [ProducesResponseType(typeof(ReviewDto), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetReviewOfUserByEvent(string userId, string eventId)
+        {
+            try
+            {
+                var review = await eventService.GetReviewOfUserByEventAsync(userId, eventId);
+                if (review == null)
+                {
+                    return NotFound(new { message = "Review not found." });
+                }
+                return Ok(review);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        // 5. Create a review
+        [HttpPost("reviews/create")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CreateReview([FromBody] CreateReviewDto dto)
+        {
+            if (dto == null || string.IsNullOrEmpty(dto.UserId) || string.IsNullOrEmpty(dto.EventId) || string.IsNullOrEmpty(dto.Text) || dto.Score <= 0)
+            {
+                return BadRequest(new { error = "Invalid review data." });
+            }
+
+            try
+            {
+                await eventService.CreateReviewAsync(dto.UserId, dto.EventId, dto.Text, dto.Score);
+                return StatusCode(201, new { message = "Review created successfully." });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        // 6. Delete a review
+        [HttpDelete("reviews/{userId}/{eventId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DeleteReview(string userId, string eventId)
+        {
+            try
+            {
+                await eventService.DeleteReviewAsync(userId, eventId);
+                return Ok(new { message = "Review deleted successfully." });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+    
+        
+        
     }
 }
 

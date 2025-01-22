@@ -82,7 +82,11 @@ const ViewEventView = () => {
                     <Divider orientation="horizontal" />
                 </Grid>
 
-                <EventReviewsPanel model={EventReviewsModel.fromViewEventModel(model)} />
+                <EventReviewsPanel
+                    model={EventReviewsModel.fromViewEventModel(model)}
+                    userFacebookId={userFacebookId}
+                />
+
 
                 <Grid size={12}>
                     <Divider orientation="horizontal" />
