@@ -92,7 +92,10 @@ const ViewEventView = () => {
                     <Divider orientation="horizontal" />
                 </Grid>
 
-                <EventCommentsPanel model={EventCommentsModel.fromViewEventModel(model)} />
+                <EventCommentsPanel model={EventCommentsModel.fromViewEventModel(model)}
+                userFacebookId={userFacebookId}
+                />
+
             </Grid>
         </>
     );

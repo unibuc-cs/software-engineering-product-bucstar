@@ -57,6 +57,8 @@ public class EventRepository(DatabaseContext dbContext) : GenericRepository<Even
         await _dbContext.SaveChangesAsync();
     }
     
+    
+    // Reviews
     public async Task<List<Review>> GetAllReviewsAsync()
     {
         return await _dbContext.Reviews
@@ -123,8 +125,52 @@ public class EventRepository(DatabaseContext dbContext) : GenericRepository<Even
             .AsNoTracking()
             .FirstOrDefaultAsync();
     }
+    
+    
+    // Comments
+    
+        public async Task<List<Comment>> GetAllCommentsAsync()
+    {
+        return await _dbContext.Comments
+            .Include(c => c.User)
+            .Include(c => c.Event)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+    
+    public async Task<List<Comment>> GetAllCommentsByEventIdAsync(Guid eventId)
+    {
+        return await _dbContext.Comments
+            .Where(c => c.EventId == eventId)
+            .Include(c => c.User)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+    
+    public async Task<List<Comment>> GetCommentsByUserIdAsync(Guid userId)
+    {
+        return await _dbContext.Comments
+            .Where(c => c.UserId == userId)
+            .Include(c => c.User)
+            .AsNoTracking()
+            .ToListAsync();
+    }
 
-
+    
+    public async Task CreateCommentAsync(Comment comment)
+    {
+        await _dbContext.Comments.AddAsync(comment);
+        await _dbContext.SaveChangesAsync();
+    }
+    
+    
+    public async Task<List<Comment>> GetCommentsOfUserByEventAsync(Guid userId, Guid eventId)
+    {
+        return await _dbContext.Comments
+            .Where(c => c.UserId == userId && c.EventId == eventId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
 
     
 

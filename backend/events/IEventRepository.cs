@@ -17,5 +17,12 @@ public interface IEventRepository
     Task CreateReviewAsync(Review review);
     Task DeleteReviewAsync(Guid userId, Guid eventId);
     Task<Review?> GetReviewOfUserByEventAsync(Guid userId, Guid eventId);
+    
+    Task<List<Comment>> GetAllCommentsAsync();
+    Task<List<Comment>> GetAllCommentsByEventIdAsync(Guid eventId);
+    Task<List<Comment>> GetCommentsByUserIdAsync(Guid userId);
+    Task CreateCommentAsync(Comment comment);
+    Task<List<Comment>> GetCommentsOfUserByEventAsync(Guid userId, Guid eventId);
+
 
 }
