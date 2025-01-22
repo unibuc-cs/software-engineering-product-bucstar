@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     AppBar,
     Toolbar,
@@ -26,6 +26,7 @@ const navItems = [
 ];
 
 const Navbar = () => {
+    const [name, setName] = React.useState("");
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [snackbarMessage, setSnackbarMessage] = React.useState("");
@@ -37,9 +38,11 @@ const Navbar = () => {
 
             if (loginResponse.status === "connected") {
                 setSnackbarMessage("Login successful!");
+                setName(loginResponse.userInfo?.name ?? '');
                 setOpenSnackbar(true);  // Show Snackbar
             } else {
                 setSnackbarMessage("Login failed. Please try again.");
+                setName("");
                 setOpenSnackbar(true);  // Show Snackbar
             }
         } catch (error) {
@@ -75,6 +78,20 @@ const Navbar = () => {
         </Box>
     );
 
+    useEffect(() => {
+        const fetchData = async () => {
+            console.log("Fetch data for navbar");
+            try {
+                const response = await FacebookLoginHelper.checkLoginStatus();
+                setName(response.userInfo?.name ?? '');
+            } catch (error) {
+                console.error("Error fetching Facebook user info:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <Box sx={{ display: 'flex', mb: 10 }}>
             <CssBaseline />
@@ -98,7 +115,8 @@ const Navbar = () => {
                         ))}
                     </Box>
 
-                    <Button color="inherit" onClick={handleLoginClick}>Login</Button>
+                    {name === '' && <Button color="inherit" onClick={handleLoginClick}>Login</Button>}
+                    {name !== '' && <Typography variant="h6">Welcome, {name}</Typography>}
                 </Toolbar>
             </AppBar>
 
