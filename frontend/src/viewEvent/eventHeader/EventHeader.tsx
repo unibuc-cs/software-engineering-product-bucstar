@@ -6,17 +6,31 @@ import { JoinEventDto, JoinEventService } from "../../joinEvent/JoinEventService
 import { FacebookLoginHelper } from "../../utils/facebookLoginHelper";
 import { useState } from "react";
 import { UnjoinEventService } from "../../joinEvent/UnjoinEventService";
+import { useNavigate } from "react-router-dom";
+import { CancelEventService } from "../../cancelEvent/CancelEventService";
 
 const EventHeader = (
     {model, refreshEvent} : {model: EventHeaderModel, refreshEvent: () => Promise<void>},
 ) => {
+    const navigate = useNavigate();
     const currentPath = window.location.pathname; // Get the current path
     const editPath = `${currentPath}/edit`;
+    const cancelPath = `/events`;
     const { id } = useParams();
-    
-    const [snackbarOpen, setSnackbarOpen] = useState(false); 
-    const [snackbarMessage, setSnackbarMessage] = useState(''); 
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState<AlertColor>('success');
+
+    const handleCancel = async () => {
+        const service = new CancelEventService();
+        try {
+            await service.cancelEvent(id!);
+            navigate(cancelPath);
+            } catch (error) {
+            console.error('Error cancelling event:', error);
+                }
+    };
 
     const onJoinEvent = async () => {
         try {
@@ -26,15 +40,15 @@ const EventHeader = (
             const dto: JoinEventDto = { userId: userId, eventId: id! };
             const response = await service.joinEvent(dto);
 
-            setSnackbarMessage(response.message || 'Joined event successfully'); 
-            setSnackbarSeverity('success'); 
+            setSnackbarMessage(response.message || 'Joined event successfully');
+            setSnackbarSeverity('success');
             setSnackbarOpen(true);
 
             // Refetch event details after successful join
             await refreshEvent();
         } catch (error) {
-            setSnackbarMessage((error as Error).message || 'Error joining event'); 
-            setSnackbarSeverity('error'); 
+            setSnackbarMessage((error as Error).message || 'Error joining event');
+            setSnackbarSeverity('error');
             setSnackbarOpen(true);
         }
     }
@@ -42,28 +56,28 @@ const EventHeader = (
     const onUnjoinEvent = async () => {
          try {
             const service = new UnjoinEventService();
-            let loginResponse = await FacebookLoginHelper.checkLoginStatus(); 
-            let userId = loginResponse.userInfo?.id!; 
-            const dto: JoinEventDto = { userId: userId, eventId: id! }; 
-            const response = await service.unjoinEvent(dto); 
-            
-            setSnackbarMessage(response.message || 'Unjoined event successfully'); 
+            let loginResponse = await FacebookLoginHelper.checkLoginStatus();
+            let userId = loginResponse.userInfo?.id!;
+            const dto: JoinEventDto = { userId: userId, eventId: id! };
+            const response = await service.unjoinEvent(dto);
+
+            setSnackbarMessage(response.message || 'Unjoined event successfully');
             setSnackbarSeverity('success');
-             setSnackbarOpen(true); 
-            
-            // Refetch event details after successful unjoin 
-            await refreshEvent(); 
-        } catch (error) { 
+             setSnackbarOpen(true);
+
+            // Refetch event details after successful unjoin
+            await refreshEvent();
+        } catch (error) {
             setSnackbarMessage((error as Error).message || 'Error unjoining event');
-            setSnackbarSeverity('error'); 
-            setSnackbarOpen(true); 
-        } 
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+        }
     }
 
-    const handleCloseSnackbar = () => { 
-        setSnackbarOpen(false); 
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
     };
-    
+
     return (
         <>
             <Grid size={12} container spacing={1} padding={4}
@@ -75,9 +89,12 @@ const EventHeader = (
                 </Grid>
                 {model.showEditButton && (
                     <Grid size={2}>
-                        <Button variant={"outlined"} color={"inherit"}
+                        <Button variant={"outlined"} color={"inherit"} sx={{ marginRight: 1, marginLeft: -1 }}
                                 component={Link} to={editPath}>
                             Edit
+                        </Button>
+                        <Button variant={"outlined"} color={"error"} onClick={handleCancel}>
+                            Cancel
                         </Button>
                     </Grid>
                 )}
@@ -89,13 +106,13 @@ const EventHeader = (
                         </Button>
                     </Grid>
                 )}
-                {model.isParticipating && ( 
-                    <Grid size={2}> 
-                        <Button variant={"outlined"} color={"inherit"} 
-                                onClick={onUnjoinEvent}> 
-                            Unjoin Event 
-                        </Button> 
-                    </Grid> 
+                {model.isParticipating && (
+                    <Grid size={2}>
+                        <Button variant={"outlined"} color={"inherit"}
+                                onClick={onUnjoinEvent}>
+                            Unjoin Event
+                        </Button>
+                    </Grid>
                 )}
                 <Grid size={12}>
                     <Typography variant="h6" align="left">
@@ -103,13 +120,13 @@ const EventHeader = (
                     </Typography>
                 </Grid>
             </Grid>
-        <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}> 
-            <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity}> 
-                {snackbarMessage} 
-            </Alert> 
+        <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+            <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity}>
+                {snackbarMessage}
+            </Alert>
         </Snackbar>
         </>
     )
 }
-    
+
 export default EventHeader;
