@@ -18,22 +18,26 @@ import {
 import dayjs, { Dayjs } from 'dayjs';
 import Grid from "@mui/material/Grid2";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { ConfirmationNumberRounded, DescriptionRounded, LocationOnRounded } from "@mui/icons-material";
+import {ConfirmationNumberRounded, DescriptionRounded, LocationOnRounded, Tag} from "@mui/icons-material";
 import { CreateEventModel } from "./CreateEventModel";
 import {CreateEventDto, CreateEventService} from "./CreateEventService";
 import {FacebookLoginHelper} from "../utils/facebookLoginHelper";
 import {useNavigate, useParams} from "react-router-dom";
+import TagList from "../components/tagList/TagList";
+import TagListModel from "../components/tagList/TagListModel";
 
 const CreateEventView = () => {
     const {id} = useParams();
     const navigate = useNavigate();
     const [model, setModel] = useState(new CreateEventModel());
+    const [currentTag, setCurrentTag] = useState<string>("");
     const [errors, setErrors] = useState({
         name: '',
         description: '',
         location: '',
         date: '',
-        limit: ''
+        limit: '',
+        // tag: '',
     });
 
     useEffect(() => {
@@ -75,6 +79,10 @@ const CreateEventView = () => {
         setErrors(prevErrors => ({ ...prevErrors, date: '' }));
     }
 
+    const setTag = (tag: string) => {
+        setCurrentTag(tag)
+    }
+
     const dateToShow = () => {
         if (model.date == null) {
             return dayjs();
@@ -110,7 +118,8 @@ const CreateEventView = () => {
                     date: model.date!.toLocaleString(),
                     participantsLimit: model.participantLimit,
                     participantsLimitEnabled: model.participantLimitEnabled,
-                    organizerId: userId
+                    organizerId: userId,
+                    tags: model.tags
                 };
                 await service.createEvent(dto);
                 navigate(-1);
@@ -137,7 +146,8 @@ const CreateEventView = () => {
                     date: model.date!.toLocaleString(),
                     participantsLimit: model.participantLimit,
                     participantsLimitEnabled: model.participantLimitEnabled,
-                    organizerId: userId
+                    organizerId: userId,
+                    tags: model.tags,
                 };
                 await service.updateEvent(dto);
                 navigate(-1);
@@ -147,6 +157,13 @@ const CreateEventView = () => {
             }
         } else {
             console.log('Form is invalid');
+        }
+    }
+
+    const tryToAddTag = () => {
+        if (currentTag !== "") {
+            setModel(prevModel => ({...prevModel, tags: prevModel.tags.concat(currentTag)}))
+            setCurrentTag("")
         }
     }
 
@@ -237,6 +254,41 @@ const CreateEventView = () => {
                 <Grid size={12}>
                     <Divider orientation="horizontal" />
                 </Grid>
+
+                <Grid container size = {12}>
+                    <Grid size={3}>
+                        <TextField
+                        variant = "outlined"
+                        label = "Add a tag"
+                        value = {currentTag}
+                        fullWidth
+                        onChange={(event) => {setCurrentTag(event.target.value)}}
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Tag />
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}>
+
+                        </TextField>
+                    </Grid>
+
+                    <Grid size={3}>
+                        <Button variant={"contained"} onClick={tryToAddTag}>
+                            <Typography variant="h6" component="div">
+                                Add Tag
+                            </Typography>
+                        </Button>
+                    </Grid>
+                    <TagList model={new TagListModel(model.tags)}/>
+                </Grid>
+
+                {/*<Grid container>*/}
+                {/*    */}
+                {/*</Grid>*/}
 
                 {/* Custom Error Handling for MobileDateTimePicker */}
                 <Grid display="flex" justifyContent="left" alignItems="left">

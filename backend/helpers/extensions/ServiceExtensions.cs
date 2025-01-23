@@ -14,6 +14,7 @@ public static class ServiceExtensions
         services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IEventRepository, EventRepository>();
         services.AddTransient<IParticipationRepository, ParticipationRepository>();
+        services.AddTransient<ITagRepository, TagRepository>();
         return services;
     }
     

@@ -33,10 +33,11 @@ public class EventRepository(DatabaseContext dbContext) : GenericRepository<Even
             .FirstOrDefaultAsync(ev => ev.Id == id);
     }
 
-    public async Task AddEvent(Event newEvent)
+    public async Task<Guid> AddEvent(Event newEvent)
     {
-        await _table.AddAsync(newEvent);
+        var temp = await _table.AddAsync(newEvent);
         await _dbContext.SaveChangesAsync();
+        return temp.Entity.Id;
     }
 
     public async Task UpdateEvent(Event newEvent)
@@ -56,8 +57,8 @@ public class EventRepository(DatabaseContext dbContext) : GenericRepository<Even
         _table.Remove(eventToDelete);
         await _dbContext.SaveChangesAsync();
     }
-    
-    
+
+
     // Reviews
     public async Task<List<Review>> GetAllReviewsAsync()
     {
