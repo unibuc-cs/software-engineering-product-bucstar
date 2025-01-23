@@ -13,16 +13,19 @@ public class EventService
     private readonly IParticipationRepository _participationRepository;
     private readonly IEventRepository _eventRepository;
     private readonly IUserRepository _userRepository;
+    private readonly ITagRepository _tagRepository;
 
     public EventService(
         IParticipationRepository participationRepository,
         IEventRepository eventRepository,
-        IUserRepository userRepository
+        IUserRepository userRepository,
+        ITagRepository tagRepository
         )
     {
         _participationRepository = participationRepository;
         _eventRepository = eventRepository;
         _userRepository = userRepository;
+        _tagRepository = tagRepository;
     }
     public async Task<List<EventSummaryDto>> GetFutureEvents()
     {
@@ -77,7 +80,17 @@ public class EventService
             var newEvent = dto.AsEvent();
             var user = await _userRepository.GetByFacebookIdAsync(dto.OrganizerId);
             newEvent.OrganizerId = user!.Id;
-            await _eventRepository.AddEvent(newEvent);
+            
+            var eventId = await _eventRepository.AddEvent(newEvent);
+            
+            for (int i = 0; i < newEvent.Tags.Count; i++)
+            {
+                var tag = newEvent.Tags.ElementAt(i);
+                tag.EventId = eventId;
+                var id = _tagRepository.AddTagAsync(tag);
+            }
+            
+            
             return dto;
         }
         catch (Exception ex)
@@ -100,7 +113,8 @@ public class EventService
                 OrganizerId = model.OrganizerId.ToString(),
                 Date = model.Date.ToLongDateString(),
                 ParticipantsLimitEnabled = model.ParticipantsLimit > 0,
-                ParticipantsLimit = model.ParticipantsLimit
+                ParticipantsLimit = model.ParticipantsLimit,
+                Tags = model.Tags.Select(t => t.Name).ToArray(),
             };
             return dto;
         }
@@ -117,6 +131,13 @@ public class EventService
             var newEvent = createEventDto.AsEvent();
             var user = await _userRepository.GetByFacebookIdAsync(createEventDto.OrganizerId);
             newEvent.OrganizerId = user!.Id;
+            
+            await _tagRepository.RemoveTagsByEventIdAsync(newEvent.Id);
+            for (int i = 0; i < newEvent.Tags.Count; i++)
+            {
+                var id = _tagRepository.AddTagAsync(newEvent.Tags.ElementAt(i));
+            }
+            
             await _eventRepository.UpdateEvent(newEvent);
             return createEventDto;
         }
@@ -132,6 +153,7 @@ public class EventService
         {
             var eventId = Guid.Parse(id);
             
+            await _tagRepository.RemoveTagsByEventIdAsync(eventId);
             await _eventRepository.DeleteEvent(eventId);
 
             return true;
