@@ -8,7 +8,7 @@
 
 Our architecture comprises four microservices: the database, backend, frontend, and the Facebook login serverless API.
 
-The frontend service operates as a standalone application, while the backend and database must be contained together within the same Docker container. EEach of these components is deployed on separate servers/machines and inter-communicate with each other. For instance, the database container is defined as a service within a custom network, with the backend service as another container in the same network, facilitating communication between them.
+The frontend service operates as a standalone application, while the backend and database must be contained together within the same Docker container. Each of these components is deployed on separate servers/machines and intercommunicate with each other. For instance, the database container is defined as a service within a custom network, with the backend service as another container in the same network, facilitating communication between them.
 
 The Facebook login API enhances our security and manages frontend browser sessions.
 
@@ -40,7 +40,7 @@ Automated testing involves using specialized software tools to execute pre-scrip
 
 Ensuring the user interface (UI) and user experience (UX) are responsive means making sure that the application is accessible and usable across a variety of devices and screen sizes. This involves testing how the UI adapts to different resolutions, orientations, and input methods.
 
-It provides a consistent and pleasant experience for users, regardless of the device they are using and it ensures that the application is accessible to a broader audience, including those using mobile devices or tablets.
+It provides a consistent and pleasant experience for users, regardless of the device they are using, and it ensures that the application is accessible to a broader audience, including those using mobile devices or tablets.
 
 ### Empiric Testing
 
