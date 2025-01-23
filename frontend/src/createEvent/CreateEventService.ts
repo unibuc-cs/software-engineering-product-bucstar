@@ -9,6 +9,7 @@ export interface CreateEventDto {
     date: string;
     participantsLimitEnabled: boolean;
     participantsLimit: number;
+    tags: string[];
 }
 
 export class CreateEventService {
@@ -63,6 +64,7 @@ export class CreateEventService {
                     new Date(Date.parse(data.date)),
                     data.participantsLimitEnabled,
                     data.participantsLimit,
+                    data.tags,
                 )
                 return model;
             } else {

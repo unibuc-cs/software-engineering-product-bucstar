@@ -5,7 +5,8 @@ export class CreateEventModel {
     public name: string = "";
     public description: string = "";
     public location: string = "";
-    
+
+    public tags: string[] = [];
     public date: Date | null = null;
     
     public participantLimitEnabled: boolean = false;
@@ -19,6 +20,7 @@ export class CreateEventModel {
         date: Date | null = null,
         participantLimitEnabled: boolean = false,
         participantLimit: number = 0,
+        tags: string[] = []
     ) {
         this.id = id;
         this.name = name;
@@ -27,5 +29,6 @@ export class CreateEventModel {
         this.date = date;
         this.participantLimitEnabled = participantLimitEnabled;
         this.participantLimit = participantLimit;
+        this.tags = tags;
     }
 }
