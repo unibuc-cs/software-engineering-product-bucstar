@@ -13,7 +13,7 @@ export class JoinEventService {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Authorizaton': `Bearer ${accessToken}`,
+                    'Authorization': `Bearer ${accessToken}`,
                 },
                 body: JSON.stringify(dto),
             });

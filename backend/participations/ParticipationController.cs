@@ -2,6 +2,7 @@ using backend.events.dto;
 using backend.Helpers.exceptions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace backend.participations;
 
@@ -21,6 +22,18 @@ public class ParticipationController(ParticipationService participationService) 
             string.IsNullOrEmpty(createParticipationDto.EventId))
         {
             return BadRequest("UserId and EventId are required.");
+        }
+        
+        JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+        if (userInfo == null)
+        {
+            return Unauthorized("User is not logged in.");
+        }
+        
+        if (userInfo["data"]?["user_id"]?.ToString() != createParticipationDto.UserId)
+        {
+            return Unauthorized("User is not authorized.");
         }
 
         try
@@ -58,6 +71,19 @@ public class ParticipationController(ParticipationService participationService) 
         {
             return BadRequest("UserId and EventId are required.");
         }
+        
+        JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+        if (userInfo == null)
+        {
+            return Unauthorized("User is not logged in.");
+        }
+        
+        if (userInfo["data"]?["user_id"]?.ToString() != createParticipationDto.UserId)
+        {
+            return Unauthorized("User is not authorized.");
+        }
+        
         try
         {
             await participationService.UnjoinEventAsync(createParticipationDto);
