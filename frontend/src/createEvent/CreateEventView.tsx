@@ -333,7 +333,8 @@ const CreateEventView = () => {
                                 type="number"
                                 value={model.participantLimit}
                                 onChange={(event) => {
-                                    setParticipantLimit(Number.parseInt(event.target.value))
+                                    const value = Math.max(0, Number.parseInt(event.target.value) || 0);
+                                    setParticipantLimit(value);
                                 }}
                                 error={Boolean(errors.limit)}
                                 helperText={errors.limit}
