@@ -81,7 +81,7 @@ export class CreateEventService {
     async updateEvent(dto: CreateEventDto, accessToken: string): Promise<any> {
         try {
             let url = `http://localhost:5009/api/Event/events/edit/update`;
-            console.log(dto);
+
             const response = await fetch(url, {
                 method: 'PUT',
                 headers: {

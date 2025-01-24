@@ -181,7 +181,8 @@ public class EventService
 
     public async Task<List<ReviewDto>> GetAllReviewsByUserIdAsync(string userId)
     {
-        var userGuid = Guid.Parse(userId);
+        var user = await _userRepository.GetByFacebookIdAsync(userId);
+        var userGuid = user!.Id;
         var reviews = await _eventRepository.GetReviewsByUserIdAsync(userGuid);
         return reviews.Select(r => new ReviewDto(r)).ToList();
     }
