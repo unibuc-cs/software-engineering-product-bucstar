@@ -21,7 +21,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {ConfirmationNumberRounded, DescriptionRounded, LocationOnRounded, Tag} from "@mui/icons-material";
 import { CreateEventModel } from "./CreateEventModel";
 import {CreateEventDto, CreateEventService} from "./CreateEventService";
-import {FacebookLoginHelper} from "../utils/facebookLoginHelper";
 import {useNavigate, useParams} from "react-router-dom";
 import TagList from "../components/tagList/TagList";
 import TagListModel from "../components/tagList/TagListModel";
@@ -30,7 +29,7 @@ import { useAuth } from '../utils/authProvider';
 const CreateEventView = () => {
     const {id} = useParams();
     const navigate = useNavigate();
-    const { accessToken } = useAuth();
+    const { accessToken, userFacebookId } = useAuth();
     const [model, setModel] = useState(new CreateEventModel());
     const [currentTag, setCurrentTag] = useState<string>("");
     const [errors, setErrors] = useState({
@@ -106,8 +105,6 @@ const CreateEventView = () => {
         if (validateForm() && accessToken != null) {
             try {
                 let service: CreateEventService = new CreateEventService();
-                let loginResponse = await FacebookLoginHelper.checkLoginStatus();
-                let userId = loginResponse.userInfo?.id!
                 let dto: CreateEventDto = {
                     id: model.id,
                     name: model.name,
@@ -116,7 +113,7 @@ const CreateEventView = () => {
                     date: model.date!.toLocaleString(),
                     participantsLimit: model.participantLimit,
                     participantsLimitEnabled: model.participantLimitEnabled,
-                    organizerId: userId,
+                    organizerId: userFacebookId!,
                     tags: model.tags
                 };
                 await service.createEvent(dto, accessToken!);
@@ -134,8 +131,6 @@ const CreateEventView = () => {
         if (validateForm() && accessToken != null) {
             try {
                 let service: CreateEventService = new CreateEventService();
-                let loginResponse = await FacebookLoginHelper.checkLoginStatus();
-                let userId = loginResponse.userInfo?.id!
                 let dto: CreateEventDto = {
                     id: model.id,
                     name: model.name,
@@ -144,7 +139,7 @@ const CreateEventView = () => {
                     date: model.date!.toLocaleString(),
                     participantsLimit: model.participantLimit,
                     participantsLimitEnabled: model.participantLimitEnabled,
-                    organizerId: userId,
+                    organizerId: userFacebookId!,
                     tags: model.tags,
                 };
                 await service.updateEvent(dto, accessToken);

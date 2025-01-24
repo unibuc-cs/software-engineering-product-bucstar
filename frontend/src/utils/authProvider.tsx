@@ -2,7 +2,9 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 
 interface AuthContextType {
     accessToken: string | null;
-    setAccessToken: (token: string | null, expiresIn?: number) => void;
+    userFacebookId: string | null;
+    setAccessToken: (token: string | null) => void;
+    setUserFacebookId: (facebookId: string | null) => void;
     isAuthenticated: boolean;
 }
 
@@ -16,6 +18,9 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.JSX.Element
     const [accessToken, setAccessTokenState] = useState<string | null>(() => {
         // Initialize from localStorage if available
         return localStorage.getItem('fb_access_token');
+    });
+    const [userFacebookId, setUserFacebookIdState] = useState<string | null>(() => {
+        return localStorage.getItem('fb_user_id');
     });
 
     const isAuthenticated = !!accessToken;
@@ -32,8 +37,17 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.JSX.Element
         }
     }, [accessToken]);
 
+    const setUserFacebookId = (facebookId: string | null) => {
+        setUserFacebookIdState(facebookId);
+        if (facebookId) {
+            localStorage.setItem('fb_user_id', facebookId);
+        } else {
+            localStorage.removeItem('fb_user_id');
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{ accessToken, setAccessToken, isAuthenticated }}>
+        <AuthContext.Provider value={{ accessToken, userFacebookId, setAccessToken, setUserFacebookId, isAuthenticated }}>
             {children}
         </AuthContext.Provider>
     );

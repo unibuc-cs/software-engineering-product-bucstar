@@ -35,7 +35,7 @@ const Navbar = () => {
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [snackbarMessage, setSnackbarMessage] = React.useState('');
 
-    const { setAccessToken, isAuthenticated } = useAuth();
+    const { setAccessToken, setUserFacebookId, isAuthenticated } = useAuth();
     const [name, setName] = React.useState('');
 
     const handleLoginClick = async () => {
@@ -44,13 +44,15 @@ const Navbar = () => {
 
             if (loginResponse.status === 'connected') {
                 setAccessToken(loginResponse.accessToken);
-                setName(loginResponse.userInfo?.name ?? '');
+                setUserFacebookId(loginResponse.userInfo!.id);
+                setName(loginResponse.userInfo!.name);
                 setSnackbarMessage('Login successful!');
                 setOpenSnackbar(true);
             } else {
                 setSnackbarMessage('Login failed. Please try again.');
                 setName('');
                 setAccessToken(null);
+                setUserFacebookId(null);
                 setOpenSnackbar(true);
             }
         } catch (error) {
@@ -91,8 +93,11 @@ const Navbar = () => {
             if (isAuthenticated) {
                 try {
                     const response = await FacebookLoginHelper.checkLoginStatus();
-                    console.log('response:', response);
                     setName(response.userInfo?.name ?? '');
+                    if (name === '') {
+                        setAccessToken(null);
+                        setUserFacebookId(null);
+                    }
                 } catch (error) {
                     console.error('Error fetching Facebook user info:', error);
                 }
@@ -100,7 +105,7 @@ const Navbar = () => {
         };
 
         fetchData();
-    }, [isAuthenticated]);
+    }, [isAuthenticated, name, setAccessToken, setUserFacebookId]);
 
     return (
         <Box sx={{ display: 'flex', mb: 10 }}>

@@ -3,7 +3,6 @@ import {Button, Typography, Snackbar, Alert, AlertColor} from "@mui/material";
 import {EventHeaderModel} from "./EventHeaderModel";
 import {Link, useParams} from "react-router-dom";
 import { JoinEventDto, JoinEventService } from "../../joinEvent/JoinEventService";
-import { FacebookLoginHelper } from "../../utils/facebookLoginHelper";
 import { useState } from "react";
 import { UnjoinEventService } from "../../joinEvent/UnjoinEventService";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +19,7 @@ const EventHeader = (
     const editPath = `${currentPath}/edit`;
     const cancelPath = `/events`;
     const { id } = useParams();
-    const { accessToken } = useAuth();
+    const { accessToken, userFacebookId } = useAuth();
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -47,9 +46,7 @@ const EventHeader = (
                 throw new Error('User not logged in');
             }
             const service = new JoinEventService();
-            let loginResponse = await FacebookLoginHelper.checkLoginStatus();
-            let userId = loginResponse.userInfo?.id!
-            const dto: JoinEventDto = { userId: userId, eventId: id! };
+            const dto: JoinEventDto = { userId: userFacebookId!, eventId: id! };
             const response = await service.joinEvent(dto, accessToken!);
 
             setSnackbarMessage(response.message || 'Joined event successfully');
@@ -71,9 +68,7 @@ const EventHeader = (
                 throw new Error('User not logged in');
             }
             const service = new UnjoinEventService();
-            let loginResponse = await FacebookLoginHelper.checkLoginStatus();
-            let userId = loginResponse.userInfo?.id!;
-            const dto: JoinEventDto = { userId: userId, eventId: id! };
+            const dto: JoinEventDto = { userId: userFacebookId!, eventId: id! };
             const response = await service.unjoinEvent(dto, accessToken!);
 
             setSnackbarMessage(response.message || 'Unjoined event successfully');
