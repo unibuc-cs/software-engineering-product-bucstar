@@ -1,15 +1,17 @@
 using backend.events.browse;
 using backend.events.dto;
+using backend.Helpers;
 using backend.Helpers.exceptions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace backend.events
 {
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("_myAllowSpecificOrigins")]
-    public class EventController(EventService eventService) : ControllerBase
+    public class EventController(EventService eventService, FacebookTokenValidator facebookTokenValidator) : ControllerBase
     {
         [HttpGet("events/browse")]
         [ProducesResponseType(typeof(EventSummaryDto), 200)]
@@ -50,10 +52,21 @@ namespace backend.events
         [ProducesResponseType(500)]                      // Internal Server Error
         public async Task<IActionResult> CreateEvent([FromBody] CreateEventDto? createEventDto)
         {
-            Console.WriteLine(createEventDto);
             if (createEventDto == null)
             {
                 return BadRequest("Event data is required.");
+            }
+            
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+
+            if (userInfo["data"]?["user_id"]?.ToString() != createEventDto.OrganizerId)
+            {
+                return Unauthorized("Not authorized to create event with different organizer id.");
             }
 
             try
@@ -81,12 +94,26 @@ namespace backend.events
         [HttpPut("events/edit/update")]
         [ProducesResponseType(typeof(CreateEventDto), 201)]   // Success, return created event details
         [ProducesResponseType(400)]                      // Bad Request if validation fails
+        [ProducesResponseType(401)]                      // Unauthorized
         [ProducesResponseType(500)]                      // Internal Server Error
         public async Task<IActionResult> UpdateEvent([FromBody] CreateEventDto? createEventDto)
         {
             if (createEventDto == null)
             {
                 return BadRequest("Event data is required.");
+            }
+            
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            
+            bool isOwner = await facebookTokenValidator.IsOwner(userInfo, createEventDto.OrganizerId);
+            if (!isOwner)
+            {
+                return Unauthorized("UserId and OrganizerId does not match.");
             }
 
             try
@@ -127,14 +154,22 @@ namespace backend.events
             }
         }
 
-        [HttpGet("events/user/{userId}/future")]
+        [HttpGet("events/user/future")]
         [ProducesResponseType(typeof(List<EventSummaryDto>), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(typeof(object), 500)]
-        public async Task<IActionResult> GetFutureEventsForUser(string userId)
+        public async Task<IActionResult> GetFutureEventsForUser()
         {
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            
             try
             {
+                string userId = userInfo["data"]["user_id"].ToString();
                 var summaries = await eventService.GetFutureEventsForUser(userId);
                 return Ok(summaries);
             }
@@ -148,14 +183,22 @@ namespace backend.events
             } 
         }
         
-        [HttpGet("events/user/{userId}/past")]
+        [HttpGet("events/user/past")]
         [ProducesResponseType(typeof(List<EventSummaryDto>), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(typeof(object), 500)]
-        public async Task<IActionResult> GetPastEventsForUser(string userId)
+        public async Task<IActionResult> GetPastEventsForUser()
         {
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            
             try
             {
+                string userId = userInfo["data"]["user_id"].ToString();
                 var summaries = await eventService.GetPastEventsForUser(userId);
                 return Ok(summaries);
             }
@@ -174,6 +217,28 @@ namespace backend.events
         [ProducesResponseType(500)]
         public async Task<IActionResult> DeleteEvent(string id)
         {
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            
+            
+            var eventDto = await eventService.GetDetailedEvent(id);
+
+            if (eventDto == null)
+            {
+                return NotFound($"Event with id {id} not found.");
+            }
+            
+            string userId = userInfo["data"]["user_id"].ToString();
+
+            if (eventDto.OrganizerFacebookId != userId)
+            {
+                return Unauthorized($"User is not authorized.");
+            }
+            
             try
             {
                 var success = await eventService.DeleteEventAsync(id);

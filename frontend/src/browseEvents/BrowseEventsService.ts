@@ -16,7 +16,7 @@ export interface EventSummaryDto {
 
 export class BrowseEventsService {
     private browseAllApiUrl: string = 'http://localhost:5009/api/Event/events/browse';
-    private browseRegisteredApiUrl: string = 'http://localhost:5009/api/Event/events/user/'
+    private browseRegisteredApiUrl: string = 'http://localhost:5009/api/Event/events/user'
 
     public async getBrowseEventsModel(): Promise<BrowseEventsModel> {
         try {
@@ -24,7 +24,6 @@ export class BrowseEventsService {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Add any authentication headers here, if needed
                 },
             });
 
@@ -53,15 +52,14 @@ export class BrowseEventsService {
         }
     }
 
-    public async getRegisteredUpcomingEvents(): Promise<BrowseEventsModel> {
+    public async getRegisteredUpcomingEvents(accessToken: string): Promise<BrowseEventsModel> {
+        this.browseRegisteredApiUrl = this.browseRegisteredApiUrl + "/future";
         try {
-            let loginResponse = await FacebookLoginHelper.checkLoginStatus();
-            let userId = loginResponse.userInfo?.id!
-            this.browseRegisteredApiUrl = this.browseRegisteredApiUrl + userId + "/future";
             const response = await fetch(this.browseRegisteredApiUrl, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
                 },
             });
 
@@ -90,15 +88,14 @@ export class BrowseEventsService {
         }
     }
 
-    public async getRegisteredPastEvents(): Promise<BrowseEventsModel> {
+    public async getRegisteredPastEvents(accessToken: string): Promise<BrowseEventsModel> {
         try {
-            let loginResponse = await FacebookLoginHelper.checkLoginStatus();
-            let userId = loginResponse.userInfo?.id!
-            this.browseRegisteredApiUrl = this.browseRegisteredApiUrl + userId + "/past";
+            this.browseRegisteredApiUrl = this.browseRegisteredApiUrl + "/past";
             const response = await fetch(this.browseRegisteredApiUrl, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
                 },
             });
 

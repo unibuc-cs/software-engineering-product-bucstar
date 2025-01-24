@@ -3,13 +3,14 @@ import { JoinEventDto } from "./JoinEventService";
 export class UnjoinEventService {
     private apiUrl: string = 'http://localhost:5009/api/Participation/unjoin';
 
-    public async unjoinEvent(dto: JoinEventDto): Promise<any> {
+    public async unjoinEvent(dto: JoinEventDto, accessToken: string): Promise<any> {
         try {
             const response = await fetch(this.apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
                 },
                 body: JSON.stringify(dto),
             });

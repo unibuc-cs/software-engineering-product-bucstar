@@ -1,3 +1,4 @@
+import { useAuth } from "../utils/authProvider";
 import {CreateEventModel} from "./CreateEventModel";
 
 export interface CreateEventDto {
@@ -15,18 +16,17 @@ export interface CreateEventDto {
 export class CreateEventService {
     private apiUrl: string = 'http://localhost:5009/api/Event/events/create';
 
-    public async createEvent(dto: CreateEventDto): Promise<any> {
+    public async createEvent(dto: CreateEventDto, accessToken: string): Promise<any> {
         try {
             const response = await fetch(this.apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
                 },
                 body: JSON.stringify(dto),
             });
-            
-            console.log(response);
 
             if (response.ok) {
                 const data = await response.json();
@@ -41,7 +41,7 @@ export class CreateEventService {
         }
     }
 
-    public async getEventModel(id: string): Promise<CreateEventModel> {
+    public async getEventModel(id: string, accessToken: string): Promise<CreateEventModel> {
         let url = `http://localhost:5009/api/Event/events/edit/${id}`;
         try {
             const response = await fetch(url, {
@@ -49,6 +49,7 @@ export class CreateEventService {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
                 },
             });
 
@@ -77,7 +78,7 @@ export class CreateEventService {
         }
     }
 
-    async updateEvent(dto: CreateEventDto) {
+    async updateEvent(dto: CreateEventDto, accessToken: string): Promise<any> {
         try {
             let url = `http://localhost:5009/api/Event/events/edit/update`;
             console.log(dto);
@@ -86,6 +87,7 @@ export class CreateEventService {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
                 },
                 body: JSON.stringify(dto),
             });

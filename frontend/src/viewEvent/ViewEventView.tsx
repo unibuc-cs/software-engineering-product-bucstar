@@ -16,17 +16,19 @@ import {useEffect, useState, useCallback} from "react";
 import {ViewEventService} from "./ViewEventService";
 import {FacebookLoginHelper} from "../utils/facebookLoginHelper";
 import {initFacebookSdk} from "../utils/facebookSdk";
+import { useAuth } from "../utils/authProvider";
 
 const ViewEventView = () => {
     const { id } = useParams();
     const [model, setModel] = useState<ViewEventModel>(new ViewEventModel());
     const [userFacebookId, setUserFacebookId] = useState<string>("");
     const [loading, setLoading] = useState(true);  // Track loading state
+    const { accessToken } = useAuth();
 
     const refreshEvent = useCallback(async () => { 
         const service = new ViewEventService(); 
         try {
-            const refreshedModel = await service.getViewEventModel(id as string); 
+            const refreshedModel = await service.getViewEventModel(id as string, accessToken!); 
             setModel(refreshedModel); 
         } catch (error) { 
             console.error("Error fetching event:", error); 

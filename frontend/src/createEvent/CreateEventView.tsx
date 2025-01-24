@@ -25,10 +25,12 @@ import {FacebookLoginHelper} from "../utils/facebookLoginHelper";
 import {useNavigate, useParams} from "react-router-dom";
 import TagList from "../components/tagList/TagList";
 import TagListModel from "../components/tagList/TagListModel";
+import { useAuth } from '../utils/authProvider';
 
 const CreateEventView = () => {
     const {id} = useParams();
     const navigate = useNavigate();
+    const { accessToken } = useAuth();
     const [model, setModel] = useState(new CreateEventModel());
     const [currentTag, setCurrentTag] = useState<string>("");
     const [errors, setErrors] = useState({
@@ -42,12 +44,12 @@ const CreateEventView = () => {
 
     useEffect(() => {
         const service = new CreateEventService();
-        if(id != null) {
-            service.getEventModel(id!)
+        if(id != null && accessToken != null) {
+            service.getEventModel(id!, accessToken!)
                 .then(model => setModel(model))
                 .catch(error => console.error("Error fetching events:", error));
         }
-    }, [id]);
+    }, [id, accessToken]);
 
     const setName = (name: string) => {
         setModel(prevModel => ({ ...prevModel, name }));
@@ -105,7 +107,7 @@ const CreateEventView = () => {
     }
 
     const tryToSave = async () => {
-        if (validateForm()) {
+        if (validateForm() && accessToken != null) {
             try {
                 let service: CreateEventService = new CreateEventService();
                 let loginResponse = await FacebookLoginHelper.checkLoginStatus();
@@ -121,7 +123,7 @@ const CreateEventView = () => {
                     organizerId: userId,
                     tags: model.tags
                 };
-                await service.createEvent(dto);
+                await service.createEvent(dto, accessToken!);
                 navigate(-1);
             }
             catch (error) {
@@ -133,7 +135,7 @@ const CreateEventView = () => {
     }
 
     const tryToUpdate = async () => {
-        if (validateForm()) {
+        if (validateForm() && accessToken != null) {
             try {
                 let service: CreateEventService = new CreateEventService();
                 let loginResponse = await FacebookLoginHelper.checkLoginStatus();
@@ -149,7 +151,7 @@ const CreateEventView = () => {
                     organizerId: userId,
                     tags: model.tags,
                 };
-                await service.updateEvent(dto);
+                await service.updateEvent(dto, accessToken);
                 navigate(-1);
             }
             catch (error) {
