@@ -252,14 +252,16 @@ public class EventService
 
     public async Task<List<CommentDto>> GetAllCommentsByUserIdAsync(string userId)
     {
-        var userGuid = Guid.Parse(userId);
+        var user = await _userRepository.GetByFacebookIdAsync(userId);
+        var userGuid = user!.Id;
         var comments = await _eventRepository.GetCommentsByUserIdAsync(userGuid);
         return comments.Select(c => new CommentDto(c)).ToList();
     }
 
     public async Task<List<CommentDto>?> GetCommentsOfUserByEventAsync(string userId, string eventId)
     {
-        var userGuid = Guid.Parse(userId);
+        var user = await _userRepository.GetByFacebookIdAsync(userId);
+        var userGuid = user!.Id;
         var eventGuid = Guid.Parse(eventId);
         var comments = await _eventRepository.GetCommentsByUserIdAsync(userGuid);
 
