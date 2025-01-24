@@ -81,10 +81,6 @@ const CreateEventView = () => {
         setErrors(prevErrors => ({ ...prevErrors, date: '' }));
     }
 
-    const setTag = (tag: string) => {
-        setCurrentTag(tag)
-    }
-
     const dateToShow = () => {
         if (model.date == null) {
             return dayjs();

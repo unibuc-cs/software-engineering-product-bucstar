@@ -33,7 +33,7 @@ const ViewEventView = () => {
         } catch (error) { 
             console.error("Error fetching event:", error); 
         } 
-    }, [id]);
+    }, [id, accessToken]);
 
     // Fetch event details
     useEffect(() => {

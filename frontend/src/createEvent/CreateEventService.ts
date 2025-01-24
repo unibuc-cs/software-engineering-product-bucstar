@@ -1,4 +1,3 @@
-import { useAuth } from "../utils/authProvider";
 import {CreateEventModel} from "./CreateEventModel";
 
 export interface CreateEventDto {

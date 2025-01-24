@@ -1,7 +1,6 @@
 import Grid from "@mui/material/Grid2";
 import {Typography} from "@mui/material";
 import {EventParticipantsModel} from "./EventParticipantsModel";
-import {useEffect} from "react";
 
 const EventParticipantsPanel = (
     {model} : {model: EventParticipantsModel}

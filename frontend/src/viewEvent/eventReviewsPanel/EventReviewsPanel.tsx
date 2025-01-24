@@ -4,7 +4,7 @@ import {StarRounded} from "@mui/icons-material";
 import ReviewRow from "../reviewRow/ReviewRow";
 import {EventReviewsModel} from "./EventReviewsModel";
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import { useState} from "react";
 import {ReviewEventService, ReviewDto} from "../../reviewEvents/ReviewEventService";
 import { useAuth } from "../../utils/authProvider";
 

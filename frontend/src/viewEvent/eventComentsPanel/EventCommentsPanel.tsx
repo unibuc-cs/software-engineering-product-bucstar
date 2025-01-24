@@ -5,7 +5,7 @@ import CommentRow from "../commentRow/CommentRow";
 import {EventCommentsModel} from "./EventCommentsModel";
 import {CommentModel} from "../commentRow/CommentModel";
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {CommentEventService, CommentDto} from "../../commentEvents/CommentEventService";
 import { useAuth } from "../../utils/authProvider";
 

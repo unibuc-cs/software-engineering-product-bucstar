@@ -1,5 +1,3 @@
-import {FacebookLoginHelper} from "./facebookLoginHelper";
-
 declare global {
     interface Window {
         FB: {
