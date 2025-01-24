@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Container, Divider, FormControl, FormHelperText, MenuItem, Select, Typography } from "@mui/material";
+import { Container, Divider, FormControl, FormHelperText, MenuItem, Select, Typography, Chip, InputLabel, OutlinedInput } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import EventCard from "./eventCard/EventCard";
 import { BrowseEventsModel } from "../../browseEvents/BrowseEventsModel";
@@ -8,6 +8,7 @@ import { EventCardModel } from "./eventCard/EventCardModel";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
+import { SelectChangeEvent } from "@mui/material/Select";
 
 const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (service : BrowseEventsService) => Promise<BrowseEventsModel>}) => {
     const [model, setModel] = useState<BrowseEventsModel>(new BrowseEventsModel());    
@@ -17,6 +18,8 @@ const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (serv
     const [filteredEvents, setFilteredEvents] = useState<EventCardModel[]>([]);
     const [sortBy, setSortBy] = useState<string>("date");
     const [sortOrder, setSortOrder] = useState<string>("asc");
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [availableTags, setAvailableTags] = useState<string[]>([]);
 
     const applyDateFilter = useCallback(() => {
         let filtered = model.eventCardModels;
@@ -36,11 +39,18 @@ const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (serv
         } else if (dateFilter === "month") {
             filtered = filtered.filter(event => dayjs(event.date).isSame(dayjs(), "month"));
         }
+
+        // Apply tag filtering
+        if (selectedTags.length > 0) {
+            filtered = filtered.filter(event => 
+                selectedTags.every(tag => event.tags.includes(tag))
+            );
+        }
+
         setFilteredEvents(filtered);
-    }, [dateFilter, startDate, endDate, model]);
+    }, [dateFilter, startDate, endDate, model, selectedTags]);
 
     const applySorting = useCallback(() => {
-        console.log("Sorting by:", sortBy);
         let sortedEvents = [...model.eventCardModels];
         if (sortBy === "date") {
             sortedEvents.sort((a, b) => (sortOrder === "asc" ? dayjs(a.date).diff(dayjs(b.date)) : dayjs(b.date).diff(dayjs(a.date))));
@@ -48,10 +58,8 @@ const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (serv
             sortedEvents.sort((a, b) => (sortOrder === "asc" ? a.registeredParticipants - b.registeredParticipants : b.registeredParticipants - a.registeredParticipants));
          }  else if (sortBy === "recommended") {
             sortedEvents.sort((a, b) => {
-
                 const scoreA = a.registeredParticipants * 5 - dayjs(a.date).diff(dayjs(), 'day');
                 const scoreB = b.registeredParticipants * 5 - dayjs(b.date).diff(dayjs(), 'day');
-
                 return sortOrder === "desc" ? scoreA - scoreB : scoreB - scoreA;
             });
         }
@@ -65,6 +73,12 @@ const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (serv
             .then(model => {
                 setModel(model);
                 setFilteredEvents(model.eventCardModels);
+                // Extract unique tags from all events
+                const tags = new Set<string>();
+                model.eventCardModels.forEach(event => {
+                    event.tags.forEach(tag => tags.add(tag));
+                });
+                setAvailableTags(Array.from(tags));
             })
             .catch(error => console.error("Error fetching events:", error));
     }, [fetchEvents]);
@@ -76,6 +90,11 @@ const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (serv
     useEffect(() => {
         applySorting();
     }, [sortBy, sortOrder, applySorting]);
+
+    const handleTagChange = (event: SelectChangeEvent<typeof selectedTags>) => {
+        const value = event.target.value;
+        setSelectedTags(typeof value === 'string' ? value.split(',') : value);
+    };
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -101,26 +120,53 @@ const EventsList = ({ title, fetchEvents } : { title: string, fetchEvents: (serv
                             )}
                         </FormControl>
                     </Grid>
-                        {dateFilter === "custom" && (
-                            <>
-                                <Grid size={{xs: 8, sm: 4}}>
-                                    <DatePicker
-                                        label="Start Date"
-                                        value={startDate}
-                                        disablePast={true}
-                                        onChange={(newValue) => setStartDate(newValue)}
-                                    />
-                                </Grid>
-                                <Grid size={{xs: 8, sm: 4}}>
-                                    <DatePicker
-                                        label="End Date"
-                                        value={endDate}
-                                        disablePast={true}
-                                        onChange={(newValue) => setEndDate(newValue)}
-                                    />
-                                </Grid>
-                            </>
-                        )}
+                    {dateFilter === "custom" && (
+                        <>
+                            <Grid size={{xs: 8, sm: 4}}>
+                                <DatePicker
+                                    label="Start Date"
+                                    value={startDate}
+                                    disablePast={true}
+                                    onChange={(newValue) => setStartDate(newValue)}
+                                />
+                            </Grid>
+                            <Grid size={{xs: 8, sm: 4}}>
+                                <DatePicker
+                                    label="End Date"
+                                    value={endDate}
+                                    disablePast={true}
+                                    onChange={(newValue) => setEndDate(newValue)}
+                                />
+                            </Grid>
+                        </>
+                    )}
+
+                    <Grid size={{ xs: 8, sm: 4 }}>
+                        <FormControl fullWidth>
+                            <InputLabel id="tags-label">Tags</InputLabel>
+                            <Select
+                                labelId="tags-label"
+                                id="tags-select"
+                                multiple
+                                value={selectedTags}
+                                onChange={handleTagChange}
+                                input={<OutlinedInput label="Tags" />}
+                                renderValue={(selected) => (
+                                    <div>
+                                        {selected.map((value) => (
+                                            <Chip key={value} label={value} />
+                                        ))}
+                                    </div>
+                                )}
+                            >
+                                {availableTags.map((tag) => (
+                                    <MenuItem key={tag} value={tag}>
+                                        {tag}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
 
                     <Grid size={{ xs: 8, sm: 4 }}>
                         <FormControl fullWidth>
