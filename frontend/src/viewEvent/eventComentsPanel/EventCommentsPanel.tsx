@@ -89,8 +89,8 @@ const EventCommentsPanel = (
                     Comments
                 </Typography>
             </Grid>
-            {model.comments.map((comment) => (
-                <CommentRow model={CommentModel.fromComment(comment)}/>
+            {model.comments.map((comment, index) => (
+                <CommentRow model={CommentModel.fromComment(comment)} key={index}/>
             ))}
 
             <TextField
