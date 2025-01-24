@@ -6,38 +6,24 @@ import {EventReviewsModel} from "./EventReviewsModel";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {ReviewEventService, ReviewDto} from "../../reviewEvents/ReviewEventService";
+import { useAuth } from "../../utils/authProvider";
 
 const EventReviewsPanel = ({model, userFacebookId, refreshEvent}: {model: EventReviewsModel; userFacebookId: string; refreshEvent: () => Promise<void>}) => {
 
     const {id: eventId} = useParams(); // Get the event ID from the route
-    const [userId, setUserId] = useState<string>("");
     const [text, setText] = useState<string>("");
     const [score, setScore] = useState<number>(5);
     const reviewService = new ReviewEventService();
+
+    const { accessToken } = useAuth();
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState<AlertColor>('success');
 
-    useEffect(() => {
-        const fetchUserId = async () => {
-            try {
-                if (userFacebookId) {
-                    const service = new ReviewEventService();
-                    const user = await service.getUserByFacebookId(userFacebookId);
-                    setUserId(user.id);
-                }
-            } catch (error) {
-                console.error("Error fetching user ID:", error);
-            }
-        };
-
-        fetchUserId();
-    }, [userFacebookId]);
-
     // Add Review functionality
     const handleAddReview = async () => {
-        if (!eventId || !userId) {
+        if (!eventId || !userFacebookId) {
             console.error("Missing event ID or user ID");
             return;
         }
@@ -45,7 +31,7 @@ const EventReviewsPanel = ({model, userFacebookId, refreshEvent}: {model: EventR
         try {
             // Create or update the review
             const review: ReviewDto = {
-                userId,
+                userId: userFacebookId,
                 eventId,
                 text,
                 score,
@@ -55,16 +41,15 @@ const EventReviewsPanel = ({model, userFacebookId, refreshEvent}: {model: EventR
 
             // Check if a review already exists for this user and event
             try {
-                existingReview = await reviewService.getReviewByUserAndEvent(userId, eventId);
+                existingReview = await reviewService.getReviewByUserAndEvent(eventId, accessToken!);
             } catch (error) {
                 console.warn("Error checking for existing review (might not exist):", error);
-
             }
 
             if (existingReview) {
             // Delete the existing review before creating a new one
             try {
-                await reviewService.deleteReview(userId, eventId);
+                await reviewService.deleteReview(eventId, accessToken!);
             } catch (error) {
                 console.error("Error deleting existing review:", error);
 
@@ -76,7 +61,7 @@ const EventReviewsPanel = ({model, userFacebookId, refreshEvent}: {model: EventR
             }
         }
 
-            await reviewService.createOrUpdateReview(review);
+            await reviewService.createOrUpdateReview(review, accessToken!);
 
             setSnackbarMessage("Review added successfully!");
             setSnackbarSeverity('success');
