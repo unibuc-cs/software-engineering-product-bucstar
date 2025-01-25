@@ -44,6 +44,7 @@ export class ViewEventService {
     
     public async getViewEventModel(id: string, accessToken: string): Promise<ViewEventModel> {
         try {
+            console.log(accessToken);
             const url = `${this.apiUrl}${id}`;
             const response = await fetch(url, {
                 method: 'GET',
