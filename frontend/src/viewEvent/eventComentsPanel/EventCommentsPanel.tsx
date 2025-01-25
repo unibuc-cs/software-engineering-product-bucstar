@@ -5,41 +5,26 @@ import CommentRow from "../commentRow/CommentRow";
 import {EventCommentsModel} from "./EventCommentsModel";
 import {CommentModel} from "../commentRow/CommentModel";
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {CommentEventService, CommentDto} from "../../commentEvents/CommentEventService";
+import { useAuth } from "../../utils/authProvider";
 
 const EventCommentsPanel = (
     {model, userFacebookId, refreshEvent}: {model: EventCommentsModel; userFacebookId: string; refreshEvent: () => Promise<void>}
 ) => {
 
     const {id: eventId} = useParams(); // Get the event ID from the route
-    const [userId, setUserId] = useState<string>("");
     const [text, setText] = useState<string>("");
-    const commentService = new CommentEventService();
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState<AlertColor>('success');
 
-    useEffect(() => {
-        const fetchUserId = async () => {
-            try {
-                if (userFacebookId) {
-                    const service = new CommentEventService();
-                    const user = await service.getUserByFacebookId(userFacebookId);
-                    setUserId(user.id);
-                }
-            } catch (error) {
-                console.error("Error fetching user ID:", error);
-            }
-        };
-
-        fetchUserId();
-    }, [userFacebookId]);
+    const { accessToken } = useAuth();
 
     // Add Comment functionality
     const handleAddComment = async () => {
-        if (!eventId || !userId) {
+        if (!eventId || !userFacebookId) {
             console.error("Missing event ID or user ID");
             return;
         }
@@ -47,12 +32,14 @@ const EventCommentsPanel = (
         try {
             // Create the comment
             const comment: CommentDto = {
-                userId,
+                userId: userFacebookId,
                 eventId,
                 text,
             };
 
-            await commentService.createComment(comment);
+            const commentService = new CommentEventService();
+
+            await commentService.createComment(comment, accessToken!);
             setSnackbarMessage("Comment added successfully!");
             setSnackbarSeverity('success');
             setSnackbarOpen(true);

@@ -181,27 +181,29 @@ public class EventService
 
     public async Task<List<ReviewDto>> GetAllReviewsByUserIdAsync(string userId)
     {
-        var userGuid = Guid.Parse(userId);
+        var user = await _userRepository.GetByFacebookIdAsync(userId);
+        var userGuid = user!.Id;
         var reviews = await _eventRepository.GetReviewsByUserIdAsync(userGuid);
         return reviews.Select(r => new ReviewDto(r)).ToList();
     }
 
     public async Task<ReviewDto?> GetReviewOfUserByEventAsync(string userId, string eventId)
     {
-        var userGuid = Guid.Parse(userId);
+        var user = await _userRepository.GetByFacebookIdAsync(userId);
+        var userGuid = user!.Id;
         var eventGuid = Guid.Parse(eventId);
         var review = await _eventRepository.GetReviewOfUserByEventAsync(userGuid, eventGuid);
 
         return review != null ? new ReviewDto(review) : null;
     }
     
-    public async Task CreateReviewAsync(string userId, string eventId, string text, int score)
+    public async Task CreateReviewAsync(CreateReviewDto createReviewDto)
     {
-        var userGuid = Guid.Parse(userId);
-        var eventGuid = Guid.Parse(eventId);
+        var user = await _userRepository.GetByFacebookIdAsync(createReviewDto.UserId);
+        var userGuid = user!.Id;
+        var eventGuid = Guid.Parse(createReviewDto.EventId);
 
         // Check if the user and event exist
-        var user = await _userRepository.GetByIdAsync(userGuid);
         var ev = await _eventRepository.GetEventAsync(eventGuid);
         if (user == null || ev == null)
         {
@@ -212,8 +214,8 @@ public class EventService
         {
             UserId = userGuid,
             EventId = eventGuid,
-            Text = text,
-            Score = score,
+            Text = createReviewDto.Text,
+            Score = createReviewDto.Score,
             DateCreated = DateTime.UtcNow,
             LastModified = DateTime.UtcNow
         };
@@ -224,7 +226,8 @@ public class EventService
     
     public async Task DeleteReviewAsync(string userId, string eventId)
     {
-        var userGuid = Guid.Parse(userId);
+        var user = await _userRepository.GetByFacebookIdAsync(userId);
+        var userGuid = user!.Id;
         var eventGuid = Guid.Parse(eventId);
 
         await _eventRepository.DeleteReviewAsync(userGuid, eventGuid);
@@ -250,14 +253,16 @@ public class EventService
 
     public async Task<List<CommentDto>> GetAllCommentsByUserIdAsync(string userId)
     {
-        var userGuid = Guid.Parse(userId);
+        var user = await _userRepository.GetByFacebookIdAsync(userId);
+        var userGuid = user!.Id;
         var comments = await _eventRepository.GetCommentsByUserIdAsync(userGuid);
         return comments.Select(c => new CommentDto(c)).ToList();
     }
 
     public async Task<List<CommentDto>?> GetCommentsOfUserByEventAsync(string userId, string eventId)
     {
-        var userGuid = Guid.Parse(userId);
+        var user = await _userRepository.GetByFacebookIdAsync(userId);
+        var userGuid = user!.Id;
         var eventGuid = Guid.Parse(eventId);
         var comments = await _eventRepository.GetCommentsByUserIdAsync(userGuid);
 
@@ -270,13 +275,13 @@ public class EventService
     }
 
     
-    public async Task CreateCommentAsync(string userId, string eventId, string text)
+    public async Task CreateCommentAsync(CreateCommentDto createCommentDto)
     {
-        var userGuid = Guid.Parse(userId);
-        var eventGuid = Guid.Parse(eventId);
+        var user = await _userRepository.GetByFacebookIdAsync(createCommentDto.UserId);
+        var userGuid = user!.Id;
+        var eventGuid = Guid.Parse(createCommentDto.EventId);
 
         // Check if the user and event exist
-        var user = await _userRepository.GetByIdAsync(userGuid);
         var ev = await _eventRepository.GetEventAsync(eventGuid);
         if (user == null || ev == null)
         {
@@ -287,7 +292,7 @@ public class EventService
         {
             UserId = userGuid,
             EventId = eventGuid,
-            Text = text,
+            Text = createCommentDto.Text,
             DateCreated = DateTime.UtcNow,
             LastModified = DateTime.UtcNow
         };

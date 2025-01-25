@@ -1,12 +1,13 @@
 export class CancelEventService {
     private apiUrl: string = 'http://localhost:5009/api/Event/events/delete';
 
-    public async cancelEvent(eventId: string): Promise<any> {
+    public async cancelEvent(eventId: string, accessToken: string): Promise<any> {
         try {
             const response = await fetch(`${this.apiUrl}/${eventId}`, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
                 },
             });
 

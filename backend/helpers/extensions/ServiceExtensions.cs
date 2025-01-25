@@ -23,6 +23,7 @@ public static class ServiceExtensions
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<EventService>();
         services.AddTransient<ParticipationService>();
+        services.AddScoped<FacebookTokenValidator>();
         return services;
     }
     

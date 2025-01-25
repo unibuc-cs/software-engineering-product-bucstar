@@ -3,12 +3,12 @@ import {Button, Typography, Snackbar, Alert, AlertColor} from "@mui/material";
 import {EventHeaderModel} from "./EventHeaderModel";
 import {Link, useParams} from "react-router-dom";
 import { JoinEventDto, JoinEventService } from "../../joinEvent/JoinEventService";
-import { FacebookLoginHelper } from "../../utils/facebookLoginHelper";
 import { useState } from "react";
 import { UnjoinEventService } from "../../joinEvent/UnjoinEventService";
 import { useNavigate } from "react-router-dom";
 import { CancelEventService } from "../../cancelEvent/CancelEventService";
 import dayjs from "dayjs";
+import { useAuth } from "../../utils/authProvider";
 
 const EventHeader = (
     {model, refreshEvent} : {model: EventHeaderModel, refreshEvent: () => Promise<void>},
@@ -19,28 +19,35 @@ const EventHeader = (
     const editPath = `${currentPath}/edit`;
     const cancelPath = `/events`;
     const { id } = useParams();
+    const { accessToken, userFacebookId } = useAuth();
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState<AlertColor>('success');
 
     const handleCancel = async () => {
-        const service = new CancelEventService();
         try {
-            await service.cancelEvent(id!);
+            if (!accessToken) {
+                throw new Error('User not logged in');
+            }
+            const service = new CancelEventService();
+            await service.cancelEvent(id!, accessToken!);
             navigate(cancelPath);
             } catch (error) {
-            console.error('Error cancelling event:', error);
-                }
+                setSnackbarMessage((error as Error).message || 'Error canceling event');
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+            }
     };
 
     const onJoinEvent = async () => {
         try {
+            if (!accessToken) {
+                throw new Error('User not logged in');
+            }
             const service = new JoinEventService();
-            let loginResponse = await FacebookLoginHelper.checkLoginStatus();
-            let userId = loginResponse.userInfo?.id!
-            const dto: JoinEventDto = { userId: userId, eventId: id! };
-            const response = await service.joinEvent(dto);
+            const dto: JoinEventDto = { userId: userFacebookId!, eventId: id! };
+            const response = await service.joinEvent(dto, accessToken!);
 
             setSnackbarMessage(response.message || 'Joined event successfully');
             setSnackbarSeverity('success');
@@ -57,11 +64,12 @@ const EventHeader = (
 
     const onUnjoinEvent = async () => {
          try {
+            if (!accessToken) {
+                throw new Error('User not logged in');
+            }
             const service = new UnjoinEventService();
-            let loginResponse = await FacebookLoginHelper.checkLoginStatus();
-            let userId = loginResponse.userInfo?.id!;
-            const dto: JoinEventDto = { userId: userId, eventId: id! };
-            const response = await service.unjoinEvent(dto);
+            const dto: JoinEventDto = { userId: userFacebookId!, eventId: id! };
+            const response = await service.unjoinEvent(dto, accessToken!);
 
             setSnackbarMessage(response.message || 'Unjoined event successfully');
             setSnackbarSeverity('success');

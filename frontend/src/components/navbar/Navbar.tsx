@@ -9,51 +9,61 @@ import {
     Divider,
     List,
     ListItem,
-    ListItemButton, ListItemText, CssBaseline, Drawer, Snackbar, Alert
+    ListItemButton,
+    ListItemText,
+    CssBaseline,
+    Drawer,
+    Snackbar,
+    Alert,
 } from '@mui/material';
-import {Link, Outlet} from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
-import {FacebookLoginHelper, LoginResponse} from "../../utils/facebookLoginHelper";
-import {NavItem} from "./NavItem";
-
+import { FacebookLoginHelper, LoginResponse } from '../../utils/facebookLoginHelper';
+import { NavItem } from './NavItem';
+import { useAuth } from '../../utils/authProvider';
 
 const drawerWidth = 240;
 const navItems = [
-    new NavItem("Home", "/"),
-    new NavItem("Browse Events", "/events"),
-    new NavItem("Create Event", "/events/new"),
-    new NavItem("Registered Events", "/events/registered"),
+    new NavItem('Home', '/'),
+    new NavItem('Browse Events', '/events'),
+    new NavItem('Create Event', '/events/new'),
+    new NavItem('Registered Events', '/events/registered'),
 ];
 
 const Navbar = () => {
-    const [name, setName] = React.useState("");
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
-    const [snackbarMessage, setSnackbarMessage] = React.useState("");
+    const [snackbarMessage, setSnackbarMessage] = React.useState('');
 
+    const { setAccessToken, setUserFacebookId, isAuthenticated } = useAuth();
+    const [name, setName] = React.useState('');
 
     const handleLoginClick = async () => {
         try {
-            let loginResponse: LoginResponse = await FacebookLoginHelper.checkLoginStatus(); // Check login status when modal opens
+            const loginResponse: LoginResponse = await FacebookLoginHelper.checkLoginStatus();
 
-            if (loginResponse.status === "connected") {
-                setSnackbarMessage("Login successful!");
-                setName(loginResponse.userInfo?.name ?? '');
-                setOpenSnackbar(true);  // Show Snackbar
+            if (loginResponse.status === 'connected') {
+                setAccessToken(loginResponse.accessToken);
+                setUserFacebookId(loginResponse.userInfo!.id);
+                setName(loginResponse.userInfo!.name);
+                setSnackbarMessage('Login successful!');
+                setOpenSnackbar(true);
             } else {
-                setSnackbarMessage("Login failed. Please try again.");
-                setName("");
-                setOpenSnackbar(true);  // Show Snackbar
+                setSnackbarMessage('Login failed. Please try again.');
+                setName('');
+                setAccessToken(null);
+                setUserFacebookId(null);
+                setOpenSnackbar(true);
             }
         } catch (error) {
-            console.log(`Error during login: ${error}`);
-            setSnackbarMessage("An error occurred. Please try again later.");
+            console.error(`Error during login: ${error}`);
+            setSnackbarMessage('An error occurred. Please try again later.');
             setOpenSnackbar(true);
         }
     };
 
     const handleCloseSnackbar = () => {
-        setOpenSnackbar(false); // Close Snackbar when the user dismisses it
+        setOpenSnackbar(false);
     };
 
     const handleDrawerToggle = () => {
@@ -80,17 +90,22 @@ const Navbar = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log("Fetch data for navbar");
-            try {
-                const response = await FacebookLoginHelper.checkLoginStatus();
-                setName(response.userInfo?.name ?? '');
-            } catch (error) {
-                console.error("Error fetching Facebook user info:", error);
+            if (isAuthenticated) {
+                try {
+                    const response = await FacebookLoginHelper.checkLoginStatus();
+                    setName(response.userInfo?.name ?? '');
+                    if (name === '') {
+                        setAccessToken(null);
+                        setUserFacebookId(null);
+                    }
+                } catch (error) {
+                    console.error('Error fetching Facebook user info:', error);
+                }
             }
         };
 
         fetchData();
-    }, []);
+    }, [isAuthenticated, name, setAccessToken, setUserFacebookId]);
 
     return (
         <Box sx={{ display: 'flex', mb: 10 }}>
@@ -107,7 +122,7 @@ const Navbar = () => {
                         <MenuIcon />
                     </IconButton>
 
-                    <Box sx={{ display: {xs: 'none', sm: 'flex'}, justifyContent: 'flex-start', flexGrow: 1 }}>
+                    <Box sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: 'flex-start', flexGrow: 1 }}>
                         {navItems.map((navItem) => (
                             <Button key={navItem.text} sx={{ color: '#fff' }} component={Link} to={navItem.to}>
                                 {navItem.text}
@@ -115,8 +130,14 @@ const Navbar = () => {
                         ))}
                     </Box>
 
-                    {name === '' && <Button color="inherit" onClick={handleLoginClick}>Login</Button>}
-                    {name !== '' && <Typography variant="h6">Welcome, {name}</Typography>}
+                    {!isAuthenticated && (
+                        <Button color="inherit" onClick={handleLoginClick}>
+                            Login
+                        </Button>
+                    )}
+                    {isAuthenticated && (
+                        <Typography variant="h6">Welcome, {name}</Typography>
+                    )}
                 </Toolbar>
             </AppBar>
 
@@ -139,7 +160,7 @@ const Navbar = () => {
 
             <Snackbar
                 open={openSnackbar}
-                autoHideDuration={6000} // Auto-hide after 6 seconds
+                autoHideDuration={6000}
                 onClose={handleCloseSnackbar}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             >
@@ -148,9 +169,9 @@ const Navbar = () => {
                 </Alert>
             </Snackbar>
 
-            <Outlet/>
+            <Outlet />
         </Box>
-    )
+    );
 };
 
 export default Navbar;

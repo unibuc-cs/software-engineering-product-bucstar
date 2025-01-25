@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import { Tabs, Tab, Box, Typography } from "@mui/material";
+import { Tabs, Tab, Box } from "@mui/material";
 import { BrowseEventsService } from "../browseEvents/BrowseEventsService";
 import EventsList from "../components/eventsList/EventsListView";
+import { useAuth } from "../utils/authProvider";
 
 const RegisteredEvents = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const { accessToken } = useAuth();
 
   const fetchUpcomingEvents = (service: BrowseEventsService) =>
-    service.getRegisteredUpcomingEvents();
+    service.getRegisteredUpcomingEvents(accessToken!);
 
   const fetchPastEvents = (service: BrowseEventsService) =>
-    service.getRegisteredPastEvents();
+    service.getRegisteredPastEvents(accessToken!);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);

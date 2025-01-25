@@ -1,10 +1,17 @@
 using backend.Data;
 using backend.database.seeders;
+using backend.Helpers;
 using backend.Helpers.Extensions;
+using backend.middlewares;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+// Add user secrets for Facebook App Access Token
+var config = new ConfigurationBuilder()
+    .AddUserSecrets<Program>()
+    .Build();
 
 builder.Services.AddCors(options =>
 {
@@ -59,6 +66,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors(myAllowSpecificOrigins);
+
+app.UseMiddleware<FacebookAuthenticationMiddleware>();
 
 app.UseAuthorization();
 

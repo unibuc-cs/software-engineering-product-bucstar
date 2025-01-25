@@ -1,15 +1,17 @@
 using backend.events.browse;
 using backend.events.dto;
+using backend.Helpers;
 using backend.Helpers.exceptions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace backend.events
 {
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("_myAllowSpecificOrigins")]
-    public class EventController(EventService eventService) : ControllerBase
+    public class EventController(EventService eventService, FacebookTokenValidator facebookTokenValidator) : ControllerBase
     {
         [HttpGet("events/browse")]
         [ProducesResponseType(typeof(EventSummaryDto), 200)]
@@ -50,10 +52,21 @@ namespace backend.events
         [ProducesResponseType(500)]                      // Internal Server Error
         public async Task<IActionResult> CreateEvent([FromBody] CreateEventDto? createEventDto)
         {
-            Console.WriteLine(createEventDto);
             if (createEventDto == null)
             {
                 return BadRequest("Event data is required.");
+            }
+            
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+
+            if (userInfo["data"]?["user_id"]?.ToString() != createEventDto.OrganizerId)
+            {
+                return Unauthorized("Not authorized to create event with different organizer id.");
             }
 
             try
@@ -81,12 +94,26 @@ namespace backend.events
         [HttpPut("events/edit/update")]
         [ProducesResponseType(typeof(CreateEventDto), 201)]   // Success, return created event details
         [ProducesResponseType(400)]                      // Bad Request if validation fails
+        [ProducesResponseType(401)]                      // Unauthorized
         [ProducesResponseType(500)]                      // Internal Server Error
         public async Task<IActionResult> UpdateEvent([FromBody] CreateEventDto? createEventDto)
         {
             if (createEventDto == null)
             {
                 return BadRequest("Event data is required.");
+            }
+            
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            
+            bool isOwner = await facebookTokenValidator.IsOwner(userInfo, createEventDto.OrganizerId);
+            if (!isOwner)
+            {
+                return Unauthorized("UserId and OrganizerId does not match.");
             }
 
             try
@@ -127,14 +154,22 @@ namespace backend.events
             }
         }
 
-        [HttpGet("events/user/{userId}/future")]
+        [HttpGet("events/user/future")]
         [ProducesResponseType(typeof(List<EventSummaryDto>), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(typeof(object), 500)]
-        public async Task<IActionResult> GetFutureEventsForUser(string userId)
+        public async Task<IActionResult> GetFutureEventsForUser()
         {
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            
             try
             {
+                string userId = userInfo["data"]["user_id"].ToString();
                 var summaries = await eventService.GetFutureEventsForUser(userId);
                 return Ok(summaries);
             }
@@ -148,14 +183,22 @@ namespace backend.events
             } 
         }
         
-        [HttpGet("events/user/{userId}/past")]
+        [HttpGet("events/user/past")]
         [ProducesResponseType(typeof(List<EventSummaryDto>), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(typeof(object), 500)]
-        public async Task<IActionResult> GetPastEventsForUser(string userId)
+        public async Task<IActionResult> GetPastEventsForUser()
         {
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            
             try
             {
+                string userId = userInfo["data"]["user_id"].ToString();
                 var summaries = await eventService.GetPastEventsForUser(userId);
                 return Ok(summaries);
             }
@@ -174,6 +217,27 @@ namespace backend.events
         [ProducesResponseType(500)]
         public async Task<IActionResult> DeleteEvent(string id)
         {
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            
+            var eventDto = await eventService.GetDetailedEvent(id);
+
+            if (eventDto == null)
+            {
+                return NotFound($"Event with id {id} not found.");
+            }
+            
+            string userId = userInfo["data"]["user_id"].ToString();
+
+            if (eventDto.OrganizerFacebookId != userId)
+            {
+                return Unauthorized($"User is not authorized.");
+            }
+            
             try
             {
                 var success = await eventService.DeleteEventAsync(id);
@@ -230,13 +294,20 @@ namespace backend.events
         }
 
         // 3. Get all reviews by a specific user
-        [HttpGet("reviews/user/{userId}")]
+        [HttpGet("reviews/user")]
         [ProducesResponseType(typeof(List<ReviewDto>), 200)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetReviewsByUserId(string userId)
+        public async Task<IActionResult> GetReviewsByUserId()
         {
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
             try
             {
+                string userId = userInfo["data"]["user_id"].ToString();
                 var reviews = await eventService.GetAllReviewsByUserIdAsync(userId);
                 return Ok(reviews);
             }
@@ -247,14 +318,21 @@ namespace backend.events
         }
 
         // 4. Get a specific review by user and event
-        [HttpGet("reviews/{userId}/{eventId}")]
+        [HttpGet("reviews/{eventId}")]
         [ProducesResponseType(typeof(ReviewDto), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetReviewOfUserByEvent(string userId, string eventId)
+        public async Task<IActionResult> GetReviewOfUserByEvent(string eventId)
         {
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
             try
             {
+                string userId = userInfo["data"]["user_id"].ToString();
                 var review = await eventService.GetReviewOfUserByEventAsync(userId, eventId);
                 if (review == null)
                 {
@@ -275,6 +353,20 @@ namespace backend.events
         [ProducesResponseType(500)]
         public async Task<IActionResult> CreateReview([FromBody] CreateReviewDto dto)
         {
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            
+            string userId = userInfo["data"]["user_id"].ToString();
+
+            if (dto.UserId != userId)
+            {
+                return Unauthorized("User is not authorized.");
+            }
+            
             if (dto == null || string.IsNullOrEmpty(dto.UserId) || string.IsNullOrEmpty(dto.EventId) || string.IsNullOrEmpty(dto.Text) || dto.Score <= 0)
             {
                 return BadRequest(new { error = "Invalid review data." });
@@ -282,7 +374,7 @@ namespace backend.events
 
             try
             {
-                await eventService.CreateReviewAsync(dto.UserId, dto.EventId, dto.Text, dto.Score);
+                await eventService.CreateReviewAsync(dto);
                 return StatusCode(201, new { message = "Review created successfully." });
             }
             catch (KeyNotFoundException ex)
@@ -296,14 +388,22 @@ namespace backend.events
         }
 
         // 6. Delete a review
-        [HttpDelete("reviews/{userId}/{eventId}")]
+        [HttpDelete("reviews/{eventId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> DeleteReview(string userId, string eventId)
+        public async Task<IActionResult> DeleteReview(string eventId)
         {
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            
             try
             {
+                string userId = userInfo["data"]["user_id"].ToString();
                 await eventService.DeleteReviewAsync(userId, eventId);
                 return Ok(new { message = "Review deleted successfully." });
             }
@@ -316,8 +416,6 @@ namespace backend.events
                 return StatusCode(500, new { error = ex.Message });
             }
         }
-    
-        
         
         
         // Comments
@@ -356,13 +454,21 @@ namespace backend.events
         }
 
         // 3. Get all comments by a specific user
-        [HttpGet("comments/user/{userId}")]
+        [HttpGet("comments/user")]
         [ProducesResponseType(typeof(List<CommentDto>), 200)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetCommentsByUserId(string userId)
+        public async Task<IActionResult> GetCommentsByUserId()
         {
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            
             try
             {
+                string userId = userInfo["data"]["user_id"].ToString();
                 var comments = await eventService.GetAllCommentsByUserIdAsync(userId);
                 return Ok(comments);
             }
@@ -373,14 +479,22 @@ namespace backend.events
         }
 
         // 4. Get specific comments by user and event
-        [HttpGet("comments/{userId}/{eventId}")]
+        [HttpGet("comments/{eventId}")]
         [ProducesResponseType(typeof(List<CommentDto>), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetCommentsOfUserByEvent(string userId, string eventId)
+        public async Task<IActionResult> GetCommentsOfUserByEvent(string eventId)
         {
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            
             try
             {
+                string userId = userInfo["data"]["user_id"].ToString();
                 var comments = await eventService.GetCommentsOfUserByEventAsync(userId, eventId);
                 if (comments == null)
                 {
@@ -401,14 +515,28 @@ namespace backend.events
         [ProducesResponseType(500)]
         public async Task<IActionResult> CreateComment([FromBody] CreateCommentDto dto)
         {
+            JObject? userInfo = HttpContext.Items["UserInfo"] as JObject;
+
+            if (userInfo == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            
             if (dto == null || string.IsNullOrEmpty(dto.UserId) || string.IsNullOrEmpty(dto.EventId) || string.IsNullOrEmpty(dto.Text) )
             {
                 return BadRequest(new { error = "Invalid comment data." });
             }
+            
+            string userId = userInfo["data"]["user_id"].ToString();
+
+            if (dto.UserId != userId)
+            {
+                return Unauthorized("User is not authorized.");
+            }
 
             try
             {
-                await eventService.CreateCommentAsync(dto.UserId, dto.EventId, dto.Text);
+                await eventService.CreateCommentAsync(dto);
                 return StatusCode(201, new { message = "Comment created successfully." });
             }
             catch (KeyNotFoundException ex)

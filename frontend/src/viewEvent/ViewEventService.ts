@@ -42,14 +42,14 @@ interface EventDetailedDto {
 export class ViewEventService {
     private apiUrl: string = 'http://localhost:5009/api/Event/events/';
     
-    public async getViewEventModel(id: string): Promise<ViewEventModel> {
+    public async getViewEventModel(id: string, accessToken: string): Promise<ViewEventModel> {
         try {
             const url = `${this.apiUrl}${id}`;
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Add any authentication headers here, if needed
+                    'Authorization': `Bearer ${accessToken}`,
                 },
             });
             

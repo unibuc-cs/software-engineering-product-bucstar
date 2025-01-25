@@ -9,25 +9,28 @@ import BrowseEventsView from "./browseEvents/BrowseEventsView";
 import ViewEventView from "./viewEvent/ViewEventView";
 import CreateEventView from "./createEvent/CreateEventView";
 import RegisteredEventsView from './registeredEvents/RegisteredEventsView';
+import { AuthProvider } from './utils/authProvider';
 
 function App() {
     return (
-      <BrowserRouter>
-          <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <div className="App">
-                  <Navbar />
-                  <Routes>
-                      <Route path="/" element={<Home />} />
-                      <Route path="/events" element={<BrowseEventsView />} />
-                      <Route path="/events/:id" element={<ViewEventView/>} />
-                      <Route path="/events/new" element={<CreateEventView/>} />
-                      <Route path="/events/:id/edit" element={<CreateEventView/>} />
-                      <Route path="/events/registered" element={<RegisteredEventsView />} />
-                  </Routes>
-              </div>
-          </ThemeProvider>
-      </BrowserRouter>
+    <AuthProvider>
+        <BrowserRouter>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <div className="App">
+                    <Navbar />
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/events" element={<BrowseEventsView />} />
+                        <Route path="/events/:id" element={<ViewEventView/>} />
+                        <Route path="/events/new" element={<CreateEventView/>} />
+                        <Route path="/events/:id/edit" element={<CreateEventView/>} />
+                        <Route path="/events/registered" element={<RegisteredEventsView />} />
+                    </Routes>
+                </div>
+            </ThemeProvider>
+        </BrowserRouter>
+      </AuthProvider>
     );
 }
 
