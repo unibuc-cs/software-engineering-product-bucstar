@@ -23,4 +23,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="VibeSync.Tests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="VibeSync.Tests\obj\VibeSync.Tests.csproj.nuget.dgspec.json" />
+  </ItemGroup>
+
 </Project>
