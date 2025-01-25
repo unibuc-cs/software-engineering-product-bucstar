@@ -27,7 +27,7 @@ public class EventService
         _userRepository = userRepository;
         _tagRepository = tagRepository;
     }
-    public async Task<List<EventSummaryDto>> GetFutureEvents()
+    public virtual async Task<List<EventSummaryDto>> GetFutureEvents()
     {
         var events = await _eventRepository.GetAllEventsAsync();
         var futureEvents = events.FindAll(ev => ev.Date > DateTime.Now);
@@ -65,7 +65,7 @@ public class EventService
         return summaries;
     }
 
-    public async Task<EventDetailedDto?> GetDetailedEvent(string id)
+    public virtual async Task<EventDetailedDto?> GetDetailedEvent(string id)
     {
         var ev = await _eventRepository.GetEventAsync(Guid.Parse(id));
         if (ev != null)
@@ -73,7 +73,7 @@ public class EventService
         return null;
     }
 
-    public async Task<CreateEventDto?> CreateEventAsync(CreateEventDto dto)
+    public virtual async Task<CreateEventDto?> CreateEventAsync(CreateEventDto dto)
     {
         try
         {
