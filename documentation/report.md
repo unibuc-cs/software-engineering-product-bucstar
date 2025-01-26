@@ -2,7 +2,36 @@
 
 ## Architecture Design
 
-### Diagrams 
+We began with our initial product feature, but as every vision is not crystal clear from the start, we recognized the need to refactor certain elements that had become redundant. Below, I will dive into these changes, comparing our initial architecture diagrams with the modifications we implemented.
+
+### Diagrams and Comparisons
+
+![Database Diagram](./architecture-diagrams/vibesync.png)
+> Initial Database Diagram Architecture
+
+The database structure remained unchanged, as it fully adhered to the initial design.
+
+![Context](./architecture-diagrams/structurizr-1-Vibesync-Context.png)
+> Context of Application
+
+The user and event organizer flows outlined in the initial context diagram were implemented without any modifications.
+
+![Container Architecture](./architecture-diagrams/structurizr-1-Vibesync-Container.png)
+> Container Architecture
+
+Similarly, the container architecture required no adjustments. Further details on the container structure can be found below in the [Microservices](#microservices) section.
+
+![API Application Components](./architecture-diagrams/structurizr-1-ApiApplication-Component.png)
+
+This is where some key refactorings were made. Initially, certain components had tightly coupled logic, creating redundancies when attempting to separate them. After careful evaluation, we refactored the following:
+
+- `HistoryController`: This controller was merged into the `EventService` as its logic required only a single function, entirely dependent on the `Events` model.
+
+- `BrowseController`: Similarly, the `BrowseController` was integrated into the `EventsController`. Its functionality relied solely on the `Events` model and consisted of just one function, making separation unnecessary.
+
+- `RecommendationController`: The `RecommendationController` introduced significant overhead for the application, especially since recommendations needed to be generated quickly and frequently. The previous approach, on the server side, required re-fetching events each time, which was inefficient. By moving the recommendation logic to the frontend, we could fetch the data once and then apply filtering logic using our heuristic algorithm locally. This eliminated the need for repeated fetches, improving performance and reducing backend load. The recommendations are now computed directly in the frontend container
+
+These changes simplified the architecture by eliminating redundancy and improving component alignment.
 
 ### Microservices
 
@@ -34,7 +63,34 @@ This pattern offers several other advantages:
 
 Automated testing involves using specialized software tools to execute pre-scripted tests on the application automatically. This includes various types of tests, such as unit tests, integration tests, and end-to-end tests, to ensure different aspects of the application function correctly.
 
+To gain a better understanding of the automated tests, we thoroughly tested the Event Controller. 
 
+#### Test Cases Overview
+
+1. **GetFutureEvents** Tests:
+    
+    - **Positive** Test: Ensures that when future events exist, the method returns an `OkObjectResult` containing a list of event summaries.
+    - **Negative** Test: Validates that when an exception occurs, the method returns a 500 Internal Server Error with the appropriate error message.
+
+2. **GetEvent** Tests:
+
+    - **Positive** Test: Checks if a detailed view of a specific event is correctly retrieved and returned as an `OkObjectResult`.
+    - **Negative** Test: Ensures that exceptions during retrieval result in a 500 Internal Server Error response.
+
+3. **CreateEvent** Tests:
+
+    - **Positive** Test: Validates the creation of an event, ensuring a success message is returned when the request is valid.
+    - **Negative** Test: Verifies that missing required fields result in a `BadRequestObjectResult` with a proper validation error message.
+
+Considering our security measures used and the design patterns implemented, mocking proved to be an essential technique. For instance, all external services and repositories (`EventService`, `IConfiguration`, etc.) are mocked using `Moq` to isolate the `EventController` logic from its dependencies. By setting up specific behaviors in mocks, the tests simulate real-world scenarios. The `HttpContext` is mocked to simulate user authentication and provide necessary user information for certain methods like `CreateEvent`.
+
+#### Benefits of These Tests
+
+- **Maintainability**: With well-defined tests, future changes to the `EventController` can be implemented and validated quickly.
+
+- **Reliability**: The automated tests enhance confidence in the controller's ability to handle a variety of real-world situations.
+
+- **Error Prevention**: By covering both typical and atypical scenarios, these tests help prevent unexpected issues.
 
 ### UI/UX Responsiveness
 
