@@ -22,7 +22,7 @@ services:
 
   backend:
     build:
-      context: ./backend
+      context: ./VibeSyncBackend/backend
     environment:
       - ASPNETCORE_URLS=http://+:5009
       - ASPNETCORE_ENVIRONMENT=Development
