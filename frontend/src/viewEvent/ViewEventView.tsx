@@ -36,6 +36,10 @@ const ViewEventView = () => {
         refreshEvent();
     }, [id, refreshEvent]);
 
+    if (accessToken === null || userFacebookId === null) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <>
             <Grid container marginX={"auto"} marginY={4} maxWidth="1000px" sx={{ borderRadius: '32px', overflow: 'hidden', backgroundColor: '#EEEEFF' }}>

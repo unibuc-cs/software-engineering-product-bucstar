@@ -15,35 +15,16 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps): React.JSX.Element => {
-    const [accessToken, setAccessTokenState] = useState<string | null>(() => {
-        // Initialize from localStorage if available
-        return localStorage.getItem('fb_access_token');
-    });
-    const [userFacebookId, setUserFacebookIdState] = useState<string | null>(() => {
-        return localStorage.getItem('fb_user_id');
-    });
-
+    const [accessToken, setAccessTokenState] = useState<string | null>(null);
+    const [userFacebookId, setUserFacebookIdState] = useState<string | null>(null);
     const isAuthenticated = !!accessToken;
 
     const setAccessToken = (token: string | null) => {
         setAccessTokenState(token);
     };
 
-    useEffect(() => {
-        if (accessToken) {
-            localStorage.setItem('fb_access_token', accessToken);
-        } else {
-            localStorage.removeItem('fb_access_token');
-        }
-    }, [accessToken]);
-
     const setUserFacebookId = (facebookId: string | null) => {
         setUserFacebookIdState(facebookId);
-        if (facebookId) {
-            localStorage.setItem('fb_user_id', facebookId);
-        } else {
-            localStorage.removeItem('fb_user_id');
-        }
     };
 
     return (

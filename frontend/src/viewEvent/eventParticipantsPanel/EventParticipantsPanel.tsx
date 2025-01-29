@@ -15,7 +15,7 @@ const EventParticipantsPanel = (
                         </Typography>
                     </Grid>
                     { model.participants.map((participant, index) => (
-                        <Grid size={12} key={/*participant.userFacebookId ||*/ /* Uncomment la linia asta cand edi si adi n o sa mai aiba acelasi facebookId*/ index}>
+                        <Grid size={12} key={index}>
                             <Typography variant="body1" align="left">
                                 {participant.username}
                             </Typography>
