@@ -2,6 +2,8 @@
 
 [**Jira**](https://dumitresculeduard.atlassian.net/jira/software/projects/VS/boards/5/backlog)
 
+[**Final Report**](./documentation/report.md)
+
 ---
 
 VibeSync is a web-based social platform that allows users to create, browse, and participate in casual events like sports games or meetups, featuring real-time updates, participant management, and event recommendations based on user preferences.
