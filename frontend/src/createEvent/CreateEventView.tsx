@@ -120,10 +120,10 @@ const CreateEventView = () => {
                 navigate(-1);
             }
             catch (error) {
-                console.log(error);
+                
             }
         } else {
-            console.log('Form is invalid');
+            
         }
     }
 
@@ -146,10 +146,10 @@ const CreateEventView = () => {
                 navigate(-1);
             }
             catch (error) {
-                console.log(error);
+                
             }
         } else {
-            console.log('Form is invalid');
+            
         }
     }
 

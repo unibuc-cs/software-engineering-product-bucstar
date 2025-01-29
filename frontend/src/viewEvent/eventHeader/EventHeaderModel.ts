@@ -28,8 +28,7 @@ export class EventHeaderModel {
         userFacebookId: string,
     ): EventHeaderModel {
         const isParticipating = viewEventModel.participants.some(participant => participant.userFacebookId === userFacebookId);
-        console.log("View event model: ", viewEventModel);
-        console.log("In event header model, isParticipating:", isParticipating);
+
         return new EventHeaderModel(
             viewEventModel.name, 
             viewEventModel.organizerName,

@@ -6,7 +6,7 @@ import {EventCommentsModel} from "./EventCommentsModel";
 import {CommentModel} from "../commentRow/CommentModel";
 import {useParams} from "react-router-dom";
 import {useState} from "react";
-import {CommentEventService, CommentDto} from "../../commentEvents/CommentEventService";
+import {CommentEventService, CommentDto} from "../commentEvents/CommentEventService";
 import { useAuth } from "../../utils/authProvider";
 
 const EventCommentsPanel = (

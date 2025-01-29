@@ -5,7 +5,7 @@ import ReviewRow from "../reviewRow/ReviewRow";
 import {EventReviewsModel} from "./EventReviewsModel";
 import {useParams} from "react-router-dom";
 import { useState} from "react";
-import {ReviewEventService, ReviewDto} from "../../reviewEvents/ReviewEventService";
+import {ReviewEventService, ReviewDto} from "../reviewEvents/ReviewEventService";
 import { useAuth } from "../../utils/authProvider";
 
 const EventReviewsPanel = ({model, userFacebookId, refreshEvent}: {model: EventReviewsModel; userFacebookId: string; refreshEvent: () => Promise<void>}) => {
