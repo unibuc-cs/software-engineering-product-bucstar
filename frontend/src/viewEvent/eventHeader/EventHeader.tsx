@@ -108,7 +108,7 @@ const EventHeader = (
                         </Button>
                     </Grid>
                 )}
-                {isActiveEvent && !model.showEditButton && !model.isParticipating && (
+                {isActiveEvent && !model.showEditButton && !model.isParticipating && !model.isEventFull && (
                     <Grid size={2}>
                         <Button variant={"outlined"} color={"inherit"}
                                 onClick={onJoinEvent}>

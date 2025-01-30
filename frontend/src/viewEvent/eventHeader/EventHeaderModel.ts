@@ -6,6 +6,7 @@ export class EventHeaderModel {
     public readonly date: Date;
     public readonly showEditButton: boolean;
     public readonly isParticipating: boolean;
+    public readonly isEventFull: boolean;
     
     constructor(
         eventName: string, 
@@ -13,12 +14,14 @@ export class EventHeaderModel {
         date: Date,
         showEditButton: boolean,
         isParticipating: boolean,
+        isEventFull: boolean,
     ) {
         this.eventName = eventName;
         this.organizerName = organizerName;
         this.date = date;
         this.showEditButton = showEditButton;
         this.isParticipating = isParticipating;
+        this.isEventFull = isEventFull;
     }
 
 
@@ -35,6 +38,7 @@ export class EventHeaderModel {
             viewEventModel.date,
             showEditButton,
             isParticipating,
+            viewEventModel.participants.length >= viewEventModel.maximumParticipants,
         );
     }
 }
