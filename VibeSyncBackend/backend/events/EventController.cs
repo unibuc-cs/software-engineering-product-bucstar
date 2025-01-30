@@ -126,6 +126,11 @@ namespace backend.events
                 
                 var createdEvent = await eventService.UpdateEventAsync(createEventDto);
 
+                if (createdEvent == null)
+                {
+                    throw new Exception("Event could not be updated.");
+                }
+
                 return Ok(new
                 {
                     message = "Event updated successfully",

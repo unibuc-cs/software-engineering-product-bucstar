@@ -2,7 +2,6 @@ import Grid from "@mui/material/Grid2";
 import EventInfoPanel from "../../components/eventInfoPanel/EventInfoPanel";
 import TagList from "../../components/tagList/TagList";
 import TagListModel from "../../components/tagList/TagListModel";
-import {Typography} from "@mui/material";
 import {EventMainInfoModel} from "./EventMainInfoModel";
 
 const EventMainInfo = (
@@ -19,9 +18,6 @@ const EventMainInfo = (
                         dateString={model.dateString}/>
                     <TagList model={new TagListModel(model.tagStrings)} />
                 </Grid>
-            <Typography variant="body1" align="left">
-                Lorem Ipsum
-            </Typography>
             </Grid>
         </>
     )

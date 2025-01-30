@@ -55,7 +55,6 @@ export class CreateEventService {
 
             if (response.ok) {
                 const data: CreateEventDto = await response.json();
-                console.log(data);
                 const model = new CreateEventModel(
                     data.id,
                     data.name,
@@ -91,7 +90,6 @@ export class CreateEventService {
                 body: JSON.stringify(dto),
             });
 
-            console.log(response);
 
             if (response.ok) {
                 const data = await response.json();

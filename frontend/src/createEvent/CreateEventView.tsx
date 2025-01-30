@@ -120,10 +120,10 @@ const CreateEventView = () => {
                 navigate(-1);
             }
             catch (error) {
-                console.log(error);
+                
             }
         } else {
-            console.log('Form is invalid');
+            
         }
     }
 
@@ -146,10 +146,10 @@ const CreateEventView = () => {
                 navigate(-1);
             }
             catch (error) {
-                console.log(error);
+                
             }
         } else {
-            console.log('Form is invalid');
+            
         }
     }
 
@@ -289,6 +289,7 @@ const CreateEventView = () => {
                         <FormControl error={Boolean(errors.date)}>
                             <MobileDateTimePicker
                                 defaultValue={dateToShow()}
+                                value={dateToShow()}
                                 disablePast={true}
                                 sx={{ background: "transparent" }}
                                 onAccept={(value) => { if (value != null) setDate(value) }}

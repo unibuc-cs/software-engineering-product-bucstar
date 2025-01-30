@@ -6,7 +6,7 @@ import { JoinEventDto, JoinEventService } from "../../joinEvent/JoinEventService
 import { useState } from "react";
 import { UnjoinEventService } from "../../joinEvent/UnjoinEventService";
 import { useNavigate } from "react-router-dom";
-import { CancelEventService } from "../../cancelEvent/CancelEventService";
+import { CancelEventService } from "../cancelEvent/CancelEventService";
 import dayjs from "dayjs";
 import { useAuth } from "../../utils/authProvider";
 

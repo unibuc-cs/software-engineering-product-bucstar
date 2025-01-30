@@ -39,7 +39,7 @@ export class FacebookLoginHelper {
 
     static statusChangeCallback = async (response: FacebookResponse): Promise<LoginResponse> => {
         if (response.status === "connected") {
-            console.log("User is already logged in with Facebook!");
+            
             const userInfo = await FacebookLoginHelper.fetchUserInfo();
             return { status: "connected", userInfo, accessToken: response.authResponse?.accessToken ?? "" };
         } else {
@@ -56,13 +56,13 @@ export class FacebookLoginHelper {
     };
 
     static loginUser = async (): Promise<UserInfo> => {
-        console.log("User is not logged in. Triggering signup flow...");
+       
 
         return new Promise<UserInfo>((resolve, reject) => {
             window.FB.login((response: FacebookResponse) => {
                 (async () => {
                     if (response.authResponse) {
-                        console.log("User logged in with Facebook during signup.");
+                     
                         try {
                             let user: UserInfo = await FacebookLoginHelper.fetchUserInfo();
                             resolve(user);

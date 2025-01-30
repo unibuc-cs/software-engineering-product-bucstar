@@ -29,14 +29,21 @@ public class UserSeeder
             {
                 Id = new Guid("022a8895-fe55-4e13-8bd9-402709435f78"),
                 Nickname = "Edi",
-                FacebookId = "2371556636519262"
+                FacebookId = "3926362367682964"
             },
             new User()
             {
                 Id = new Guid("ef043f56-86d2-4b68-9e03-996aadf92c76"),
                 Nickname = "Florin Alexandru",
                 FacebookId = "2886420674856395"
+            },
+            new User()
+            {
+                Id = new Guid("1e5fe355-5a9f-484f-bff6-f497f5fc0609"),
+                Nickname = "Codarcea Alexandru",
+                FacebookId = "1817904855694446"
             }
+            
         };
         
         _dbContext.Users.AddRange(users);
