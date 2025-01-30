@@ -29,7 +29,7 @@ public class UserSeeder
             {
                 Id = new Guid("022a8895-fe55-4e13-8bd9-402709435f78"),
                 Nickname = "Edi",
-                FacebookId = "2371556636519263"
+                FacebookId = "3926362367682964"
             },
             new User()
             {
