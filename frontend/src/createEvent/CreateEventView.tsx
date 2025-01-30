@@ -289,6 +289,7 @@ const CreateEventView = () => {
                         <FormControl error={Boolean(errors.date)}>
                             <MobileDateTimePicker
                                 defaultValue={dateToShow()}
+                                value={dateToShow()}
                                 disablePast={true}
                                 sx={{ background: "transparent" }}
                                 onAccept={(value) => { if (value != null) setDate(value) }}
