@@ -4,6 +4,8 @@
 
 [**Final Report**](./documentation/report.md)
 
+[**Watch Demo**](https://youtu.be/fHuVNWBDuys)
+
 ---
 
 VibeSync is a web-based social platform that allows users to create, browse, and participate in casual events like sports games or meetups, featuring real-time updates, participant management, and event recommendations based on user preferences.
