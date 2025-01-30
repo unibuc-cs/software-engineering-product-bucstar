@@ -135,7 +135,7 @@ public class EventService
             await _tagRepository.RemoveTagsByEventIdAsync(newEvent.Id);
             for (int i = 0; i < newEvent.Tags.Count; i++)
             {
-                var id = _tagRepository.AddTagAsync(newEvent.Tags.ElementAt(i));
+                await _tagRepository.AddTagAsync(newEvent.Tags.ElementAt(i));
             }
             
             await _eventRepository.UpdateEvent(newEvent);
