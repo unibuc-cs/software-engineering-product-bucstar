@@ -28,8 +28,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? builder.Configuration.GetConnectionString("DefaultConnectionMySQL");
-builder.Services.AddDbContext<DatabaseContext>(
+builder.Services.AddDbContextFactory<DatabaseContext>(
     options => options.UseMySQL(connectionString!)
+);
+builder.Services.AddTransient<DatabaseContext>(sp =>
+    sp.GetRequiredService<IDbContextFactory<DatabaseContext>>().CreateDbContext()
 );
 
 builder.Services.AddRepositories();
